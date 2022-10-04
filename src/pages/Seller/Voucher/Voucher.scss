@@ -1,0 +1,42 @@
+.form__container {
+  background: #eee;
+  width: 100vw;
+  height: 100vh;
+  padding: 5% 10%;
+
+  h3{
+    margin: 8px 0;
+    color: #1E46A2;
+    font-weight: 600;
+  }
+
+  h5{
+    margin: 8px 0;
+    color: #2658CD;
+    font-weight: 400;
+  }
+
+  .form__content {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+
+    .affix {
+      display:block;
+      width: fit-content;
+    }
+  }
+
+  .btn-primary {
+    padding: 6px 12px;
+    border-radius: 8px;
+    background: #2658CD;
+    color: white;
+    &:hover {
+      background: #1E46A2;
+    }
+  }
+}
