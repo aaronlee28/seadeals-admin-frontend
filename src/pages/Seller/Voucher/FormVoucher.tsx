@@ -5,6 +5,7 @@ import { axiosPrivate } from '../../../api/axios';
 import './Voucher.scss';
 import VoucherBasicInfo from './FormItem/VoucherBasicInfo';
 import VoucherBonusInfo from './FormItem/VoucherBonusInfo';
+import Button from '../../../components/Button/Button';
 
 const VOUCHERS_URL = 'vouchers';
 
@@ -35,9 +36,7 @@ const FormVoucher = () => {
     });
   };
 
-  const handleSubmit = async (e: any) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
     try {
       const response = await axiosPrivate.post(
         VOUCHERS_URL,
@@ -58,15 +57,15 @@ const FormVoucher = () => {
   };
 
   return (
-    <div className="form__container">
+    <div className="voucher__container">
       <h3>Buat voucher toko</h3>
-      <div className="form__content">
+      <div className="voucher__content">
         <form onSubmit={handleSubmit}>
           <VoucherBasicInfo voucher={voucher} handleOnChange={handleOnChange} />
           <VoucherBonusInfo voucher={voucher} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
-            <button className="me-0 btn-primary" type="button">Simpan</button>
-            <button className="me-0 btn-primary bg-secondary" type="button" onClick={() => navigate(from, { replace: true })}>Kembali</button>
+            <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />
+            <Button buttonType="secondary alt" handleClickedButton={() => navigate(from, { replace: true })} text="Kembali" />
           </div>
         </form>
       </div>
