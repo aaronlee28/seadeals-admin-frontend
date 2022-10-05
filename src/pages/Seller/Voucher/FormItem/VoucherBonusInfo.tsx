@@ -3,13 +3,13 @@ import '../Voucher.scss';
 
 const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
   <div className="my-4">
-    <h5 className="text-start"><b>Pengaturan bonus</b></h5>
+    <h5 className="text-start"><b>Pengaturan Bonus</b></h5>
     <div className="row my-3">
       <label className="col-3 text-end align-self-center" htmlFor="amount_type">Tipe voucher</label>
       <div className="col-9">
         <div className="d-flex gap-3">
           <div>
-            <input type="radio" id="percentage" name="amount_type" onChange={handleOnChange} value="percentage" />
+            <input type="radio" id="percentage" name="amount_type" onChange={handleOnChange} value="percentage" checked />
             <label htmlFor="percentage" className="mx-1">Persentase</label>
             <br />
           </div>
