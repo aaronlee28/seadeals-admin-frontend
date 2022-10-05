@@ -10,6 +10,7 @@ import SellerRegister from '../pages/Public/SellerRegister';
 import AdminHome from '../pages/Admin/AdminHome';
 import SellerHome from '../pages/Seller/SellerHome';
 import Login from '../pages/Public/Login';
+import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 
 const AppRoutes = () => (
   <Routes>
@@ -22,6 +23,7 @@ const AppRoutes = () => (
         <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
           <Route path="/seller/" element={<SellerLayout />}>
             <Route path="" element={<SellerHome />} />
+            <Route path="voucher/new" element={<FormVoucher />} />
           </Route>
         </Route>
 

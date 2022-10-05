@@ -1,0 +1,93 @@
+.voucher__container {
+  background: #eee;
+  width: 100vw;
+  height: 100vh;
+  padding: 5% 10%;
+
+  h3{
+    margin: 8px 0;
+    color: #1E46A2;
+    font-weight: 600;
+  }
+
+  h5{
+    margin: 8px 0;
+    color: #2658CD;
+    font-weight: 400;
+  }
+
+  .voucher__content {
+    background: #fff;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    padding: 5%;
+    border-radius: 8px;
+
+    .input-group-addon {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-weight: 400;
+        line-height: 1;
+        color: #555;
+        text-align: center;
+        background-color: #eee;
+        border: 1px solid #ccc;
+        width: 1%;
+        white-space: nowrap;
+        vertical-align: middle;
+        display: table-cell;
+    }
+
+    .form__input {
+        position: relative;
+        float: left;
+        width: 100%;
+        display: table-cell;
+        padding: 6px 12px;
+        border: 1px solid #ccc;
+    }
+
+    .suffix input {
+        border-radius: 4px 0px 0px 4px;
+    }
+    .suffix .input-group-addon {
+        border-left: 0;
+        border-radius: 0px 4px 4px 0px;
+    }
+    .prefix input {
+        border-radius: 0px 4px 4px 0px;
+    }
+    .prefix .input-group-addon {
+        border-right: 0;
+        border-radius: 4px 0px 0px 4px;
+    }
+    .presuffix input {
+        border-radius: 0px;
+    }
+    .input-group-addon.prefix {
+        border-radius: 4px 0px 0px 4px;
+        border-right: 0;
+    }
+    .input-group-addon.suffix {
+        border-radius: 0px 4px 4px 0px;
+        border-left: 0;
+    }
+    .input-group {
+        position: relative;
+        display: table;
+        border-collapse: separate;
+    }
+  }
+}
+
+.voucher__action-button{
+  padding: 0;
+  text-align: start;
+  font-size: 0.8em;
+  color: #2658CD;
+  background: inherit;
+  &:hover{
+    color: #FB3C00;
+  }
+}
