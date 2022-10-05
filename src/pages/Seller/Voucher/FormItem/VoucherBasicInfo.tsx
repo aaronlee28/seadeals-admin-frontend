@@ -17,18 +17,20 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
       <div className="row my-3">
         <label className="col-3 text-end" htmlFor="code">Kode voucher</label>
         <div className="col-9">
-          <div className="row border rounded">
-            <input className="col" defaultValue={prefixCode} type="text" disabled readOnly />
-            <input
-              className="col-9 col-md-10 col-xl-11 p-2"
-              name="code"
-              maxLength={5}
-              pattern="[a-zA-Z0-9]+"
-              placeholder="Masukkan kode voucher"
-              type="text"
-              required
-              onChange={handleOnChange}
-            />
+          <div className="row">
+            <div className="input-group prefix p-0">
+              <span className="input-group-addon">{prefixCode}</span>
+              <input
+                className="form__input"
+                name="code"
+                maxLength={5}
+                pattern="[a-zA-Z0-9]+"
+                placeholder="Masukkan kode voucher"
+                type="text"
+                required
+                onChange={handleOnChange}
+              />
+            </div>
           </div>
           <div className="row">
             {`Masukkan A-Z, 0-9; maksimum 5 karakter
