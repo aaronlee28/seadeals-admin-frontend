@@ -5,7 +5,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
   <div className="my-4">
     <h5 className="text-start"><b>Pengaturan bonus</b></h5>
     <div className="row my-3">
-      <label className="col-3 text-end" htmlFor="amount_type">Tipe voucher</label>
+      <label className="col-3 text-end align-self-center" htmlFor="amount_type">Tipe voucher</label>
       <div className="col-9">
         <div className="d-flex gap-3">
           <div>
@@ -22,7 +22,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
       </div>
     </div>
     <div className="row my-3">
-      <label className="col-3 text-end" htmlFor="amount">Voucher</label>
+      <label className="col-3 text-end align-self-center" htmlFor="amount">Voucher</label>
       <div className="col-9">
         <div className="row">
           {
@@ -47,11 +47,11 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
       </div>
     </div>
     <div className="row my-3">
-      <label className="col-3 text-end" htmlFor="quota">Kuota voucher</label>
+      <label className="col-3 text-end align-self-center" htmlFor="quota">Kuota voucher</label>
       <input name="quota" className="col-9 border rounded p-2" type="number" placeholder="Masukkan angka" required onChange={handleOnChange} />
     </div>
     <div className="row my-3">
-      <label className="col-3 text-end" htmlFor="min_spending">Minimal pembelian</label>
+      <label className="col-3 text-end align-self-center" htmlFor="min_spending">Minimal pembelian</label>
       <div className="col-9">
         <div className="row">
           <div className="input-group prefix p-0">

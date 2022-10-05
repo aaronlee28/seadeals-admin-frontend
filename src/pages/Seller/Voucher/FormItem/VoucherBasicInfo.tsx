@@ -11,11 +11,11 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
     <div className="my-4">
       <h5 className="text-start"><b>Rincian Dasar</b></h5>
       <div className="row my-3">
-        <label className="col-3 text-end" htmlFor="name">Nama voucher</label>
+        <label className="col-3 text-end align-self-center" htmlFor="name">Nama voucher</label>
         <input name="name" className="col-9 border rounded p-2" maxLength={100} placeholder="Masukkan nama voucher" type="text" required onChange={handleOnChange} />
       </div>
       <div className="row my-3">
-        <label className="col-3 text-end" htmlFor="code">Kode voucher</label>
+        <label className="col-3 text-end align-self-center" htmlFor="code">Kode voucher</label>
         <div className="col-9">
           <div className="row">
             <div className="input-group prefix p-0">
@@ -39,7 +39,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
         </div>
       </div>
       <div className="row my-3">
-        <label className="col-3 text-end" htmlFor="start_date">Periode voucher</label>
+        <label className="col-3 text-end align-self-center" htmlFor="start_date">Periode voucher</label>
         <input
           name="start_date"
           className="col-4 border rounded p-2"

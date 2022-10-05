@@ -64,8 +64,9 @@ const FormVoucher = () => {
         <form onSubmit={handleSubmit}>
           <VoucherBasicInfo voucher={voucher} handleOnChange={handleOnChange} />
           <VoucherBonusInfo voucher={voucher} handleOnChange={handleOnChange} />
-          <div className="d-flex flex-row-reverse">
+          <div className="d-flex flex-row-reverse gap-3">
             <button className="me-0 btn-primary" type="button">Simpan</button>
+            <button className="me-0 btn-primary bg-secondary" type="button" onClick={() => navigate(from, { replace: true })}>Kembali</button>
           </div>
         </form>
       </div>
