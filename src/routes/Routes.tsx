@@ -11,6 +11,7 @@ import AdminHome from '../pages/Admin/AdminHome';
 import SellerHome from '../pages/Seller/SellerHome';
 import Login from '../pages/Public/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
+import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
 
 const AppRoutes = () => (
   <Routes>
@@ -24,6 +25,7 @@ const AppRoutes = () => (
           <Route path="/seller/" element={<SellerLayout />}>
             <Route path="" element={<SellerHome />} />
             <Route path="voucher/new" element={<FormVoucher />} />
+            <Route path="voucher/list" element={<DashboardVoucher />} />
           </Route>
         </Route>
 
