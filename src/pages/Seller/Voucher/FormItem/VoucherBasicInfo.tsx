@@ -43,6 +43,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
         <input
           name="start_date"
           className="col-4 border rounded p-2"
+          defaultValue={timeNow}
           min={timeNow}
           step={1}
           type="datetime-local"
@@ -50,7 +51,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
           onChange={handleOnChange}
         />
         <span className="col-1 p-2"> - </span>
-        <input name="end_date" className="col-4 border rounded p-2" min={voucher.start_date} step={1} type="datetime-local" required onChange={handleOnChange} />
+        <input name="end_date" className="col-4 border rounded p-2" defaultValue={timeNow} min={voucher.start_date} step={1} type="datetime-local" required onChange={handleOnChange} />
       </div>
     </div>
   );
