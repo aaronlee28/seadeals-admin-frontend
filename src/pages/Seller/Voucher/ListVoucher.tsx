@@ -3,10 +3,10 @@ import Formatter from '../../../utils/formatter';
 
 const ListVoucher:FC<any> = ({ vouchers }) => (
   <div className="container">
-    <table className="table table-hover">
+    <table className="table table-hover voucher__table">
       <caption>List of shop voucher</caption>
       <thead>
-        <tr>
+        <tr className="table-secondary">
           <th>Nama Voucher | Kode</th>
           <th>Diskon</th>
           <th>Kuota Pemakaian</th>
