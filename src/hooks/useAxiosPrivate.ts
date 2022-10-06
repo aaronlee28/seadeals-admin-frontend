@@ -3,14 +3,14 @@ import { axiosPrivate } from '../api/axios';
 import useRefreshToken from './useRefreshToken';
 import useAuth from './useAuth';
 
-const useAxiosPrivate = () => {
+const useAxiosPrivate = (token:string = '') => {
   const refresh = useRefreshToken();
   const { auth } = useAuth();
 
   useEffect(() => {
     const requestIntercept = axiosPrivate.interceptors.request.use((config) => {
       if (!config?.headers?.Authorization) {
-        const accessToken = localStorage.getItem('access_token');
+        const accessToken = token || localStorage.getItem('access_token');
         // @ts-ignore
         // eslint-disable-next-line no-param-reassign
         config.headers.Authorization = `Bearer ${accessToken}`;

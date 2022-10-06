@@ -9,7 +9,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
       <div className="col-9">
         <div className="d-flex gap-3">
           <div>
-            <input type="radio" id="percentage" name="amount_type" onChange={handleOnChange} value="percentage" checked />
+            <input type="radio" id="percentage" name="amount_type" onChange={handleOnChange} value="percentage" defaultChecked />
             <label htmlFor="percentage" className="mx-1">Persentase</label>
             <br />
           </div>

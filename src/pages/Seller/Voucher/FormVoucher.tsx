@@ -1,18 +1,17 @@
 import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { axiosPrivate } from '../../../api/axios';
+import { useNavigate } from 'react-router-dom';
 
 import './Voucher.scss';
 import VoucherBasicInfo from './FormItem/VoucherBasicInfo';
 import VoucherBonusInfo from './FormItem/VoucherBonusInfo';
 import Button from '../../../components/Button/Button';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 const VOUCHERS_URL = 'vouchers';
 
 const FormVoucher = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
+  const axiosPrivate = useAxiosPrivate();
 
   const [voucher, setVoucher] = useState({
     name: '',
@@ -50,7 +49,7 @@ const FormVoucher = () => {
         }),
       );
       console.log(response);
-      navigate(from, { replace: true });
+      navigate('/seller/voucher/list');
     } catch (err) {
       console.error(err);
     }
@@ -65,7 +64,7 @@ const FormVoucher = () => {
           <VoucherBonusInfo voucher={voucher} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
             <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />
-            <Button buttonType="secondary alt" handleClickedButton={() => navigate(from, { replace: true })} text="Kembali" />
+            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Kembali" />
           </div>
         </form>
       </div>

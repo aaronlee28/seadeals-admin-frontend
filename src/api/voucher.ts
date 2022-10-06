@@ -1,8 +1,6 @@
-import { axiosPrivate } from './axios';
-
 class VoucherAPI {
-  static FindVoucherByUserID() {
-    return axiosPrivate.get('/vouchers');
+  static FindVoucherByUserID(ax:any, filter:any) {
+    return ax.get(`/vouchers?${filter}`);
   }
 }
 
