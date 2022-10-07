@@ -40,8 +40,8 @@ const ListVoucher:FC<any> = ({ vouchers }) => (
                   <td>
                     <div className="d-flex flex-column text-start">
                       <button type="button" className="voucher__action-button">Rincian</button>
-                      <button type="button" className="voucher__action-button">Update</button>
-                      <button type="button" className="voucher__action-button">Delete</button>
+                      <button type="button" className="voucher__action-button" disabled={v.status === 'ended'}>Update</button>
+                      <button type="button" className="voucher__action-button" disabled={v.status !== 'upcoming'}>Delete</button>
                     </div>
                   </td>
                 </tr>

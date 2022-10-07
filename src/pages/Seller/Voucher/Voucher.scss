@@ -92,7 +92,10 @@
   font-size: 0.8em;
   color: #2658CD;
   background: inherit;
-  &:hover{
+  &:disabled{
+    color: #555555;
+  }
+  &:hover:enabled{
     color: #FB3C00;
   }
 }
