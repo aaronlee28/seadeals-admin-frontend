@@ -7,6 +7,7 @@ import VoucherBonusInfo from './FormItem/VoucherBonusInfo';
 import VoucherAPI from '../../../api/voucher';
 import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import VoucherConstant from '../../../constants/voucher';
 
 const VOUCHERS_URL = 'vouchers';
 
@@ -51,7 +52,7 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
   };
 
   useEffect(() => {
-    if (formType !== 'create') {
+    if (formType !== VoucherConstant.CREATE) {
       findVoucherByID().then();
     }
   }, []);
@@ -104,8 +105,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
-            {formType === 'create' && <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
-            {formType === 'update' && <Button buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
+            {formType === VoucherConstant.CREATE && <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
+            {formType === VoucherConstant.UPDATE && <Button buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
             <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Kembali" />
           </div>
         </form>
