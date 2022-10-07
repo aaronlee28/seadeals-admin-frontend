@@ -9,13 +9,15 @@ import RequireAuth from '../components/RequireAuth';
 import SellerRegister from '../pages/Public/SellerRegister';
 import AdminHome from '../pages/Admin/AdminHome';
 import SellerHome from '../pages/Seller/SellerHome';
-import Login from '../pages/Public/Login';
+import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
+import Register from '../pages/Register/Register';
 
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/seller/register" element={<SellerRegister />} />
 
       <Route element={<PersistLogin />}>
