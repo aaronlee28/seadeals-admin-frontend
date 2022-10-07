@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import '../Voucher.scss';
 
-const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
+const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
   <div className="my-4">
     <h5 className="text-start"><b>Pengaturan Bonus</b></h5>
     <div className="row my-3">
@@ -9,12 +9,29 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
       <div className="col-9">
         <div className="d-flex gap-3">
           <div>
-            <input type="radio" id="percentage" name="amount_type" onChange={handleOnChange} value="percentage" checked />
+            <input
+              type="radio"
+              id="percentage"
+              name="amount_type"
+              onChange={handleOnChange}
+              value="percentage"
+              readOnly={formType === 'show'}
+              disabled={formType === 'show'}
+              defaultChecked
+            />
             <label htmlFor="percentage" className="mx-1">Persentase</label>
             <br />
           </div>
           <div>
-            <input type="radio" id="nominal" name="amount_type" onChange={handleOnChange} value="nominal" />
+            <input
+              type="radio"
+              id="nominal"
+              name="amount_type"
+              onChange={handleOnChange}
+              value="nominal"
+              readOnly={formType === 'show'}
+              disabled={formType === 'show'}
+            />
             <label htmlFor="nominal" className="mx-1">Nominal</label>
             <br />
           </div>
@@ -30,7 +47,16 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
             && (
               <div className="input-group prefix p-0">
                 <span className="input-group-addon">Rp</span>
-                <input name="amount" className="form__input" placeholder="Masukkan angka" type="number" onChange={handleOnChange} required />
+                <input
+                  name="amount"
+                  className="form__input"
+                  placeholder="Masukkan angka"
+                  type="number"
+                  onChange={handleOnChange}
+                  required
+                  readOnly={formType === 'show'}
+                  disabled={formType === 'show'}
+                />
               </div>
             )
           }
@@ -38,7 +64,17 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
             voucher.amount_type === 'percentage'
             && (
               <div className="input-group suffix p-0">
-                <input name="amount" max={100} className="form__input" placeholder="Masukkan angka" type="number" onChange={handleOnChange} required />
+                <input
+                  name="amount"
+                  max={100}
+                  className="form__input"
+                  placeholder="Masukkan angka"
+                  type="number"
+                  onChange={handleOnChange}
+                  required
+                  readOnly={formType === 'show'}
+                  disabled={formType === 'show'}
+                />
                 <span className="input-group-addon">% (Persen)</span>
               </div>
             )
@@ -48,7 +84,16 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
     </div>
     <div className="row my-3">
       <label className="col-3 text-end align-self-center" htmlFor="quota">Kuota voucher</label>
-      <input name="quota" className="col-9 border rounded p-2" type="number" placeholder="Masukkan angka" required onChange={handleOnChange} />
+      <input
+        name="quota"
+        className="col-9 border rounded p-2"
+        type="number"
+        placeholder="Masukkan angka"
+        required
+        readOnly={formType === 'show'}
+        disabled={formType === 'show'}
+        onChange={handleOnChange}
+      />
     </div>
     <div className="row my-3">
       <label className="col-3 text-end align-self-center" htmlFor="min_spending">Minimal pembelian</label>
@@ -56,7 +101,16 @@ const VoucherBonusInfo:FC<any> = ({ voucher, handleOnChange }) => (
         <div className="row">
           <div className="input-group prefix p-0">
             <span className="input-group-addon">Rp</span>
-            <input name="min_spending" className="form__input" placeholder="Masukkan angka" type="number" required onChange={handleOnChange} />
+            <input
+              name="min_spending"
+              className="form__input"
+              placeholder="Masukkan angka"
+              type="number"
+              required
+              readOnly={formType === 'show'}
+              disabled={formType === 'show'}
+              onChange={handleOnChange}
+            />
           </div>
         </div>
       </div>

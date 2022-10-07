@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, { FC, useEffect, useState } from 'react';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { axiosPrivate } from '../../../api/axios';
 
 import './Voucher.scss';
@@ -9,10 +9,11 @@ import Button from '../../../components/Button/Button';
 
 const VOUCHERS_URL = 'vouchers';
 
-const FormVoucher = () => {
+const FormVoucher:FC<any> = ({ formType }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || '/';
+  const { voucherID } = useParams();
 
   const [voucher, setVoucher] = useState({
     name: '',
@@ -35,6 +36,20 @@ const FormVoucher = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  const findVoucherByID = async () => {
+    await VoucherAPI.FindVoucherByID(voucherID)
+      .then((resp:any) => {
+        setVoucher(resp.data.data);
+      })
+      .catch((err:any) => err);
+  };
+
+  useEffect(() => {
+    if (formType !== 'create') {
+      findVoucherByID().then();
+    }
+  }, [formType]);
 
   const handleSubmit = async () => {
     try {
@@ -61,10 +76,10 @@ const FormVoucher = () => {
       <h3>Buat voucher toko</h3>
       <div className="voucher__content">
         <form onSubmit={handleSubmit}>
-          <VoucherBasicInfo voucher={voucher} handleOnChange={handleOnChange} />
-          <VoucherBonusInfo voucher={voucher} handleOnChange={handleOnChange} />
+          <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
+          <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
-            <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />
+            {formType === 'create' && <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
             <Button buttonType="secondary alt" handleClickedButton={() => navigate(from, { replace: true })} text="Kembali" />
           </div>
         </form>

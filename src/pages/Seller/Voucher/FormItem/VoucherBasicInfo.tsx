@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import useAuth from '../../../../hooks/useAuth';
 import '../Voucher.scss';
 
-const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
+const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
   const timeNow = `${new Date().toISOString().split('.')[0]}`;
   const auth = useAuth();
   const prefixCode = auth.auth.user.username.substring(0, 4).toUpperCase();
@@ -12,7 +12,17 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
       <h5 className="text-start"><b>Rincian Dasar</b></h5>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="name">Nama voucher</label>
-        <input name="name" className="col-9 border rounded p-2" maxLength={100} placeholder="Masukkan nama voucher" type="text" required onChange={handleOnChange} />
+        <input
+          name="name"
+          className="col-9 border rounded p-2"
+          maxLength={100}
+          placeholder="Masukkan nama voucher"
+          type="text"
+          required
+          readOnly={formType === 'show'}
+          disabled={formType === 'show'}
+          onChange={handleOnChange}
+        />
       </div>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="code">Kode voucher</label>
@@ -28,6 +38,8 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
                 placeholder="Masukkan kode voucher"
                 type="text"
                 required
+                readOnly={formType !== 'create'}
+                disabled={formType !== 'create'}
                 onChange={handleOnChange}
               />
             </div>
@@ -48,10 +60,23 @@ const VoucherBasicInfo:FC<any> = ({ voucher, handleOnChange }) => {
           step={1}
           type="datetime-local"
           required
+          readOnly={formType === 'show'}
+          disabled={formType === 'show'}
           onChange={handleOnChange}
         />
         <span className="col-1 p-2"> - </span>
-        <input name="end_date" className="col-4 border rounded p-2" defaultValue={timeNow} min={voucher.start_date} step={1} type="datetime-local" required onChange={handleOnChange} />
+        <input
+          name="end_date"
+          className="col-4 border rounded p-2"
+          defaultValue={timeNow}
+          min={voucher.start_date}
+          step={1}
+          type="datetime-local"
+          required
+          readOnly={formType === 'show'}
+          disabled={formType === 'show'}
+          onChange={handleOnChange}
+        />
       </div>
     </div>
   );
