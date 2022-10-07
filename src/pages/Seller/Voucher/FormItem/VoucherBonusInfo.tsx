@@ -17,7 +17,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
               value="percentage"
               readOnly={formType === 'show'}
               disabled={formType === 'show'}
-              defaultChecked
+              checked={voucher.amount_type === 'percentage'}
             />
             <label htmlFor="percentage" className="mx-1">Persentase</label>
             <br />
@@ -31,6 +31,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
               value="nominal"
               readOnly={formType === 'show'}
               disabled={formType === 'show'}
+              checked={voucher.amount_type === 'nominal'}
             />
             <label htmlFor="nominal" className="mx-1">Nominal</label>
             <br />
@@ -54,6 +55,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
                   type="number"
                   onChange={handleOnChange}
                   required
+                  value={voucher.amount}
                   readOnly={formType === 'show'}
                   disabled={formType === 'show'}
                 />
@@ -72,6 +74,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
                   type="number"
                   onChange={handleOnChange}
                   required
+                  value={voucher.amount}
                   readOnly={formType === 'show'}
                   disabled={formType === 'show'}
                 />
@@ -90,6 +93,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
         type="number"
         placeholder="Masukkan angka"
         required
+        value={voucher.quota}
         readOnly={formType === 'show'}
         disabled={formType === 'show'}
         onChange={handleOnChange}
@@ -107,6 +111,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
               placeholder="Masukkan angka"
               type="number"
               required
+              value={voucher.min_spending}
               readOnly={formType === 'show'}
               disabled={formType === 'show'}
               onChange={handleOnChange}

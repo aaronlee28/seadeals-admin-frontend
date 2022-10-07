@@ -1,29 +1,29 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { axiosPrivate } from '../../../api/axios';
+import { useParams, useNavigate } from 'react-router-dom';
 
 import './Voucher.scss';
 import VoucherBasicInfo from './FormItem/VoucherBasicInfo';
 import VoucherBonusInfo from './FormItem/VoucherBonusInfo';
+import VoucherAPI from '../../../api/voucher';
 import Button from '../../../components/Button/Button';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 const VOUCHERS_URL = 'vouchers';
 
 const FormVoucher:FC<any> = ({ formType }) => {
   const navigate = useNavigate();
-  const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
   const { voucherID } = useParams();
+  const axiosPrivate = useAxiosPrivate();
 
   const [voucher, setVoucher] = useState({
     name: '',
     code: '',
     start_date: '',
     end_date: '',
-    quota: 1,
+    quota: '',
     amount_type: 'percentage',
-    amount: 1,
-    min_spending: 0,
+    amount: '',
+    min_spending: '',
   });
 
   const handleOnChange = (e: any) => {
@@ -38,7 +38,7 @@ const FormVoucher:FC<any> = ({ formType }) => {
   };
 
   const findVoucherByID = async () => {
-    await VoucherAPI.FindVoucherByID(voucherID)
+    await VoucherAPI.FindVoucherByID(axiosPrivate, voucherID)
       .then((resp:any) => {
         setVoucher(resp.data.data);
       })
@@ -49,7 +49,7 @@ const FormVoucher:FC<any> = ({ formType }) => {
     if (formType !== 'create') {
       findVoucherByID().then();
     }
-  }, [formType]);
+  }, []);
 
   const handleSubmit = async () => {
     try {
@@ -65,7 +65,7 @@ const FormVoucher:FC<any> = ({ formType }) => {
         }),
       );
       console.log(response);
-      navigate(from, { replace: true });
+      navigate('/seller/voucher/list');
     } catch (err) {
       console.error(err);
     }
@@ -80,7 +80,7 @@ const FormVoucher:FC<any> = ({ formType }) => {
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
             {formType === 'create' && <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
-            <Button buttonType="secondary alt" handleClickedButton={() => navigate(from, { replace: true })} text="Kembali" />
+            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Kembali" />
           </div>
         </form>
       </div>

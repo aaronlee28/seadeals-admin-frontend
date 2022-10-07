@@ -19,6 +19,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
           placeholder="Masukkan nama voucher"
           type="text"
           required
+          value={voucher.name}
           readOnly={formType === 'show'}
           disabled={formType === 'show'}
           onChange={handleOnChange}
@@ -38,6 +39,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
                 placeholder="Masukkan kode voucher"
                 type="text"
                 required
+                value={formType !== 'create' ? voucher.code.substring(4) : voucher.code}
                 readOnly={formType !== 'create'}
                 disabled={formType !== 'create'}
                 onChange={handleOnChange}
@@ -46,7 +48,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
           </div>
           <div className="row">
             {`Masukkan A-Z, 0-9; maksimum 5 karakter
-              \n Kode voucher Anda adalah: ${prefixCode + voucher.code}`}
+              \n Kode voucher Anda adalah: ${prefixCode}${formType !== 'create' ? (voucher.code.substring(4)) : voucher.code}`}
           </div>
         </div>
       </div>
@@ -55,11 +57,10 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
         <input
           name="start_date"
           className="col-4 border rounded p-2"
-          defaultValue={timeNow}
           min={timeNow}
-          step={1}
           type="datetime-local"
           required
+          value={voucher.start_date ? voucher.start_date.replace('Z', '') : timeNow}
           readOnly={formType === 'show'}
           disabled={formType === 'show'}
           onChange={handleOnChange}
@@ -68,11 +69,10 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
         <input
           name="end_date"
           className="col-4 border rounded p-2"
-          defaultValue={timeNow}
           min={voucher.start_date}
-          step={1}
           type="datetime-local"
           required
+          value={voucher.end_date ? voucher.end_date.replace('Z', '') : timeNow}
           readOnly={formType === 'show'}
           disabled={formType === 'show'}
           onChange={handleOnChange}
