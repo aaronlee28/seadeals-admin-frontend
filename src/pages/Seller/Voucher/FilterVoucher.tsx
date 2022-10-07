@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import VOUCHER_STATUS from '../../../constants/voucher';
+import VoucherConstant from '../../../constants/voucher';
 import Form from '../../../components/Form/Form';
 
 const FilterVoucher:FC<any> = ({ status, setStatus }) => {
@@ -7,7 +7,7 @@ const FilterVoucher:FC<any> = ({ status, setStatus }) => {
     inputType: 'select',
     label: 'status',
     name: 'status',
-    options: VOUCHER_STATUS,
+    options: VoucherConstant.VOUCHER_STATUS,
   }];
 
   return (

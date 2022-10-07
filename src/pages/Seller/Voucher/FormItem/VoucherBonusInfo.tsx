@@ -1,4 +1,5 @@
 import React, { FC } from 'react';
+import VoucherConstant from '../../../../constants/voucher';
 import '../Voucher.scss';
 
 const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
@@ -15,9 +16,9 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
               name="amount_type"
               onChange={handleOnChange}
               value="percentage"
-              readOnly={formType === 'show'}
-              disabled={formType === 'show'}
-              checked={voucher.amount_type === 'percentage'}
+              readOnly={formType === VoucherConstant.SHOW}
+              disabled={formType === VoucherConstant.SHOW}
+              checked={voucher.amount_type === VoucherConstant.PERCENTAGE}
             />
             <label htmlFor="percentage" className="mx-1">Persentase</label>
             <br />
@@ -29,9 +30,9 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
               name="amount_type"
               onChange={handleOnChange}
               value="nominal"
-              readOnly={formType === 'show'}
-              disabled={formType === 'show'}
-              checked={voucher.amount_type === 'nominal'}
+              readOnly={formType === VoucherConstant.SHOW}
+              disabled={formType === VoucherConstant.SHOW}
+              checked={voucher.amount_type === VoucherConstant.NOMINAL}
             />
             <label htmlFor="nominal" className="mx-1">Nominal</label>
             <br />
@@ -44,7 +45,7 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
       <div className="col-9">
         <div className="row">
           {
-            voucher.amount_type === 'nominal'
+            voucher.amount_type === VoucherConstant.NOMINAL
             && (
               <div className="input-group prefix p-0">
                 <span className="input-group-addon">Rp</span>
@@ -56,14 +57,14 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
                   onChange={handleOnChange}
                   required
                   value={voucher.amount}
-                  readOnly={formType === 'show'}
-                  disabled={formType === 'show'}
+                  readOnly={formType === VoucherConstant.SHOW}
+                  disabled={formType === VoucherConstant.SHOW}
                 />
               </div>
             )
           }
           {
-            voucher.amount_type === 'percentage'
+            voucher.amount_type === VoucherConstant.PERCENTAGE
             && (
               <div className="input-group suffix p-0">
                 <input
@@ -75,8 +76,8 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
                   onChange={handleOnChange}
                   required
                   value={voucher.amount}
-                  readOnly={formType === 'show'}
-                  disabled={formType === 'show'}
+                  readOnly={formType === VoucherConstant.SHOW}
+                  disabled={formType === VoucherConstant.SHOW}
                 />
                 <span className="input-group-addon">% (Persen)</span>
               </div>
@@ -94,8 +95,8 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
         placeholder="Masukkan angka"
         required
         value={voucher.quota}
-        readOnly={formType === 'show'}
-        disabled={formType === 'show'}
+        readOnly={formType === VoucherConstant.SHOW}
+        disabled={formType === VoucherConstant.SHOW}
         onChange={handleOnChange}
       />
     </div>
@@ -112,8 +113,8 @@ const VoucherBonusInfo:FC<any> = ({ voucher, formType, handleOnChange }) => (
               type="number"
               required
               value={voucher.min_spending}
-              readOnly={formType === 'show'}
-              disabled={formType === 'show'}
+              readOnly={formType === VoucherConstant.SHOW}
+              disabled={formType === VoucherConstant.SHOW}
               onChange={handleOnChange}
             />
           </div>

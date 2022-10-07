@@ -40,7 +40,12 @@ const FormVoucher:FC<any> = ({ formType }) => {
   const findVoucherByID = async () => {
     await VoucherAPI.FindVoucherByID(axiosPrivate, voucherID)
       .then((resp:any) => {
-        setVoucher(resp.data.data);
+        const { data } = resp.data;
+        setVoucher({
+          ...data,
+          start_date: data.start_date.replace('Z', ''),
+          end_date: data.end_date.replace('Z', ''),
+        });
       })
       .catch((err:any) => err);
   };
@@ -50,6 +55,26 @@ const FormVoucher:FC<any> = ({ formType }) => {
       findVoucherByID().then();
     }
   }, []);
+
+  const handleUpdate = async () => {
+    try {
+      const response = await axiosPrivate.patch(
+        `${VOUCHERS_URL}/${voucherID}`,
+        JSON.stringify({
+          ...voucher,
+          quota: Number(voucher.quota),
+          amount: Number(voucher.amount),
+          min_spending: Number(voucher.min_spending),
+          start_date: `${voucher.start_date}Z`,
+          end_date: `${voucher.end_date}Z`,
+        }),
+      );
+      console.log(response);
+      navigate('/seller/voucher/list');
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const handleSubmit = async () => {
     try {
@@ -80,6 +105,7 @@ const FormVoucher:FC<any> = ({ formType }) => {
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
             {formType === 'create' && <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
+            {formType === 'update' && <Button buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
             <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Kembali" />
           </div>
         </form>

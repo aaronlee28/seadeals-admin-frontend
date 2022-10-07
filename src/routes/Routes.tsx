@@ -25,8 +25,8 @@ const AppRoutes = () => (
           <Route path="/seller/" element={<SellerLayout />}>
             <Route path="" element={<SellerHome />} />
             <Route path="voucher/">
-              <Route path="new" element={<FormVoucher formType="create" />} />
               <Route path="list" element={<DashboardVoucher />} />
+              <Route path="new" element={<FormVoucher formType="create" />} />
               <Route path="show/:voucherID" element={<FormVoucher formType="show" />} />
               <Route path="update/:voucherID" element={<FormVoucher formType="update" />} />
             </Route>
