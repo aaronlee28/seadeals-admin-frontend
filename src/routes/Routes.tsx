@@ -26,9 +26,9 @@ const AppRoutes = () => (
             <Route path="" element={<SellerHome />} />
             <Route path="voucher/">
               <Route path="list" element={<DashboardVoucher />} />
-              <Route path="new" element={<FormVoucher formType="create" />} />
-              <Route path="show/:voucherID" element={<FormVoucher formType="show" />} />
-              <Route path="update/:voucherID" element={<FormVoucher formType="update" />} />
+              <Route path="new" element={<FormVoucher formType="create" title="Buat Voucher Toko" />} />
+              <Route path="show/:voucherID" element={<FormVoucher formType="show" title="Detail Voucher Toko" />} />
+              <Route path="update/:voucherID" element={<FormVoucher formType="update" title="Update Voucher Toko" />} />
             </Route>
           </Route>
         </Route>

@@ -10,7 +10,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 
 const VOUCHERS_URL = 'vouchers';
 
-const FormVoucher:FC<any> = ({ formType }) => {
+const FormVoucher:FC<any> = ({ title, formType }) => {
   const navigate = useNavigate();
   const { voucherID } = useParams();
   const axiosPrivate = useAxiosPrivate();
@@ -98,7 +98,7 @@ const FormVoucher:FC<any> = ({ formType }) => {
 
   return (
     <div className="voucher__container">
-      <h3>Buat voucher toko</h3>
+      <h3 className="mb-4 mt-2">{title}</h3>
       <div className="voucher__content">
         <form onSubmit={handleSubmit}>
           <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
