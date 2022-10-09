@@ -19,6 +19,8 @@ const DashboardVoucher:FC<any> = () => {
   const [totalPage, setTotalPage] = useState(1);
   const [status, setStatus] = useState('');
 
+  const [deletedID, setDeletedID] = useState(undefined);
+
   const findVoucherByUserID = async () => {
     const filter = `page=${page}&status=${status}`;
     await VoucherAPI.FindVoucherByUserID(axiosPrivate, filter)
@@ -31,9 +33,19 @@ const DashboardVoucher:FC<any> = () => {
       .catch((err:any) => err);
   };
 
+  const handleDelete = async () => {
+    await VoucherAPI.DeleteVoucherByID(axiosPrivate, deletedID)
+      .then((resp: any) => {
+        const { data } = resp.data;
+        console.log(data);
+        setDeletedID(undefined);
+      })
+      .catch((err: any) => err);
+  };
+
   useEffect(() => {
     findVoucherByUserID().then();
-  }, [page, status]);
+  }, [page, status, deletedID]);
 
   return (
     <div className="voucher__container">
@@ -49,7 +61,11 @@ const DashboardVoucher:FC<any> = () => {
         </div>
         <div>
           <FilterVoucher status={status} setStatus={setStatus} />
-          <ListVoucher vouchers={vouchers} />
+          <ListVoucher
+            vouchers={vouchers}
+            setDeletedID={setDeletedID}
+            handleDelete={handleDelete}
+          />
           <Pagination
             totalPage={totalPage}
             page={page}

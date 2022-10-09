@@ -1,24 +1,26 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Formatter from '../../../utils/formatter';
-import VoucherAPI from '../../../api/voucher';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import Modal from '../../../components/Modal/Modal';
+import Confirmation from '../../../components/Modal/Confirmation';
 
-const ListVoucher:FC<any> = ({ vouchers }) => {
+const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
-  const axiosPrivate = useAxiosPrivate();
-
-  const handleDelete = async (id: any) => {
-    await VoucherAPI.DeleteVoucherByID(axiosPrivate, id)
-      .then((resp: any) => {
-        const { data } = resp.data;
-        console.log(data);
-      })
-      .catch((err: any) => err);
-  };
+  const [showModalDelete, setShowModalDelete] = useState(false);
 
   return (
     <div className="container">
+      {showModalDelete && (
+      <Modal cancel={() => setShowModalDelete(false)}>
+        <Confirmation
+          text="Kamu yakin untuk mengakhiri voucher ini?"
+          handleClose={() => setShowModalDelete(false)}
+          handleConfirm={() => {
+            handleDelete(); setShowModalDelete(false);
+          }}
+        />
+      </Modal>
+      )}
       <table className="table table-hover voucher__table">
         <caption>List of shop voucher</caption>
         <thead>
@@ -56,9 +58,9 @@ const ListVoucher:FC<any> = ({ vouchers }) => {
                   <td>
                     <div className="d-flex flex-column text-start">
                       <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/show/${v.id}`)}>Rincian</button>
-                      <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/update/${v.id}`)} disabled={v.status === 'ended'}>Update</button>
+                      <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/update/${v.id}`)} disabled={v.status === 'ended'}>Ubah</button>
                       <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/new?copy=${v.id}`)}>Duplikat</button>
-                      <button type="button" className="voucher__action-button" disabled={v.status !== 'upcoming'} onClick={() => { handleDelete(v.id); }}>Delete</button>
+                      <button type="button" className="voucher__action-button" disabled={v.status !== 'upcoming'} onClick={() => { setShowModalDelete(true); setDeletedID(v.id); }}>Akhiri</button>
                     </div>
                   </td>
                 </tr>
