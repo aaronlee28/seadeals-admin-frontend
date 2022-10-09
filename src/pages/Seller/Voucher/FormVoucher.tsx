@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import './Voucher.scss';
 import VoucherBasicInfo from './FormItem/VoucherBasicInfo';
@@ -14,6 +14,8 @@ const VOUCHERS_URL = 'vouchers';
 const FormVoucher:FC<any> = ({ title, formType }) => {
   const navigate = useNavigate();
   const { voucherID } = useParams();
+  const [searchParams] = useSearchParams();
+  const vID = searchParams.get('copy');
   const axiosPrivate = useAxiosPrivate();
 
   const [voucher, setVoucher] = useState({
@@ -39,11 +41,12 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
   };
 
   const findVoucherByID = async () => {
-    await VoucherAPI.FindVoucherByID(axiosPrivate, voucherID)
+    await VoucherAPI.FindVoucherByID(axiosPrivate, vID || voucherID)
       .then((resp:any) => {
         const { data } = resp.data;
         setVoucher({
           ...data,
+          code: vID ? '' : data.code,
           start_date: data.start_date.replace('Z', ''),
           end_date: data.end_date.replace('Z', ''),
         });
@@ -52,9 +55,7 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
   };
 
   useEffect(() => {
-    if (formType !== VoucherConstant.CREATE) {
-      findVoucherByID().then();
-    }
+    findVoucherByID().then();
   }, []);
 
   const handleUpdate = async () => {
@@ -66,8 +67,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           quota: Number(voucher.quota),
           amount: Number(voucher.amount),
           min_spending: Number(voucher.min_spending),
-          start_date: `${voucher.start_date}Z`,
-          end_date: `${voucher.end_date}Z`,
+          start_date: `${voucher.start_date}+07:00`,
+          end_date: `${voucher.end_date}+07:00`,
         }),
       );
       console.log(response);
@@ -86,8 +87,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           quota: Number(voucher.quota),
           amount: Number(voucher.amount),
           min_spending: Number(voucher.min_spending),
-          start_date: `${voucher.start_date}Z`,
-          end_date: `${voucher.end_date}Z`,
+          start_date: `${voucher.start_date}+07:00`,
+          end_date: `${voucher.end_date}+07:00`,
         }),
       );
       console.log(response);
@@ -101,12 +102,12 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
     <div className="voucher__container">
       <h3 className="mb-4 mt-2">{title}</h3>
       <div className="voucher__content">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={(e) => e.preventDefault()}>
           <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
-            {formType === VoucherConstant.CREATE && <Button buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
-            {formType === VoucherConstant.UPDATE && <Button buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
+            {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
+            {formType === VoucherConstant.UPDATE && <Button isSubmit buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
             <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Kembali" />
           </div>
         </form>

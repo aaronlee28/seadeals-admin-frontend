@@ -11,6 +11,7 @@ type ButtonOptionalProps = {
   text?: string;
   iconUrl?: any;
   iconName?: string;
+  isSubmit?: boolean;
 };
 
 interface ButtonProps
@@ -21,6 +22,7 @@ const defaultProps: ButtonOptionalProps = {
   text: '',
   iconUrl: null,
   iconName: '',
+  isSubmit: false,
 };
 
 const Button = (props: ButtonProps) => {
@@ -29,12 +31,13 @@ const Button = (props: ButtonProps) => {
     text,
     iconUrl,
     iconName,
+    isSubmit,
     handleClickedButton,
   } = props;
 
   return (
     <button
-      type="button"
+      type={isSubmit ? 'submit' : 'button'}
       className={`button ${buttonType}`}
       onClick={handleClickedButton}
     >
