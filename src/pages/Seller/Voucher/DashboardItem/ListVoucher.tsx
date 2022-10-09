@@ -1,8 +1,8 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Formatter from '../../../utils/formatter';
-import Modal from '../../../components/Modal/Modal';
-import Confirmation from '../../../components/Modal/Confirmation';
+import Formatter from '../../../../utils/formatter';
+import Modal from '../../../../components/Modal/Modal';
+import Confirmation from '../../../../components/Modal/Confirmation';
 
 const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
@@ -21,19 +21,20 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
         />
       </Modal>
       )}
-      <table className="table table-hover voucher__table">
-        <caption>List of shop voucher</caption>
-        <thead>
-          <tr className="table-secondary">
-            <th>Nama Voucher | Kode</th>
-            <th>Diskon</th>
-            <th>Kuota Pemakaian</th>
-            <th>Status | Periode Voucher</th>
-            <th>Aksi</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
+      <div className="table-responsive">
+        <table className="table table-hover voucher__table">
+          <caption>List of shop voucher</caption>
+          <thead>
+            <tr className="table-secondary">
+              <th>Nama Voucher | Kode</th>
+              <th>Diskon</th>
+              <th>Kuota Pemakaian</th>
+              <th>Status | Periode Voucher</th>
+              <th>Aksi</th>
+            </tr>
+          </thead>
+          <tbody>
+            {
             vouchers.length === 0
               ? <tr><td colSpan={5}>No vouchers</td></tr>
               : vouchers.map((v:any) => (
@@ -66,8 +67,9 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
                 </tr>
               ))
           }
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

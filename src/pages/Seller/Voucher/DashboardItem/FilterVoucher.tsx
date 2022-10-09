@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import VoucherConstant from '../../../constants/voucher';
-import Form from '../../../components/Form/Form';
+import VoucherConstant from '../../../../constants/voucher';
+import Form from '../../../../components/Form/Form';
 
 const FilterVoucher:FC<any> = ({ status, setStatus }) => {
   const items = [{
