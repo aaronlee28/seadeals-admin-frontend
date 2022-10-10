@@ -2,7 +2,7 @@ import React from 'react';
 import './Modal.scss';
 
 type ModalProps = {
-  // modalType: string;
+  modalType: string;
   // data: any;
   // accept: () => void;
   cancel: () => void;
@@ -11,6 +11,7 @@ type ModalProps = {
 
 const Modal = (props: ModalProps) => {
   const {
+    modalType,
     cancel,
     children,
   } = props;
@@ -22,7 +23,7 @@ const Modal = (props: ModalProps) => {
       role="presentation"
     >
       <div
-        className="modal_content"
+        className={`modal_content ${modalType}`}
         onClick={(e) => e.stopPropagation()}
         role="presentation"
       >
