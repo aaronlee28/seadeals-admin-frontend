@@ -10,7 +10,7 @@ import Pagination from '../../../components/Pagination/Pagination';
 import FilterVoucher from './DashboardItem/FilterVoucher';
 import StatsVoucher from './DashboardItem/StatsVoucher';
 
-const DashboardVoucher:FC<any> = () => {
+const DashboardVoucher:FC<any> = ({ title }) => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const innerRef = useRef(null);
@@ -50,7 +50,7 @@ const DashboardVoucher:FC<any> = () => {
 
   return (
     <div className="voucher__container">
-      <h3>Voucher Toko</h3>
+      <h3>{title}</h3>
       <div className="voucher__content my-3">
         <StatsVoucher />
       </div>

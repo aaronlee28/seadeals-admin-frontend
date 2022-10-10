@@ -2,6 +2,7 @@ import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Formatter from '../../../../utils/formatter';
 import ModalConfirmation from '../../../../components/Modal/ModalConfirmation/ModalConfirmation';
+import Button from '../../../../components/Button/Button';
 
 const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
@@ -59,11 +60,11 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
                     </div>
                   </td>
                   <td>
-                    <div className="d-flex flex-column text-start">
-                      <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/show/${v.id}`)}>Rincian</button>
-                      <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/update/${v.id}`)} disabled={v.status === 'ended'}>Ubah</button>
-                      <button type="button" className="voucher__action-button" onClick={() => navigate(`/seller/voucher/new?copy=${v.id}`)}>Duplikat</button>
-                      <button type="button" className="voucher__action-button" disabled={v.status !== 'upcoming'} onClick={() => { setShowModalDelete(true); setDeletedID(v.id); }}>Akhiri</button>
+                    <div className="d-flex flex-column align-items-start">
+                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/show/${v.id}`)} text="Rincian" />
+                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/update/${v.id}`)} isDisabled={v.status === 'ended'} text="Ubah" />
+                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/new?copy=${v.id}`)} text="Duplikat" />
+                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(v.id); }} isDisabled={v.status !== 'upcoming'} text="Akhiri" />
                     </div>
                   </td>
                 </tr>
