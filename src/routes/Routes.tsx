@@ -6,17 +6,19 @@ import SellerLayout from '../layouts/SellerLayout';
 import AdminLayout from '../layouts/AdminLayout';
 import PersistLogin from '../components/PersistLogin';
 import RequireAuth from '../components/RequireAuth';
-import SellerRegister from '../pages/Public/SellerRegister';
+import SellerRegister from '../pages/Seller/Register/SellerRegister';
 import AdminHome from '../pages/Admin/AdminHome';
 import SellerHome from '../pages/Seller/SellerHome';
-import Login from '../pages/Public/Login';
+import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
+import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
 
 const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<Layout />}>
       <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="/seller/register" element={<SellerRegister />} />
 
       <Route element={<PersistLogin />}>
