@@ -100,15 +100,6 @@ const Register = () => {
 
       navigate('/seller/register', { replace: true });
     } catch (err) {
-      console.log(JSON.stringify({
-        email,
-        password,
-        username: userName,
-        full_name: fullName,
-        gender,
-        phone: `+62${phone}`,
-        birth_date: birthDate,
-      }));
       navigate('/register', { replace: true });
     }
   };

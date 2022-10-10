@@ -171,8 +171,8 @@ const SellerRegister = () => {
       ).then((res: any) => {
         if (res.data.data.length > 0) {
           setMainAddress(true);
-          setAddressChecked(true);
         }
+        setAddressChecked(true);
       });
     } catch (err) {
       navigate('/seller/register', { replace: true });
