@@ -1,8 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Formatter from '../../../../utils/formatter';
-import Modal from '../../../../components/Modal/Modal';
-import Confirmation from '../../../../components/Modal/Confirmation';
+import ModalConfirmation from '../../../../components/Modal/ModalConfirmation/ModalConfirmation';
 
 const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
@@ -11,15 +10,15 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
   return (
     <div className="container">
       {showModalDelete && (
-      <Modal cancel={() => setShowModalDelete(false)}>
-        <Confirmation
-          text="Kamu yakin untuk mengakhiri voucher ini?"
-          handleClose={() => setShowModalDelete(false)}
-          handleConfirm={() => {
-            handleDelete(); setShowModalDelete(false);
-          }}
-        />
-      </Modal>
+      <ModalConfirmation
+        text="Kamu yakin akan menghapus voucher ini?"
+        handleClose={() => setShowModalDelete(false)}
+        handleConfirm={() => {
+          handleDelete();
+          setShowModalDelete(false);
+        }}
+        setShowModal={setShowModalDelete}
+      />
       )}
       <div className="table-responsive">
         <table className="table table-hover voucher__table">
