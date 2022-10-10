@@ -3,10 +3,10 @@ import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import axios from '../../api/axios';
-import logo from '../../assets/images/logo.png';
-import logo_xs from '../../assets/images/logo_xs.png';
-import useAuth from '../../hooks/useAuth';
+import axios from '../../../api/axios';
+import logo from '../../../assets/images/logo.png';
+import logo_xs from '../../../assets/images/logo_xs.png';
+import useAuth from '../../../hooks/useAuth';
 
 const Register = () => {
   const [revealed, setRevealed] = useState(false);
