@@ -2,16 +2,19 @@ import React, { useEffect, useState } from 'react';
 import './SellerRegister.scss';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import Modal from 'react-bootstrap/Modal';
 import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Cities from '../../../api/cities';
+import Modal from '../../../components/Modal/Modal';
+import useCheckLogged from '../../../hooks/useCheckLogged';
 
 const SellerRegister = () => {
+  useCheckLogged();
   const uRLSellers = '/sellers';
   const uRLAddress = '/user/profiles/addresses';
   const [userId, setUserId] = useState('');
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
 
   const getUserId = () => {
     const token = localStorage.getItem('access_token');
@@ -129,7 +132,6 @@ const SellerRegister = () => {
     }
   }, [cities]);
 
-  const navigate = useNavigate();
   const handleSubmitModal = () => {
     try {
       axiosPrivate.post(
@@ -218,70 +220,72 @@ const SellerRegister = () => {
     <div className="seller-register_container">
       <div className="registration-form-card">
         <div className="header"><p className="header-text">Atur informasi toko</p></div>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Alamat Baru</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form>
-              <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
-                {provinces.map((prov) => (
-                  <option
-                    key={prov.province_id}
-                    value={prov.province_name}
-                  >
-                    {prov.province_name}
-                  </option>
-                ))}
-              </select>
-              {
+        {show && (
+        <Modal cancel={handleClose}>
+          <div className="d-flex flex-column p-4 w-75">
+            <h5 className="text-start mb-4 text-main"><b>Alamat Baru</b></h5>
+            <div>
+              <form>
+                <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
+                  {provinces.map((prov) => (
+                    <option
+                      key={prov.province_id}
+                      value={prov.province_name}
+                    >
+                      {prov.province_name}
+                    </option>
+                  ))}
+                </select>
+                {
                   province && (
-                  <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
-                    {cities.map((ci) => (
-                      <option
-                        key={ci.city_id}
-                        value={ci.city_name}
-                      >
-                        {ci.city_name}
-                      </option>
-                    ))}
-                  </select>
+                    <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
+                      {cities.map((ci) => (
+                        <option
+                          key={ci.city_id}
+                          value={ci.city_name}
+                        >
+                          {ci.city_name}
+                        </option>
+                      ))}
+                    </select>
                   )
-              }
-              <input
-                className="form-control mb-2"
-                value={subDistrict}
-                onChange={(event) => setSubDistrict(event.target.value)}
-                id="sub-district"
-                placeholder="Kecamatan"
-                autoComplete="new-password"
-                required
-              />
-              <input
-                className="form-control mb-2"
-                value={postalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
-                id="postal-code"
-                placeholder="Kode Pos"
-                autoComplete="new-password"
-                required
-              />
-              <textarea
-                className="form-control mb-2"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-                id="address"
-                placeholder="Isi alamat lengkap"
-                autoComplete="new-password"
-                required
-              />
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
-            <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmitModal} />
-          </Modal.Footer>
+                }
+                <input
+                  className="form-control mb-2"
+                  value={subDistrict}
+                  onChange={(event) => setSubDistrict(event.target.value)}
+                  id="sub-district"
+                  placeholder="Kecamatan"
+                  autoComplete="new-password"
+                  required
+                />
+                <input
+                  className="form-control mb-2"
+                  value={postalCode}
+                  onChange={(event) => setPostalCode(event.target.value)}
+                  id="postal-code"
+                  placeholder="Kode Pos"
+                  autoComplete="new-password"
+                  required
+                />
+                <textarea
+                  className="form-control mb-2"
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
+                  id="address"
+                  placeholder="Isi alamat lengkap"
+                  autoComplete="new-password"
+                  required
+                />
+              </form>
+            </div>
+            <div className="d-flex justify-content-end gap-2 mt-4">
+              <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
+              <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmitModal} />
+            </div>
+          </div>
         </Modal>
+        )}
         <div className="input-groups">
           <div className="input-group row">
             <div className="col-2">Nama toko:</div>

@@ -2,8 +2,10 @@ import React from 'react';
 import jwt_decode from 'jwt-decode';
 import { useLocation, useNavigate } from 'react-router-dom';
 import useAuth from '../../hooks/useAuth';
+import useCheckLogged from '../../hooks/useCheckLogged';
 
 const Login = () => {
+  useCheckLogged();
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
