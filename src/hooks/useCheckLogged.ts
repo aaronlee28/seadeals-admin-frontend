@@ -10,9 +10,11 @@ const useCheckLogged = () => {
     if (token !== null) {
       const dateNow = new Date();
       const decode:any = jwt_decode(token);
-      if (decode.exp * 1000 > dateNow.getTime()) {
-        navigate('/');
+      if (decode.exp * 1000 < dateNow.getTime()) {
+        navigate('/login');
       }
+    } else {
+      navigate('/login');
     }
   }, []);
 };
