@@ -31,7 +31,6 @@ const Login = () => {
 
     setAuth({ user, roles: scope.split(' '), accessToken });
     localStorage.setItem('access_token', accessToken);
-    console.log(scope);
 
     setEmail('');
     setPassword('');
