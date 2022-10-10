@@ -19,9 +19,9 @@ const AppRoutes = () => (
     <Route path="/" element={<Layout />}>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/seller/register" element={<SellerRegister />} />
 
       <Route element={<PersistLogin />}>
+        <Route path="/seller/register" element={<SellerRegister />} />
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
           <Route path="/seller/" element={<SellerLayout />}>

@@ -37,9 +37,11 @@ const Login = () => {
 
     if (scope.includes('seller')) {
       navigate('/seller/', { replace: true });
+      return;
     }
     if (scope.includes('admin')) {
       navigate('/admin/', { replace: true });
+      return;
     }
     navigate('/seller/register', { replace: true });
   };
