@@ -175,7 +175,7 @@ const SellerRegister = () => {
         }
       });
     } catch (err) {
-      console.log(err);
+      navigate('/seller/register', { replace: true });
     }
   };
 
