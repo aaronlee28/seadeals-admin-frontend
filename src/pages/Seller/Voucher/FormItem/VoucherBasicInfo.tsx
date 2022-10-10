@@ -48,7 +48,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
               />
             </div>
           </div>
-          <div className="row">
+          <div className="row text-start">
             {`Masukkan A-Z, 0-9; maksimum 5 karakter
               \n Kode voucher Anda adalah: ${prefixCode}${formType !== VoucherConstant.CREATE ? (voucher.code.substring(4)) : voucher.code}`}
           </div>

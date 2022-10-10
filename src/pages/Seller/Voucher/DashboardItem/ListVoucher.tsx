@@ -41,7 +41,10 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
                   <td>
                     <div className="d-flex flex-column text-start">
                       <span>{v.name}</span>
-                      <span>{`Kode: ${v.code}`}</span>
+                      <span>
+                        {'Kode: '}
+                        <b>{v.code}</b>
+                      </span>
                     </div>
                   </td>
                   <td>
