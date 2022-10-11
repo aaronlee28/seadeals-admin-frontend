@@ -28,8 +28,12 @@ const AppRoutes = () => (
         <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
           <Route path="/seller/" element={<SellerLayout />}>
             <Route path="" element={<SellerHome />} />
-            <Route path="voucher/new" element={<FormVoucher />} />
-            <Route path="voucher/list" element={<DashboardVoucher />} />
+            <Route path="voucher/">
+              <Route path="list" element={<DashboardVoucher title="Voucher Toko" />} />
+              <Route path="new" element={<FormVoucher formType="create" title="Buat Voucher Toko" />} />
+              <Route path="show/:voucherID" element={<FormVoucher formType="show" title="Detail Voucher Toko" />} />
+              <Route path="update/:voucherID" element={<FormVoucher formType="update" title="Update Voucher Toko" />} />
+            </Route>
           </Route>
         </Route>
 

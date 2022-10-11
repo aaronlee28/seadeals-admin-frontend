@@ -123,6 +123,7 @@ const ModalFilterLocation = (props: ModalFilterLocationProps) => {
 
   return (
     <Modal
+      modalType="filter_location"
       cancel={handleCloseModal}
     >
       {

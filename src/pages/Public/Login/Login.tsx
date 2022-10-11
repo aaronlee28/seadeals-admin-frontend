@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { useLocation, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
@@ -12,6 +12,8 @@ import useCheckLogged from '../../../hooks/useCheckLogged';
 const LOGIN_URL = '/sign-in';
 
 const Login = () => {
+  useCheckLogged();
+
   const { setAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -19,7 +21,50 @@ const Login = () => {
   const location = useLocation();
   let from = location.state?.from?.pathname;
 
-  useCheckLogged();
+  const handleCallbackResponse = async (response: any) => {
+    try {
+      const res = await axios.post(
+        '/google/sign-in',
+        JSON.stringify({ token_id: response.credential }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+      const decode:any = jwt_decode(res.data.data.id_token);
+      const accessToken = res?.data?.data.id_token;
+      const { user, scope } = decode;
+
+      setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
+
+      if (scope.includes('seller')) {
+        navigate('/seller', { replace: true });
+        return;
+      }
+      if (scope.includes('admin')) {
+        navigate('/admin', { replace: true });
+        return;
+      }
+
+      navigate('/seller/register', { replace: true });
+    } catch (err:any) {
+      navigate('/register', { replace: true, state: err.response.data?.data?.user });
+    }
+  };
+
+  useEffect(() => {
+    /* global google */
+    // @ts-ignore
+    google.accounts.id.initialize({
+      client_id: '751840690856-m92j6st0agj7bgbuv3ok4t5j6sr7e8cm.apps.googleusercontent.com',
+      callback: handleCallbackResponse,
+    });
+    // @ts-ignore
+    google.accounts.id.renderButton(
+      document.getElementById('signInDiv'),
+      { theme: 'outline', size: 'large', width: '400' },
+    );
+  }, []);
 
   const handleSubmit = async () => {
     const response = await axios.post(
@@ -103,6 +148,9 @@ const Login = () => {
             <input type="password" placeholder="Kata sandi" className="form-control mb-2" value={password} onChange={(event) => setPassword(event.target.value)} />
             <Button buttonType="primary" text="Login" handleClickedButton={handleSubmit} />
             <div className="hr-sect"><b>ATAU</b></div>
+            <div className="d-flex justify-content-center">
+              <div className="mb-4" id="signInDiv" />
+            </div>
             <p id="daftar-text">
               Belum punya akun SeaDeals?
               {' '}
