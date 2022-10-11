@@ -103,24 +103,6 @@ const Login = () => {
     } catch (err:any) {
       toast.error(err.response?.data?.message);
     }
-
-    try {
-      const sellerDetail = await axios.get(
-        `seller/${user.user_id}`,
-        {
-          withCredentials: true,
-        },
-      );
-      if (sellerDetail !== null) {
-        navigate(from, { replace: true });
-        return;
-      }
-      console.log(sellerDetail);
-    } catch (error:any) {
-      toast.error(error.response.data.message);
-      navigate('/seller/register', { replace: true });
-    }
-    navigate('/seller/register', { replace: true });
   };
 
   // mock token
