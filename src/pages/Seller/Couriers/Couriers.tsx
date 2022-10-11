@@ -9,14 +9,12 @@ const Couriers = () => {
   const [couriers, setCouriers] = useState<any[]>([]);
   const navigate = useNavigate();
 
-  const getCouriers = () => {
+  const token = localStorage.getItem('access_token');
+  const getCouriers = async () => {
     try {
-      axiosPrivate.get(
-        '/couriers',
-      ).then((res: any) => {
-        setCouriers(res.data.data);
-        console.log(res);
-      });
+      console.log(token);
+      const response = await axiosPrivate.get('/couriers');
+      setCouriers(response.data.data);
     } catch (err) {
       navigate('/seller/register/couriers', { replace: true });
     }
@@ -50,19 +48,22 @@ const Couriers = () => {
   };
 
   return (
-    <div className="couriers_container">
-      <div>
+    <div className="couriers_container row">
+      <div className="couriers_card col-3">
         <form>
           <div className="form-group">
             <label className="mb-4">Pilih jasa kurir:</label>
-            <br />
-            <select onChange={(event) => setCourierId(event.target.value)}>
-              {couriers.map((courier) => (
-                <option key={courier.id} value={courier.id}>
-                  {courier.name}
-                </option>
-              ))}
-            </select>
+            {
+              couriers && (
+              <select className="form-select mb-4" onChange={(event) => setCourierId(event.target.value)}>
+                {couriers.map((courier) => (
+                  <option key={courier.id} value={courier.id}>
+                    {courier.name}
+                  </option>
+                ))}
+              </select>
+              )
+            }
             <Button buttonType="primary" text="Selesai" handleClickedButton={handleDone} />
           </div>
         </form>

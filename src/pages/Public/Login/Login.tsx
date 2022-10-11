@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import useAuth from '../../../hooks/useAuth';
 import './Login.scss';
 import logo from '../../../assets/images/logo.png';
@@ -60,7 +61,8 @@ const Login = () => {
         return;
       }
       console.log(sellerDetail);
-    } catch (error) {
+    } catch (error:any) {
+      toast.error(error.response.data.message);
       navigate('/seller/register', { replace: true });
     }
     navigate('/seller/register', { replace: true });
