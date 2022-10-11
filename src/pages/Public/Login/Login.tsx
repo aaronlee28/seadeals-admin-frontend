@@ -28,6 +28,7 @@ const Login = () => {
     const decode:any = jwt_decode(response.data.data.id_token);
     const accessToken = response?.data?.data.id_token;
     const { user, scope } = decode;
+    console.log(user);
 
     setAuth({ user, roles: scope.split(' '), accessToken });
     localStorage.setItem('access_token', accessToken);
@@ -42,6 +43,22 @@ const Login = () => {
     if (scope.includes('admin')) {
       navigate('/admin/', { replace: true });
       return;
+    }
+
+    try {
+      const sellerDetail = await axios.get(
+        `seller/${user.user_id}`,
+        {
+          withCredentials: true,
+        },
+      );
+      if (sellerDetail !== null) {
+        navigate(from, { replace: true });
+        return;
+      }
+      console.log(sellerDetail);
+    } catch (error) {
+      navigate('/seller/register', { replace: true });
     }
     navigate('/seller/register', { replace: true });
   };
