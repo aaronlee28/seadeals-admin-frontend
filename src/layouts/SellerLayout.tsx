@@ -1,9 +1,10 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
+import Sidebar from './Sidebar/Sidebar';
 
 const SellerLayout = () => (
   <div>
-    <h1>Seller</h1>
+    <Sidebar />
     <Outlet />
   </div>
 );
