@@ -192,9 +192,9 @@ const SellerRegister = () => {
   const [shopName, setShopName] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     try {
-      axiosPrivate.post(
+      await axiosPrivate.post(
         uRLSellers,
         JSON.stringify({
           user_id: userId,
