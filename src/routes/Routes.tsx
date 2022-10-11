@@ -13,6 +13,7 @@ import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
+import Couriers from '../pages/Seller/Couriers/Couriers';
 
 const AppRoutes = () => (
   <Routes>
@@ -22,6 +23,7 @@ const AppRoutes = () => (
 
       <Route element={<PersistLogin />}>
         <Route path="/seller/register" element={<SellerRegister />} />
+        <Route path="/seller/register/couriers" element={<Couriers />} />
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
           <Route path="/seller/" element={<SellerLayout />}>
