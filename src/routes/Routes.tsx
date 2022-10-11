@@ -13,6 +13,7 @@ import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
+import DeliverySettings from '../pages/Seller/Delivery/Settings/DeliverySettings';
 
 const AppRoutes = () => (
   <Routes>
@@ -31,6 +32,9 @@ const AppRoutes = () => (
               <Route path="new" element={<FormVoucher formType="create" title="Buat Voucher Toko" />} />
               <Route path="show/:voucherID" element={<FormVoucher formType="show" title="Detail Voucher Toko" />} />
               <Route path="update/:voucherID" element={<FormVoucher formType="update" title="Update Voucher Toko" />} />
+            </Route>
+            <Route path="delivery">
+              <Route path="settings" element={<DeliverySettings />} />
             </Route>
           </Route>
         </Route>
