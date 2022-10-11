@@ -6,6 +6,7 @@ import './Login.scss';
 import logo from '../../../assets/images/logo.png';
 import Button from '../../../components/Button/Button';
 import axios from '../../../api/axios';
+import useCheckLogged from '../../../hooks/useCheckLogged';
 
 const LOGIN_URL = '/sign-in';
 
@@ -16,6 +17,8 @@ const Login = () => {
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname;
+
+  useCheckLogged();
 
   const handleSubmit = async () => {
     const response = await axios.post(
@@ -37,11 +40,11 @@ const Login = () => {
     setPassword('');
 
     if (scope.includes('seller')) {
-      navigate('/seller/', { replace: true });
+      navigate('/seller', { replace: true });
       return;
     }
     if (scope.includes('admin')) {
-      navigate('/admin/', { replace: true });
+      navigate('/admin', { replace: true });
       return;
     }
 
