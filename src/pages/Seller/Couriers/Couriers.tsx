@@ -9,10 +9,8 @@ const Couriers = () => {
   const [couriers, setCouriers] = useState<any[]>([]);
   const navigate = useNavigate();
 
-  const token = localStorage.getItem('access_token');
   const getCouriers = async () => {
     try {
-      console.log(token);
       const response = await axiosPrivate.get('/couriers');
       setCouriers(response.data.data);
     } catch (err) {
