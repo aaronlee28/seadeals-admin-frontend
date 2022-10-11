@@ -34,6 +34,7 @@ const SellerRegister = () => {
   const [address, setAddress] = useState('');
 
   const [show, setShow] = useState(false);
+  const [mainAddress, setMainAddress] = useState(false);
   const handleClose = () => setShow(false);
 
   const [provinces, setProvinces] = useState<any[]>([]);
@@ -164,8 +165,6 @@ const SellerRegister = () => {
     setType(getCityType(e.target.value));
   };
 
-  const [mainAddress, setMainAddress] = useState(false);
-  const [addressChecked, setAddressChecked] = useState(false);
   const checkMainAddress = () => {
     try {
       axiosPrivate.get(
@@ -174,7 +173,6 @@ const SellerRegister = () => {
         if (res.data.data.length > 0) {
           setMainAddress(true);
         }
-        setAddressChecked(true);
       });
     } catch (err) {
       navigate('/seller/register', { replace: true });
@@ -189,13 +187,7 @@ const SellerRegister = () => {
     if (userId !== '') {
       checkMainAddress();
     }
-  }, [userId]);
-
-  useEffect(() => {
-    if (!mainAddress && addressChecked) {
-      setShow(true);
-    }
-  }, [addressChecked]);
+  }, [userId, mainAddress]);
 
   const [shopName, setShopName] = useState('');
   const [description, setDescription] = useState('');
@@ -209,8 +201,11 @@ const SellerRegister = () => {
           shop_name: shopName,
           description,
         }),
-      );
-      navigate('/seller/register/couriers', { replace: true });
+      ).then((res: any) => {
+        if (res.status_code === 200) {
+          navigate('/seller/register/couriers', { replace: true });
+        }
+      });
     } catch (err) {
       navigate('/seller/register', { replace: true });
     }
@@ -221,12 +216,16 @@ const SellerRegister = () => {
       <div className="registration-form-card">
         <div className="header"><p className="header-text">Atur informasi toko</p></div>
         {show && (
-        <Modal cancel={handleClose}>
+        <Modal cancel={handleClose} modalType="">
           <div className="d-flex flex-column p-4 w-75">
-            <h5 className="text-start mb-4 text-main"><b>Alamat Baru</b></h5>
+            <div className="text-start mb-4">
+              <h5 className="text-main"><b>Alamat Baru</b></h5>
+              <p className="mt-0 pt-0">Anda perlu menyediakan alamat utama untuk melanjutkan pendaftaran sebagai seller</p>
+            </div>
             <div>
               <form>
-                <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
+                <select className="form-select mb-2" onChange={handleSelectProvince}>
+                  <option>Pilih provinsi</option>
                   {provinces.map((prov) => (
                     <option
                       key={prov.province_id}
@@ -237,7 +236,7 @@ const SellerRegister = () => {
                   ))}
                 </select>
                 {
-                  province && (
+                  (province !== 'Pilih provinsi') && (
                     <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
                       {cities.map((ci) => (
                         <option
@@ -266,6 +265,8 @@ const SellerRegister = () => {
                   id="postal-code"
                   placeholder="Kode Pos"
                   autoComplete="new-password"
+                  type="number"
+                  maxLength={5}
                   required
                 />
                 <textarea
@@ -286,19 +287,28 @@ const SellerRegister = () => {
           </div>
         </Modal>
         )}
-        <div className="input-groups">
-          <div className="input-group row">
-            <div className="col-2">Nama toko:</div>
-            <div className="col-10"><input type="text" placeholder="Nama toko" className="form-control" value={shopName} onChange={(event) => setShopName(event.target.value)} /></div>
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="input-groups">
+            <div className="input-group row">
+              <div className="col-2">Nama toko:</div>
+              <div className="col-10"><input type="text" placeholder="Nama toko" className="form-control" value={shopName} onChange={(event) => setShopName(event.target.value)} required /></div>
+            </div>
+            <div className="input-group row">
+              <div className="col-2">Deskripsi:</div>
+              <div className="col-10"><textarea placeholder="Deskripsi" className="form-control" value={description} onChange={(event) => setDescription(event.target.value)} required /></div>
+            </div>
           </div>
-          <div className="input-group row">
-            <div className="col-2">Deskripsi:</div>
-            <div className="col-10"><textarea placeholder="Deskripsi" className="form-control" value={description} onChange={(event) => setDescription(event.target.value)} /></div>
+          <div className="button-group">
+            {!show && !mainAddress && (
+              <Button
+                buttonType="primary alt"
+                text="Atur alamat"
+                handleClickedButton={() => setShow(true)}
+              />
+            )}
+            {mainAddress && <Button isSubmit buttonType="primary alt" text="Lanjut ke atur jasa kurir" handleClickedButton={handleSubmit} />}
           </div>
-        </div>
-        <div className="button-group">
-          <Button buttonType="primary alt" text="Lanjut ke atur jasa kurir" handleClickedButton={handleSubmit} />
-        </div>
+        </form>
       </div>
     </div>
   );

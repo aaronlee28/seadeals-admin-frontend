@@ -11,14 +11,14 @@ import useCheckLogged from '../../../hooks/useCheckLogged';
 const LOGIN_URL = '/sign-in';
 
 const Login = () => {
+  useCheckLogged();
+
   const { setAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
   let from = location.state?.from?.pathname;
-
-  useCheckLogged();
 
   const handleCallbackResponse = async (response: any) => {
     try {
@@ -45,7 +45,7 @@ const Login = () => {
         return;
       }
 
-      navigate(from, { replace: true });
+      navigate('/seller/register', { replace: true });
     } catch (err:any) {
       navigate('/register', { replace: true, state: err.response.data?.data?.user });
     }
