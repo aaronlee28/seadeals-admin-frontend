@@ -12,6 +12,17 @@ const useCheckLogged = () => {
       const decode:any = jwt_decode(token);
       if (decode.exp * 1000 < dateNow.getTime()) {
         navigate('/login');
+      } else {
+        const { scope } = decode;
+        if (scope.includes('seller')) {
+          navigate('/seller', { replace: true });
+          return;
+        }
+        if (scope.includes('admin')) {
+          navigate('/admin', { replace: true });
+          return;
+        }
+        navigate('/seller/register', { replace: true });
       }
     } else {
       navigate('/login');
