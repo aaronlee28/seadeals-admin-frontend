@@ -20,7 +20,7 @@ const Sidebar:FC<any> = ({ data }) => {
         </div>
         <NavbarSellerAdmin />
       </div>
-      <nav className="sidebar__nav-content" style={{ left: showSidebar ? '0' : '-100%' }}>
+      <nav className="sidebar__nav-content shadow" style={{ left: showSidebar ? '0' : '-100%' }}>
         <div className="sidebar__wrap">
           <div className="sidebar__nav-icon justify-content-between">
             <img
