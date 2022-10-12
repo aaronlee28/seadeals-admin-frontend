@@ -13,7 +13,7 @@ const OrdersList:FC<OrderListProps> = ({ orders, couriers }) => (
     {
       orders.length > 0
         ? orders.map((order) => <OrderItem key={order.id} order={order} couriers={couriers} />)
-        : <p>Belum ada pesanan!</p>
+        : <div className="text-center text-secondary"><p>Belum ada pesanan!</p></div>
   }
   </div>
 );

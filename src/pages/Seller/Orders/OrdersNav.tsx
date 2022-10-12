@@ -30,6 +30,16 @@ const OrdersNav:FC<OrdersNavProps> = ({ setParam, active }) => {
           buttonType={`navtab ${active === ORDER_FILTER.DONE && 'active'}`}
           handleClickedButton={() => handleNavClick(ORDER_FILTER.DONE)}
         />
+        <Button
+          text="Direfund"
+          buttonType={`navtab ${active === ORDER_FILTER.REFUNDED && 'active'}`}
+          handleClickedButton={() => handleNavClick(ORDER_FILTER.REFUNDED)}
+        />
+        <Button
+          text="Sampai"
+          buttonType={`navtab ${active === ORDER_FILTER.DELIVERED && 'active'}`}
+          handleClickedButton={() => handleNavClick(ORDER_FILTER.DELIVERED)}
+        />
       </div>
     </div>
   );
