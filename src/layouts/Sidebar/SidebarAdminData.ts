@@ -2,47 +2,47 @@ import { ReactComponent as IconChevron } from '../../assets/svg/icon_chevron_rig
 import { ReactComponent as IconProduct } from '../../assets/svg/icon_product.svg';
 import { ReactComponent as IconVoucher } from '../../assets/svg/icon_voucher.svg';
 
-const SidebarSellerData = [
+const SidebarAdminData = [
   {
     id: 1,
-    title: 'Voucher Toko',
-    path: '/seller/voucher/list',
+    title: 'Voucher',
+    path: '/admin/voucher/list',
     icon: IconVoucher,
     iconClosed: IconChevron,
     iconOpened: IconChevron,
     subNav: [
       {
         title: 'Buat voucher',
-        path: '/seller/voucher/new',
+        path: '/admin/voucher/new',
         icon: IconVoucher,
       },
       {
         title: 'Daftar voucher',
-        path: '/seller/voucher/list',
+        path: '/admin/voucher/list',
         icon: IconVoucher,
       },
     ],
   },
   {
     id: 2,
-    title: 'Produk',
-    path: '/seller/product/list',
+    title: 'Kategori',
+    path: '/admin/category/list',
     icon: IconProduct,
     iconClosed: IconChevron,
     iconOpened: IconChevron,
     subNav: [
       {
-        title: 'Daftar produk',
-        path: '/seller/product/list',
+        title: 'Daftar kategori',
+        path: '/admin/category/list',
         icon: IconProduct,
       },
       {
-        title: 'Buat produk',
-        path: '/seller/product/new',
+        title: 'Buat kategori',
+        path: '/admin/category/new',
         icon: IconProduct,
       },
     ],
   },
 ];
 
-export default SidebarSellerData;
+export default SidebarAdminData;
