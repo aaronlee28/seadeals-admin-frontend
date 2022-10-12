@@ -13,7 +13,7 @@ const Sidebar:FC<any> = ({ data }) => {
   const toggleNav = () => setShowSidebar(!showSidebar);
 
   return (
-    <div className="">
+    <div className="sticky-top shadow">
       <div className="sidebar__nav">
         <div className="sidebar__nav-icon">
           {React.createElement(IconBurger, { className: 'nav-icon', onClick: toggleNav })}
