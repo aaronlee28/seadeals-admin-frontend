@@ -4,8 +4,8 @@ const DisplayDatetime = (time: string) => {
 };
 
 const DisplayPrice = (price: number) => {
-  const priceSplit = price.toString().split(/(?=(?:\d{3})+(?:\.|$))/g);
-  return `Rp. ${priceSplit.join('.')}`;
+  const str = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price || 0);
+  return str.substring(0, str.length - 3);
 };
 
 export default { DisplayDatetime, DisplayPrice };

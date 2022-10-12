@@ -97,4 +97,18 @@
 
     }
   }
+  &.navtab {
+      padding-bottom:0.5rem;
+      background: #FFFFFF;
+      border-radius: 0;
+      .text {
+        font-weight: 800;
+      }
+      &:hover {
+        color: #1E46A2;
+      }
+      &.active {
+        border-bottom: solid 2px #2658CD;
+      }
+  }
 }
