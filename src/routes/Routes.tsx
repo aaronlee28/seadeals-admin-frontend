@@ -15,6 +15,7 @@ import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
 import Couriers from '../pages/Seller/Couriers/Couriers';
 import PageNotFound from '../pages/PageNotFound';
+import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 
 const AppRoutes = () => (
   <Routes>
@@ -34,6 +35,12 @@ const AppRoutes = () => (
               <Route path="new" element={<FormVoucher formType="create" title="Buat Voucher Toko" />} />
               <Route path="show/:voucherID" element={<FormVoucher formType="show" title="Detail Voucher Toko" />} />
               <Route path="update/:voucherID" element={<FormVoucher formType="update" title="Update Voucher Toko" />} />
+            </Route>
+            <Route path="product/">
+              <Route path="list" element={<DashboardProduct />} />
+              <Route path="new" element={<FormVoucher formType="create" title="Buat Produk" />} />
+              <Route path="show/:productID" element={<FormVoucher formType="show" title="Detail Produk" />} />
+              <Route path="update/:productID" element={<FormVoucher formType="update" title="Update Produk" />} />
             </Route>
           </Route>
         </Route>
