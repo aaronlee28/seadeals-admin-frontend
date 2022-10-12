@@ -6,12 +6,10 @@ import './Login.scss';
 import logo from '../../../assets/images/logo.png';
 import Button from '../../../components/Button/Button';
 import axios from '../../../api/axios';
-import useCheckLogged from '../../../hooks/useCheckLogged';
 
 const LOGIN_URL = '/sign-in';
 
 const Login = () => {
-  useCheckLogged();
   const { setAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
