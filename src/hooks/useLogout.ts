@@ -1,3 +1,4 @@
+import toast from 'react-hot-toast';
 import useAuth from './useAuth';
 import useAxiosPrivate from './useAxiosPrivate';
 
@@ -9,8 +10,8 @@ const useLogout = () => {
     try {
       await axiosPrivate.post('/sign-out', JSON.stringify({ user_id: parseInt(auth.user.user_id, 10) }));
       localStorage.removeItem('access_token');
-    } catch (err) {
-      console.error(err);
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
     }
     setAuth({});
   };

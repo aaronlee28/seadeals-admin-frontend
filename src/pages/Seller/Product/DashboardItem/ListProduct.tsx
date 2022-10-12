@@ -9,7 +9,6 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
   const [showModalDelete, setShowModalDelete] = useState(false);
 
-  console.log(products[0]);
   return (
     <div className="container">
       {showModalDelete && (

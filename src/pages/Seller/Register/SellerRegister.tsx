@@ -61,7 +61,7 @@ const SellerRegister = () => {
         }
         setProvinces(provincesValues);
       })
-      .catch((err) => err);
+      .catch((err) => toast.error(err.response?.data?.message));
   };
 
   const getCities = async () => {
@@ -84,7 +84,7 @@ const SellerRegister = () => {
         }
         setCities(values);
       })
-      .catch((err) => err);
+      .catch((err) => toast.error(err.response?.data?.message));
   };
 
   const getProvinceId = (p:string) => {
@@ -154,7 +154,7 @@ const SellerRegister = () => {
       setShow(false);
       setMainAddress(true);
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message);
       navigate('/user', { replace: true });
     }
   };
@@ -179,7 +179,8 @@ const SellerRegister = () => {
           setMainAddress(true);
         }
       });
-    } catch (err) {
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
       navigate('/seller/register', { replace: true });
     }
   };
@@ -217,7 +218,7 @@ const SellerRegister = () => {
         }
       });
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message);
       navigate('/seller/register', { replace: true });
     }
   };

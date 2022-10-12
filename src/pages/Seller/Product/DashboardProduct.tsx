@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
+import toast from 'react-hot-toast';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Button from '../../../components/Button/Button';
 import Pagination from '../../../components/Pagination/Pagination';
@@ -29,17 +30,19 @@ const DashboardProduct:FC<any> = () => {
         setPage(data.current_page);
         setProducts(data.products);
       })
-      .catch((err:any) => err);
+      .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
   const handleDelete = async () => {
     await ProductAPI.DeleteProductByID(axiosPrivate, deletedID)
       .then((resp: any) => {
         const { data } = resp.data;
-        console.log(data);
+        if (data.response?.data?.data?.is_deleted) {
+          toast.success('produk berhasil dihapus');
+        }
         setDeletedID(undefined);
       })
-      .catch((err: any) => err);
+      .catch((err: any) => toast.error(err.response?.data?.message));
   };
 
   useEffect(() => {

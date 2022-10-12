@@ -2,6 +2,7 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import VoucherAPI from '../../../api/voucher';
 import ListVoucher from './DashboardItem/ListVoucher';
 import Button from '../../../components/Button/Button';
@@ -30,7 +31,7 @@ const DashboardVoucher:FC<any> = ({ title }) => {
         setPage(data.page);
         setVouchers(data.vouchers);
       })
-      .catch((err:any) => err);
+      .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
   const handleDelete = async () => {
@@ -40,7 +41,7 @@ const DashboardVoucher:FC<any> = ({ title }) => {
         console.log(data);
         setDeletedID(undefined);
       })
-      .catch((err: any) => err);
+      .catch((err: any) => toast.error(err.response?.data?.message));
   };
 
   useEffect(() => {
