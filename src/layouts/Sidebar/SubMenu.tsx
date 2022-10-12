@@ -1,8 +1,9 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import React, { FC, useState } from 'react';
 
 const SubMenu:FC<any> = ({ item }) => {
   const [showSubNav, setShowSubNav] = useState(false);
+  const location = useLocation();
 
   const toggleSubNav = () => setShowSubNav(!showSubNav);
 
@@ -18,7 +19,7 @@ const SubMenu:FC<any> = ({ item }) => {
   return (
     <div>
       <Link
-        className="sub-menu with-arrow"
+        className={item.path === location.pathname ? 'sub-menu with-arrow active' : 'sub-menu with-arrow'}
         to={item.path}
         onClick={(e) => {
           if (item.subNav) {
@@ -37,7 +38,7 @@ const SubMenu:FC<any> = ({ item }) => {
       </Link>
       <div className="d-flex flex-column align-items-start ms-4">
         {showSubNav && item.subNav?.map((t:any) => (
-          <Link to={t.path} key={t.path} className="sub-menu">
+          <Link to={t.path} key={t.path} className={t.path === location.pathname ? 'sub-menu with-arrow active' : 'sub-menu with-arrow'}>
             {React.createElement(item.icon, { className: 'nav-icon' })}
             <span className="sub-menu__label">{t.title}</span>
           </Link>

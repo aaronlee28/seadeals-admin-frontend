@@ -61,6 +61,9 @@
   height: 60px;
   text-decoration: none;
   font-size: 16px;
+  &.active{
+    background: #a5cefd;
+  }
   &.with-arrow{
     justify-content: space-between;
   }

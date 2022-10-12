@@ -5,8 +5,17 @@ import { ReactComponent as IconVoucher } from '../../assets/svg/icon_voucher.svg
 const SidebarAdminData = [
   {
     id: 1,
+    title: 'Beranda',
+    path: '/admin',
+    icon: IconVoucher,
+    iconClosed: IconChevron,
+    iconOpened: IconChevron,
+    subNav: null,
+  },
+  {
+    id: 2,
     title: 'Voucher',
-    path: '/admin/voucher/list',
+    path: '',
     icon: IconVoucher,
     iconClosed: IconChevron,
     iconOpened: IconChevron,
@@ -24,9 +33,9 @@ const SidebarAdminData = [
     ],
   },
   {
-    id: 2,
+    id: 3,
     title: 'Kategori',
-    path: '/admin/category/list',
+    path: '',
     icon: IconProduct,
     iconClosed: IconChevron,
     iconOpened: IconChevron,
