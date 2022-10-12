@@ -38,7 +38,9 @@ const DashboardVoucher:FC<any> = ({ title }) => {
     await VoucherAPI.DeleteVoucherByID(axiosPrivate, deletedID)
       .then((resp: any) => {
         const { data } = resp.data;
-        console.log(data);
+        if (data?.is_deleted) {
+          toast.success('voucher berhasil dihapus');
+        }
         setDeletedID(undefined);
       })
       .catch((err: any) => toast.error(err.response?.data?.message));

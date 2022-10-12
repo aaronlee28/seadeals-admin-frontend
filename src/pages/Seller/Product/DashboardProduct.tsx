@@ -37,7 +37,7 @@ const DashboardProduct:FC<any> = () => {
     await ProductAPI.DeleteProductByID(axiosPrivate, deletedID)
       .then((resp: any) => {
         const { data } = resp.data;
-        if (data.response?.data?.data?.is_deleted) {
+        if (data?.is_deleted) {
           toast.success('produk berhasil dihapus');
         }
         setDeletedID(undefined);

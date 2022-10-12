@@ -74,7 +74,9 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           end_date: `${voucher.end_date}+07:00`,
         }),
       );
-      console.log(response);
+      if (response.status === 200) {
+        toast.success('voucher berhasil diubah');
+      }
       navigate('/seller/voucher/list');
     } catch (err:any) {
       toast.error(err.response?.data?.message);
@@ -94,7 +96,9 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           end_date: `${voucher.end_date}+07:00`,
         }),
       );
-      console.log(response);
+      if (response.status === 200) {
+        toast.success('voucher baru berhasil dibuat');
+      }
       navigate('/seller/voucher/list');
     } catch (err:any) {
       toast.error(err.response?.data?.message);
