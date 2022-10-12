@@ -2,17 +2,20 @@ import React, { useEffect, useState } from 'react';
 import './SellerRegister.scss';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import toast from 'react-hot-toast';
 import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Cities from '../../../api/cities';
 import Modal from '../../../components/Modal/Modal';
 import useCheckLogged from '../../../hooks/useCheckLogged';
+import useAuth from '../../../hooks/useAuth';
 
 const SellerRegister = () => {
   useCheckLogged();
   const uRLSellers = '/sellers';
   const uRLAddress = '/user/profiles/addresses';
   const [userId, setUserId] = useState('');
+  const { setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
 
@@ -149,7 +152,9 @@ const SellerRegister = () => {
         }),
       );
       setShow(false);
-    } catch (err) {
+      setMainAddress(true);
+    } catch (err: any) {
+      toast.error(err.message);
       navigate('/user', { replace: true });
     }
   };
@@ -192,9 +197,9 @@ const SellerRegister = () => {
   const [shopName, setShopName] = useState('');
   const [description, setDescription] = useState('');
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     try {
-      await axiosPrivate.post(
+      axiosPrivate.post(
         uRLSellers,
         JSON.stringify({
           user_id: userId,
@@ -202,11 +207,17 @@ const SellerRegister = () => {
           description,
         }),
       ).then((res: any) => {
-        if (res.status_code === 200) {
+        if (res.data.statusCode === 200) {
+          const decode:any = jwt_decode(res.data.data.id_token);
+          const accessToken = res?.data?.data.id_token;
+          const { user, scope } = decode;
+          setAuth({ user, roles: scope.split(' '), accessToken });
+          localStorage.setItem('access_token', accessToken);
           navigate('/seller/register/couriers', { replace: true });
         }
       });
-    } catch (err) {
+    } catch (err: any) {
+      toast.error(err.message);
       navigate('/seller/register', { replace: true });
     }
   };
