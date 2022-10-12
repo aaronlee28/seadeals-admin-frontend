@@ -8,7 +8,6 @@ import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Pagination from '../../../components/Pagination/Pagination';
 import FilterVoucher from './DashboardItem/FilterVoucher';
-import StatsVoucher from './DashboardItem/StatsVoucher';
 
 const DashboardVoucher:FC<any> = ({ title }) => {
   const navigate = useNavigate();
@@ -51,9 +50,6 @@ const DashboardVoucher:FC<any> = ({ title }) => {
   return (
     <div className="voucher__container">
       <h3>{title}</h3>
-      <div className="voucher__content my-3">
-        <StatsVoucher />
-      </div>
       <div className="voucher__content">
         <div className="d-flex justify-content-between mb-4 pb-4">
           <div className="d-flex flex-column text-start">
