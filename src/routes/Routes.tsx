@@ -14,6 +14,7 @@ import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
 import Couriers from '../pages/Seller/Couriers/Couriers';
+import PageNotFound from '../pages/PageNotFound';
 
 const AppRoutes = () => (
   <Routes>
@@ -45,6 +46,7 @@ const AppRoutes = () => (
 
       </Route>
     </Route>
+    <Route path="*" element={<PageNotFound />} />
 
   </Routes>
 );
