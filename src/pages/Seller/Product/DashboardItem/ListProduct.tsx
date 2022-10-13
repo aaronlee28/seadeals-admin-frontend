@@ -4,6 +4,7 @@ import ModalConfirmation from '../../../../components/Modal/ModalConfirmation/Mo
 import Button from '../../../../components/Button/Button';
 import { ReactComponent as IconHeart } from '../../../../assets/svg/icon_heart.svg';
 import '../Product.scss';
+import Formatter from '../../../../utils/formatter';
 
 const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
@@ -28,14 +29,22 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
           <thead>
             <tr className="table-secondary">
               <th>Nama Produk</th>
-              <th>Variasi</th>
+              <th>
+                <div className="d-flex gap-4 align-items-end">
+                  <span className="product-list__variant small">Kode Variasi</span>
+                  <span className="product-list__variant large">Variasi</span>
+                  <span className="product-list__variant large">Harga</span>
+                  <span className="product-list__variant">Stok</span>
+                </div>
+              </th>
+              <th>Penjualan</th>
               <th>Aksi</th>
             </tr>
           </thead>
           <tbody>
             {
             products.length === 0
-              ? <tr><td colSpan={3}>No vouchers</td></tr>
+              ? <tr><td colSpan={4}>No vouchers</td></tr>
               : products.map((p:any) => (
                 <tr key={p.id}>
                   <td>
@@ -51,11 +60,33 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
                       </div>
                     </div>
                   </td>
-                  <td>
-                    <div className="">
-                      Mantap
-                    </div>
-                  </td>
+                  {
+                    p.product_variant_detail !== null
+                      ? (
+                        <td>
+                          {p.product_variant_detail.map((pvd: any) => (
+                            <div className="d-flex gap-4" key={pvd.id}>
+                              <span className="product-list__variant small">{pvd.variant_code || '-'}</span>
+                              {
+                          pvd.variant_1_value || pvd.variant_2_value
+                            ? (
+                              <span
+                                className="product-list__variant large"
+                              >
+                                {`${pvd.variant_1_value || ''}${pvd.variant_1_value && pvd.variant_2_value ? ',' : ''} ${pvd.variant_2_value || ''}`}
+                              </span>
+                            )
+                            : <span className="product-list__variant">-</span>
+                        }
+                              <span className="product-list__variant large">{Formatter.DisplayPrice(pvd.price)}</span>
+                              <span className="product-list__variant">{pvd.stock !== 0 ? pvd.stock : 'Habis'}</span>
+                            </div>
+                          ))}
+                        </td>
+                      )
+                      : <td><tr>No variant</tr></td>
+                    }
+                  <td><span className="product-list__variant">{p.sold_count}</span></td>
                   <td>
                     <div className="d-flex flex-column align-items-start">
                       <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)} text="Lihat" />
