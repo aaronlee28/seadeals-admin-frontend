@@ -31,7 +31,7 @@ const SellerRegister = () => {
   const [provinceId, setProvinceId] = useState('');
   const [type, setType] = useState('');
   const [subDistrict, setSubDistrict] = useState('');
-  const [province, setProvince] = useState('');
+  const [province, setProvince] = useState('Pilih provinsi');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [address, setAddress] = useState('');
