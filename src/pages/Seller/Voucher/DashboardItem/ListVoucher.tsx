@@ -61,10 +61,10 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
                   </td>
                   <td>
                     <div className="d-flex flex-column align-items-start">
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/show/${v.id}`)} text="Rincian" />
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/update/${v.id}`)} isDisabled={v.status === 'ended'} text="Ubah" />
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/new?copy=${v.id}`)} text="Duplikat" />
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(v.id); }} isDisabled={v.status !== 'upcoming'} text="Akhiri" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/voucher/show/${v.id}`)} text="Rincian" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/voucher/update/${v.id}`)} isDisabled={v.status === 'ended'} text="Ubah" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/voucher/new?copy=${v.id}`)} text="Duplikat" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(v.id); }} isDisabled={v.status !== 'upcoming'} text="Akhiri" />
                     </div>
                   </td>
                 </tr>

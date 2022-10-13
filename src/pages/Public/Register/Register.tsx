@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import toast from 'react-hot-toast';
 import axios from '../../../api/axios';
 import logo from '../../../assets/images/logo.png';
 import logo_xs from '../../../assets/images/logo_xs.png';
@@ -100,7 +101,8 @@ const Register = () => {
       setBirthDate('');
 
       navigate('/seller/register', { replace: true });
-    } catch (err) {
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
       navigate('/register', { replace: true });
     }
   };

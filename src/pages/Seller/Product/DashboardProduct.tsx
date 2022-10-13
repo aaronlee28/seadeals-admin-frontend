@@ -1,45 +1,44 @@
+import { useNavigate } from 'react-router-dom';
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
-import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import VoucherAPI from '../../../api/voucher';
-import ListVoucher from './DashboardItem/ListVoucher';
-import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import Button from '../../../components/Button/Button';
 import Pagination from '../../../components/Pagination/Pagination';
-import FilterVoucher from './DashboardItem/FilterVoucher';
+import ProductAPI from '../../../api/product';
+import ListProduct from './DashboardItem/ListProduct';
+import '../Voucher/Voucher.scss';
 
-const DashboardVoucher:FC<any> = ({ title }) => {
+const DashboardProduct:FC<any> = () => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const innerRef = useRef(null);
 
-  const [vouchers, setVouchers] = useState([]);
+  const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
-  const [status, setStatus] = useState('');
 
   const [deletedID, setDeletedID] = useState(undefined);
 
-  const findVoucherByUserID = async () => {
-    const filter = `page=${page}&status=${status}`;
-    await VoucherAPI.FindVoucherByUserID(axiosPrivate, filter)
+  const findProductBySellerID = async () => {
+    const filter = `page=${page}&limit=10`;
+    await ProductAPI.FindProductBySellerID(axiosPrivate, filter)
       .then((resp:any) => {
         const { data } = resp.data;
-        setTotalPage(data.total_pages);
-        setPage(data.page);
-        setVouchers(data.vouchers);
+        setTotalPage(data.total_page);
+        setPage(data.current_page);
+        setProducts(data.products);
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
   const handleDelete = async () => {
-    await VoucherAPI.DeleteVoucherByID(axiosPrivate, deletedID)
+    await ProductAPI.DeleteProductByID(axiosPrivate, deletedID)
       .then((resp: any) => {
-        const { data } = resp.data;
-        if (data?.is_deleted) {
-          toast.success('voucher berhasil dihapus');
+        const { data } = resp;
+        if (data?.statusCode === 200) {
+          toast.success('produk berhasil dihapus');
         }
         setDeletedID(undefined);
       })
@@ -47,24 +46,23 @@ const DashboardVoucher:FC<any> = ({ title }) => {
   };
 
   useEffect(() => {
-    findVoucherByUserID().then();
-  }, [page, status, deletedID]);
+    findProductBySellerID().then();
+  }, [page, deletedID]);
 
   return (
     <div className="voucher__container">
-      <h3>{title}</h3>
+      <h3>Daftar Produk</h3>
       <div className="voucher__content">
         <div className="d-flex justify-content-between mb-4 pb-4">
           <div className="d-flex flex-column text-start">
-            <h5 className="m-0">Daftar Voucher</h5>
-            <p className="m-0 p-0">Buat voucher untuk menarik pembeli</p>
+            <h5 className="m-0">Daftar Produk</h5>
+            <p className="m-0 p-0">Buat produk untuk dijual di toko kamu</p>
           </div>
-          <Button buttonType="secondary" text="Buat voucher" handleClickedButton={() => navigate('/seller/voucher/new')} />
+          <Button buttonType="secondary" text="Buat produk" handleClickedButton={() => navigate('/seller/product/new')} />
         </div>
         <div>
-          <FilterVoucher status={status} setStatus={setStatus} />
-          <ListVoucher
-            vouchers={vouchers}
+          <ListProduct
+            products={products}
             setDeletedID={setDeletedID}
             handleDelete={handleDelete}
           />
@@ -80,4 +78,4 @@ const DashboardVoucher:FC<any> = ({ title }) => {
   );
 };
 
-export default DashboardVoucher;
+export default DashboardProduct;

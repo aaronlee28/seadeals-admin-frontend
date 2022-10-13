@@ -48,7 +48,7 @@ const Login = () => {
 
       navigate('/seller/register', { replace: true });
     } catch (err:any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message);
       navigate('/register', { replace: true, state: err.response.data?.data?.user });
     }
   };
