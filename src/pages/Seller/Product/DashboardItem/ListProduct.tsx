@@ -30,7 +30,7 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
             <tr className="table-secondary">
               <th>Nama Produk</th>
               <th>
-                <div className="d-flex gap-4 align-items-end">
+                <div className="d-flex justify-content-between gap-4 align-items-end">
                   <span className="product-list__variant small">Kode Variasi</span>
                   <span className="product-list__variant large">Variasi</span>
                   <span className="product-list__variant large">Harga</span>
@@ -67,7 +67,7 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
                       ? (
                         <td>
                           {p.product_variant_detail.map((pvd: any) => (
-                            <div className="d-flex gap-4 my-1" key={pvd.id}>
+                            <div className="d-flex justify-content-between gap-4 my-1" key={pvd.id}>
                               <span className="product-list__variant cell-content small">{pvd.variant_code || '-'}</span>
                               {
                           pvd.variant_1_value || pvd.variant_2_value
