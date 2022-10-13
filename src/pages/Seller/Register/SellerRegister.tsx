@@ -9,6 +9,7 @@ import Cities from '../../../api/cities';
 import Modal from '../../../components/Modal/Modal';
 import useCheckLogged from '../../../hooks/useCheckLogged';
 import useAuth from '../../../hooks/useAuth';
+import useLogout from '../../../hooks/useLogout';
 
 const SellerRegister = () => {
   useCheckLogged();
@@ -18,6 +19,7 @@ const SellerRegister = () => {
   const { setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const logout = useLogout();
 
   const getUserId = () => {
     const token = localStorage.getItem('access_token');
@@ -311,6 +313,7 @@ const SellerRegister = () => {
             </div>
           </div>
           <div className="button-group">
+            <Button buttonType="secondary mx-2" text="Batalkan pendaftaran" handleClickedButton={() => { logout().then(); navigate('/login'); }} />
             {!show && !mainAddress && (
               <Button
                 buttonType="primary alt"
