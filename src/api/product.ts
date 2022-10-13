@@ -8,7 +8,7 @@ class ProductAPI {
   }
 
   static DeleteProductByID(ax:any, id:any = '') {
-    return ax.delete(`/sellers/products/${id}`);
+    return ax.delete(`/sellers/${id}/delete-product`);
   }
 }
 

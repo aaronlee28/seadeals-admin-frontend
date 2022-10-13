@@ -4,6 +4,9 @@
     border-collapse: collapse;
     border-radius: 0.5em;
     overflow: hidden;
+    .product-list__row{
+      border-bottom: 1px solid black;
+    }
   }
   .product-list__product-main{
     display: flex;
@@ -32,6 +35,9 @@
   .product-list__variant{
     margin-right: 8px;
     width: 100px;
+    &.cell-content{
+      font-size: 0.9rem;
+    }
     &.small{
       width: 56px;
     }
@@ -59,4 +65,8 @@
       }
     }
   }
+}
+
+.deleted {
+  background: #ffe5e5;
 }

@@ -32,7 +32,7 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
               <th>
                 <div className="d-flex gap-4 align-items-end">
                   <span className="product-list__variant small">Kode Variasi</span>
-                  <span className="product-list__variant large">Variasi</span>
+                  <span className="product-list__variant">Variasi</span>
                   <span className="product-list__variant large">Harga</span>
                   <span className="product-list__variant">Stok</span>
                 </div>
@@ -46,13 +46,15 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
             products.length === 0
               ? <tr><td colSpan={4}>No vouchers</td></tr>
               : products.map((p:any) => (
-                <tr key={p.id}>
+                <tr key={p.id} className={p.is_deleted ? 'deleted product-list__row' : 'product-list__row'}>
                   <td>
                     <div className="product-list__product-main">
                       <img src={p.photo} alt="foto produk" className="product-list__photo" />
                       <div className="d-flex flex-column text-start">
                         <span className="product-list__name">{p.name}</span>
-                        <span className="product-list__category">{p.category}</span>
+                        <span className="product-list__category">
+                          {p.category}
+                        </span>
                         <div className="product-list__caption">
                           {React.createElement(IconHeart, { className: 'product-list__icon' })}
                           <span>{p.favorite_count}</span>
@@ -65,34 +67,34 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
                       ? (
                         <td>
                           {p.product_variant_detail.map((pvd: any) => (
-                            <div className="d-flex gap-4" key={pvd.id}>
-                              <span className="product-list__variant small">{pvd.variant_code || '-'}</span>
+                            <div className="d-flex gap-4 my-1" key={pvd.id}>
+                              <span className="product-list__variant cell-content small">{pvd.variant_code || '-'}</span>
                               {
                           pvd.variant_1_value || pvd.variant_2_value
                             ? (
                               <span
-                                className="product-list__variant large"
+                                className="product-list__variant cell-content"
                               >
                                 {`${pvd.variant_1_value || ''}${pvd.variant_1_value && pvd.variant_2_value ? ',' : ''} ${pvd.variant_2_value || ''}`}
                               </span>
                             )
-                            : <span className="product-list__variant">-</span>
+                            : <span className="product-list__variant cell-content">-</span>
                         }
-                              <span className="product-list__variant large">{Formatter.DisplayPrice(pvd.price)}</span>
-                              <span className="product-list__variant">{pvd.stock !== 0 ? pvd.stock : 'Habis'}</span>
+                              <span className="product-list__variant cell-content large">{Formatter.DisplayPrice(pvd.price)}</span>
+                              <span className="product-list__variant cell-content">{pvd.stock !== 0 ? pvd.stock : 'Habis'}</span>
                             </div>
                           ))}
                         </td>
                       )
-                      : <td><tr>No variant</tr></td>
+                      : <td>No variant</td>
                     }
                   <td><span className="product-list__variant">{p.sold_count}</span></td>
                   <td>
                     <div className="d-flex flex-column align-items-start">
-                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)} text="Lihat" />
-                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/update/${p.id}`)} text="Ubah" />
-                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/new?copy=${p.id}`)} text="Duplikat" />
-                      <Button buttonType="plain action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(p.id); }} text="Hapus" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)} text="Lihat" isDisabled={p.is_deleted} />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)} text="Rincian" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/update/${p.id}`)} text="Ubah" isDisabled={p.is_deleted} />
+                      <Button buttonType="plain action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(p.id); }} text="Hapus" isDisabled={p.is_deleted} />
                     </div>
                   </td>
                 </tr>
