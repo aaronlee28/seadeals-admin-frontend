@@ -32,7 +32,7 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
               <th>
                 <div className="d-flex gap-4 align-items-end">
                   <span className="product-list__variant small">Kode Variasi</span>
-                  <span className="product-list__variant">Variasi</span>
+                  <span className="product-list__variant large">Variasi</span>
                   <span className="product-list__variant large">Harga</span>
                   <span className="product-list__variant">Stok</span>
                 </div>
@@ -73,12 +73,12 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
                           pvd.variant_1_value || pvd.variant_2_value
                             ? (
                               <span
-                                className="product-list__variant cell-content"
+                                className="product-list__variant cell-content large"
                               >
                                 {`${pvd.variant_1_value || ''}${pvd.variant_1_value && pvd.variant_2_value ? ',' : ''} ${pvd.variant_2_value || ''}`}
                               </span>
                             )
-                            : <span className="product-list__variant cell-content">-</span>
+                            : <span className="product-list__variant cell-content large">-</span>
                         }
                               <span className="product-list__variant cell-content large">{Formatter.DisplayPrice(pvd.price)}</span>
                               <span className="product-list__variant cell-content">{pvd.stock !== 0 ? pvd.stock : 'Habis'}</span>
