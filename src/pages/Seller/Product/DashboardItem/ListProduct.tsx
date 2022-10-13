@@ -44,7 +44,7 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
           <tbody>
             {
             products.length === 0
-              ? <tr><td colSpan={4}>No vouchers</td></tr>
+              ? <tr><td className="text-center" colSpan={4}>No Products</td></tr>
               : products.map((p:any) => (
                 <tr key={p.id} className={p.is_deleted ? 'deleted product-list__row' : 'product-list__row'}>
                   <td>
