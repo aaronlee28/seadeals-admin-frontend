@@ -1,8 +1,8 @@
 import './Couriers.scss';
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import Button from '../../../components/Button/Button';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import Button from '../../../../components/Button/Button';
 
 const Couriers = () => {
   const axiosPrivate = useAxiosPrivate();
@@ -18,7 +18,7 @@ const Couriers = () => {
     }
   };
 
-  const [courierId, setCourierId] = useState('');
+  const [courierId, setCourierId] = useState(1);
   useEffect(() => {
     getCouriers();
   }, []);
@@ -53,7 +53,7 @@ const Couriers = () => {
             <label className="mb-4">Pilih jasa kurir:</label>
             {
               couriers && (
-              <select className="form-select mb-4" onChange={(event) => setCourierId(event.target.value)}>
+              <select className="form-select mb-4" onChange={(event) => setCourierId(Number(event.target.value))} defaultValue={courierId}>
                 {couriers.map((courier) => (
                   <option key={courier.id} value={courier.id}>
                     {courier.name}
