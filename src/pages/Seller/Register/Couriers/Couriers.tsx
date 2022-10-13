@@ -35,10 +35,6 @@ const Couriers = () => {
           withCredentials: true,
         },
       );
-      console.log(JSON.stringify({
-        courier_id: Number(courierId),
-        is_selected: true,
-      }));
       navigate('/seller', { replace: true });
     } catch (err) {
       navigate('/seller/register/couriers', { replace: true });
