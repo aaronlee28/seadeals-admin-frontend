@@ -22,8 +22,8 @@ const NavbarSellerAdmin:FC<any> = () => {
           setShowDropDown(!showDropDown);
         }}
       >
-        <img src="https://via.placeholder.com/100" alt="profile" />
-        {user.username}
+        <img src={user.avatar_url || 'https://via.placeholder.com/100'} alt="profile" />
+        {user.name}
       </Link>
       {showDropDown && (
       <div className="navbar__dropdown-menu shadow">
