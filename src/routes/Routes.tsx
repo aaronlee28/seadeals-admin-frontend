@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ROLES from '../constants/roles';
 import Layout from '../layouts/Layout';
 import SellerLayout from '../layouts/SellerLayout';
@@ -16,10 +16,12 @@ import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
 import Couriers from '../pages/Seller/Couriers/Couriers';
 import PageNotFound from '../pages/PageNotFound';
 import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
+import FormProduct from '../pages/Seller/Product/FormProduct';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Layout />}>
+    <Route path="" element={<Layout />}>
+      <Route path="" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
@@ -38,9 +40,9 @@ const AppRoutes = () => (
             </Route>
             <Route path="product/">
               <Route path="list" element={<DashboardProduct />} />
-              <Route path="new" element={<FormVoucher formType="create" title="Buat Produk" />} />
-              <Route path="show/:productID" element={<FormVoucher formType="show" title="Detail Produk" />} />
-              <Route path="update/:productID" element={<FormVoucher formType="update" title="Update Produk" />} />
+              <Route path="new" element={<FormProduct formType="create" title="Buat Produk" />} />
+              <Route path="show/:productID" element={<FormProduct formType="show" title="Detail Produk" />} />
+              <Route path="update/:productID" element={<FormProduct formType="update" title="Update Produk" />} />
             </Route>
           </Route>
         </Route>
