@@ -14,26 +14,6 @@ const SidebarSellerData = [
     subNav: null,
   },
   {
-    id: 2,
-    title: 'Voucher Toko',
-    path: '',
-    icon: IconVoucher,
-    iconClosed: IconChevron,
-    iconOpened: IconChevron,
-    subNav: [
-      {
-        title: 'Daftar voucher',
-        path: '/seller/voucher/list',
-        icon: IconVoucher,
-      },
-      {
-        title: 'Buat voucher',
-        path: '/seller/voucher/new',
-        icon: IconVoucher,
-      },
-    ],
-  },
-  {
     id: 3,
     title: 'Produk',
     path: '',
@@ -50,6 +30,26 @@ const SidebarSellerData = [
         title: 'Buat produk',
         path: '/seller/product/new',
         icon: IconProduct,
+      },
+    ],
+  },
+  {
+    id: 2,
+    title: 'Voucher Toko',
+    path: '',
+    icon: IconVoucher,
+    iconClosed: IconChevron,
+    iconOpened: IconChevron,
+    subNav: [
+      {
+        title: 'Daftar voucher',
+        path: '/seller/voucher/list',
+        icon: IconVoucher,
+      },
+      {
+        title: 'Buat voucher',
+        path: '/seller/voucher/new',
+        icon: IconVoucher,
       },
     ],
   },
