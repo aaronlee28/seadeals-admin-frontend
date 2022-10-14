@@ -8,6 +8,7 @@ import Formatter from '../../../../utils/formatter';
 
 const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
   const navigate = useNavigate();
+  const buyerURL = process.env.REACT_APP_BUYER_URL;
   const [showModalDelete, setShowModalDelete] = useState(false);
 
   return (
@@ -91,9 +92,9 @@ const ListProduct:FC<any> = ({ products, setDeletedID, handleDelete }) => {
                   <td><span className="product-list__variant">{p.sold_count}</span></td>
                   <td>
                     <div className="d-flex flex-column align-items-start">
-                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)} text="Lihat" isDisabled={p.is_deleted} />
+                      <a href={`https://${buyerURL}/product/${p.slug}.${p.id}`} target="_blank" className="plain action-button" rel="noreferrer">Lihat</a>
                       <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)} text="Rincian" />
-                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/update/${p.id}`)} text="Ubah" isDisabled={p.is_deleted} />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/product/update/${p.id}`)} text="Ubah" isDisabled />
                       <Button buttonType="plain action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(p.id); }} text="Hapus" isDisabled={p.is_deleted} />
                     </div>
                   </td>
