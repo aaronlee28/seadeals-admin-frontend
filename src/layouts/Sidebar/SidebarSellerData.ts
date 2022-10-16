@@ -67,7 +67,7 @@ const SidebarSellerData = [
         icon: IconPromotion,
       },
       {
-        title: 'Buat produk',
+        title: 'Buat promosi',
         path: '/seller/promotions/new',
         icon: IconPromotion,
       },
