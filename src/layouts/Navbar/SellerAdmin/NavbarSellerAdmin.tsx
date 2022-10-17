@@ -21,6 +21,7 @@ const NavbarSellerAdmin:FC<any> = () => {
           e.preventDefault();
           setShowDropDown(!showDropDown);
         }}
+        onBlur={() => setShowDropDown(false)}
       >
         <img src={user.avatar_url || 'https://via.placeholder.com/100'} alt="profile" />
         {user.name}
