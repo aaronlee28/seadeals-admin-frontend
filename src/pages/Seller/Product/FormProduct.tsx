@@ -53,7 +53,7 @@ const FormProduct:FC<any> = ({
           <div className="d-flex flex-row-reverse gap-3">
             {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
             {formType === VoucherConstant.UPDATE && <Button isSubmit buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
-            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Batal" />
+            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/product/list')} text="Batal" />
           </div>
         </form>
       </div>
