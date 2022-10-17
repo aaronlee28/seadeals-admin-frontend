@@ -13,7 +13,7 @@ import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
-import Couriers from '../pages/Seller/Couriers/Couriers';
+import Couriers from '../pages/Seller/Register/Couriers/Couriers';
 import PageNotFound from '../pages/PageNotFound';
 import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
