@@ -21,13 +21,12 @@ const NavbarSellerAdmin:FC<any> = () => {
           e.preventDefault();
           setShowDropDown(!showDropDown);
         }}
-        onBlur={() => setShowDropDown(false)}
       >
         <img src={user.avatar_url || 'https://via.placeholder.com/100'} alt="profile" />
         {user.name}
       </Link>
       {showDropDown && (
-      <div className="navbar__dropdown-menu shadow">
+      <div className="navbar__dropdown-menu shadow" onBlur={() => setShowDropDown(false)}>
         <NavbarMenuItem title="Logout" to="/login" icon={IconClose} handleClick={logout} />
       </div>
       )}

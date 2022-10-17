@@ -26,7 +26,7 @@ const useCheckLogged = () => {
         }
         navigate('/seller/register', { replace: true });
       }
-    } else {
+    } else if (from !== '/register') {
       navigate('/login');
     }
   }, []);
