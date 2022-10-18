@@ -52,9 +52,9 @@ const DashboardProduct:FC<any> = () => {
   }, [page, deletedID]);
 
   return (
-    <div className="voucher__container">
+    <div className="promotions-dashboard_container">
       <h3>Daftar Produk</h3>
-      <div className="voucher__content">
+      <div className="promotion_content">
         <div className="d-flex justify-content-between mb-4 pb-4">
           <div className="d-flex flex-column text-start">
             <h5 className="m-0">Daftar Produk</h5>
