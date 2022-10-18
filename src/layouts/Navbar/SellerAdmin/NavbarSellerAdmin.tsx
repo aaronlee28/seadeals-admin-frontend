@@ -26,7 +26,7 @@ const NavbarSellerAdmin:FC<any> = () => {
         {user.name}
       </Link>
       {showDropDown && (
-      <div className="navbar__dropdown-menu shadow">
+      <div className="navbar__dropdown-menu shadow" onBlur={() => setShowDropDown(false)}>
         <NavbarMenuItem title="Logout" to="/login" icon={IconClose} handleClick={logout} />
       </div>
       )}

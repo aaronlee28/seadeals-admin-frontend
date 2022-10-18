@@ -15,12 +15,12 @@ const Sidebar:FC<any> = ({ data }) => {
   return (
     <div className="sticky-top shadow">
       <div className="sidebar__nav">
-        <div className="sidebar__nav-icon">
+        <div className="sidebar__nav-icon" onMouseEnter={toggleNav}>
           {React.createElement(IconBurger, { className: 'nav-icon', onClick: toggleNav })}
         </div>
         <NavbarSellerAdmin />
       </div>
-      <nav className="sidebar__nav-content shadow" style={{ left: showSidebar ? '0' : '-100%' }}>
+      <nav className="sidebar__nav-content shadow" onMouseLeave={toggleNav} style={{ left: showSidebar ? '0' : '-100%' }}>
         <div className="sidebar__wrap">
           <div className="sidebar__nav-icon justify-content-between">
             <img

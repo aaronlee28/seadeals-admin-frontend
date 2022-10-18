@@ -20,6 +20,7 @@ const DashboardVoucher:FC<any> = ({ title }) => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [status, setStatus] = useState('');
+  const [loading, setLoading] = useState(true);
 
   const [deletedID, setDeletedID] = useState(undefined);
 
@@ -31,6 +32,7 @@ const DashboardVoucher:FC<any> = ({ title }) => {
         setTotalPage(data.total_pages);
         setPage(data.page);
         setVouchers(data.vouchers);
+        setLoading(false);
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
   };
@@ -68,6 +70,7 @@ const DashboardVoucher:FC<any> = ({ title }) => {
             vouchers={vouchers}
             setDeletedID={setDeletedID}
             handleDelete={handleDelete}
+            loading={loading}
           />
           <Pagination
             totalPage={totalPage}

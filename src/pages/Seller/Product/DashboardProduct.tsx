@@ -18,6 +18,7 @@ const DashboardProduct:FC<any> = () => {
   const [products, setProducts] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const [deletedID, setDeletedID] = useState(undefined);
 
@@ -29,6 +30,7 @@ const DashboardProduct:FC<any> = () => {
         setTotalPage(data.total_page);
         setPage(data.current_page);
         setProducts(data.products);
+        setLoading(false);
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
   };
@@ -65,6 +67,7 @@ const DashboardProduct:FC<any> = () => {
             products={products}
             setDeletedID={setDeletedID}
             handleDelete={handleDelete}
+            loading={loading}
           />
           <Pagination
             totalPage={totalPage}
