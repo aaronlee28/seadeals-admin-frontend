@@ -8,6 +8,7 @@ import { ReactComponent as IconChevron } from '../../../../assets/svg/icon_chevr
 const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
   const [categories, setCategories] = useState([]);
   const [categories2nd, setCategories2nd] = useState([]);
+  const [categories3rd, setCategories3rd] = useState([]);
   const defaultCat = { name: '', parent_id: null };
   const [category, setCategory] = useState({ ...defaultCat });
   const axiosPrivate = useAxiosPrivate();
@@ -22,15 +23,18 @@ const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
       .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
-  const handleChooseCategory = (cat:any) => {
-    if (cat.children !== null) {
+  const handleChooseCategory = (cat:any, depth:number) => {
+    if (depth === 2) {
+      setCategories3rd([]);
+    } else if (depth === 1) {
       setCategories2nd([]);
-      setCategory(defaultCat);
-      if (cat.children.length !== 0) {
-        setCategories2nd(cat.children);
-      } else {
-        setCategory(cat);
-      }
+      setCategories3rd([]);
+    }
+    setCategory(defaultCat);
+    if (cat.children.length !== 0 && depth === 1) {
+      setCategories2nd(cat.children);
+    } else if (cat.children.length !== 0 && depth === 2) {
+      setCategories3rd(cat.children);
     } else {
       setCategory(cat);
     }
@@ -52,8 +56,8 @@ const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
       <div className="category__container">
         <div className="category__scroll">
           {categories.map((item:any) => (
-            <div className="category__item" role="presentation" onClick={() => handleChooseCategory(item)}>
-              <Button buttonType="plain category__item-button cat1" text={item.name} handleClickedButton={() => handleChooseCategory(item)} />
+            <div className="category__item" role="presentation" onClick={() => handleChooseCategory(item, 1)}>
+              <Button buttonType="plain category__item-button cat1" text={item.name} handleClickedButton={() => handleChooseCategory(item, 1)} />
               {item.children.length !== 0 && React.createElement(IconChevron, { className: 'category__chevron-icon' })}
             </div>
           ))}
@@ -64,7 +68,20 @@ const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
           <div className="category__scroll">
             {categories2nd.map((item:any) => (
               <div className="category__item">
-                <Button buttonType="plain category__item-button cat2" text={item.name} handleClickedButton={() => handleChooseCategory(item)} />
+                <Button buttonType="plain category__item-button cat2" text={item.name} handleClickedButton={() => handleChooseCategory(item, 2)} />
+                {item.children.length !== 0 && React.createElement(IconChevron, { className: 'category__chevron-icon' })}
+              </div>
+            ))}
+          </div>
+          )
+        }
+        {
+          categories3rd !== null && categories2nd !== null && category !== null
+          && (
+          <div className="category__scroll">
+            {categories3rd.map((item:any) => (
+              <div className="category__item">
+                <Button buttonType="plain category__item-button cat2" text={item.name} handleClickedButton={() => handleChooseCategory(item, 3)} />
               </div>
             ))}
           </div>
