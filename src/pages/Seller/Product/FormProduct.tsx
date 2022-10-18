@@ -14,13 +14,19 @@ const FormProduct:FC<any> = ({
 
   const [product, setProduct] = useState({
     name: '',
-    code: '',
-    start_date: '',
-    end_date: '',
-    quota: '',
-    amount_type: 'percentage',
-    amount: '',
-    min_spending: '',
+    is_bulk_enabled: false,
+    min_quantity: 0,
+    max_quantity: 0,
+    video_url: '',
+    is_hazardous: false,
+    condition_status: '',
+    length: '',
+    width: '',
+    height: '',
+    weight: '',
+    default_price: 0,
+    default_stock: 0,
+    product_photos: [],
   });
 
   const handleOnChange = (e: any) => {
