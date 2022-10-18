@@ -92,8 +92,83 @@
     padding: 5%;
     border-radius: 8px;
   }
+
+  .product-form__category{
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 8px;
+    text-align: start;
+    cursor: pointer;
+    color: #777;
+  }
 }
 
 .deleted {
   background: #ffe5e5;
+}
+
+.category__container{
+  display: flex;
+  margin: 8px 4px;
+  border: 1px solid #ccc;
+  max-width: 100%;
+  width: fit-content;
+  overflow-x: scroll;
+  .category__scroll{
+    padding-top: 4px;
+    width: 256px;
+    height: 226px;
+    overflow-y: scroll;
+  }
+  .category__item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.9em;
+    text-align: start;
+    padding: 2px 8px;
+    width: 100%;
+    cursor: pointer;
+    &:hover{
+      color: #1E46A2;
+    }
+    .category__item-button{
+      display: flex;
+      width: 100%;
+      justify-content: start;
+      p{
+        text-align: start;
+      }
+      &:hover{
+        color: #1E46A2;
+      }
+      &:focus{
+        color: #1E46A2;
+      }
+    }
+  }
+  .category__chevron-icon{
+    height: 16px;
+    width: 16px;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
