@@ -3,71 +3,58 @@ import React, {
 } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import VoucherAPI from '../../../api/voucher';
-import ListVoucher from './DashboardItem/ListVoucher';
+import PromotionsAPI from '../../../api/promotions';
+import ListPromotions from './DashboardItem/ListPromotions';
 import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Pagination from '../../../components/Pagination/Pagination';
-import FilterVoucher from './DashboardItem/FilterVoucher';
-import './Voucher.scss';
+import FilterPromotions from './DashboardItem/FilterPromotions';
+import './PromotionsDashboard.scss';
 
-const DashboardVoucher:FC<any> = ({ title }) => {
+const PromotionsDashboard:FC<any> = ({ title }) => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
   const innerRef = useRef(null);
 
-  const [vouchers, setVouchers] = useState([]);
+  const [promotions, setPromotions] = useState([]);
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [status, setStatus] = useState('');
 
   const [deletedID, setDeletedID] = useState(undefined);
 
-  const findVoucherByUserID = async () => {
+  const findPromotions = async () => {
     const filter = `page=${page}&status=${status}`;
-    await VoucherAPI.FindVoucherByUserID(axiosPrivate, filter)
+    await PromotionsAPI.GetPromotions(axiosPrivate, filter)
       .then((resp:any) => {
         const { data } = resp.data;
         setTotalPage(data.total_pages);
         setPage(data.page);
-        setVouchers(data.vouchers);
+        setPromotions(data);
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
-  const handleDelete = async () => {
-    await VoucherAPI.DeleteVoucherByID(axiosPrivate, deletedID)
-      .then((resp: any) => {
-        const { data } = resp.data;
-        if (data?.is_deleted) {
-          toast.success('voucher berhasil dihapus');
-        }
-        setDeletedID(undefined);
-      })
-      .catch((err: any) => toast.error(err.response?.data?.message));
-  };
-
   useEffect(() => {
-    findVoucherByUserID().then();
+    findPromotions().then();
   }, [page, status, deletedID]);
 
   return (
-    <div className="voucher__container">
+    <div className="promotions-dashboard_container">
       <h3>{title}</h3>
-      <div className="voucher__content">
+      <div className="promotion_content">
         <div className="d-flex justify-content-between mb-4 pb-4">
           <div className="d-flex flex-column text-start">
-            <h5 className="m-0">Daftar Voucher</h5>
-            <p className="m-0 p-0">Buat voucher untuk menarik pembeli</p>
+            <h5 className="m-0">Daftar Promosi</h5>
+            <p className="m-0 p-0">Berikan harga terbaik untuk produkmu di SeaDeals</p>
           </div>
-          <Button buttonType="secondary" text="Buat voucher" handleClickedButton={() => navigate('/seller/voucher/new')} />
+          <Button buttonType="secondary" text="Buat promosi" handleClickedButton={() => navigate('/seller/promotions/new')} />
         </div>
         <div>
-          <FilterVoucher status={status} setStatus={setStatus} />
-          <ListVoucher
-            vouchers={vouchers}
+          <FilterPromotions status={status} setStatus={setStatus} />
+          <ListPromotions
+            promotions={promotions}
             setDeletedID={setDeletedID}
-            handleDelete={handleDelete}
           />
           <Pagination
             totalPage={totalPage}
@@ -81,4 +68,4 @@ const DashboardVoucher:FC<any> = ({ title }) => {
   );
 };
 
-export default DashboardVoucher;
+export default PromotionsDashboard;
