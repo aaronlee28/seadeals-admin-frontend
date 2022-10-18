@@ -9,6 +9,7 @@ import Cities from '../../../api/cities';
 import Modal from '../../../components/Modal/Modal';
 import useCheckLogged from '../../../hooks/useCheckLogged';
 import useAuth from '../../../hooks/useAuth';
+import useLogout from '../../../hooks/useLogout';
 
 const SellerRegister = () => {
   useCheckLogged();
@@ -18,6 +19,7 @@ const SellerRegister = () => {
   const { setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
   const navigate = useNavigate();
+  const logout = useLogout();
 
   const getUserId = () => {
     const token = localStorage.getItem('access_token');
@@ -31,7 +33,7 @@ const SellerRegister = () => {
   const [provinceId, setProvinceId] = useState('');
   const [type, setType] = useState('');
   const [subDistrict, setSubDistrict] = useState('');
-  const [province, setProvince] = useState('');
+  const [province, setProvince] = useState('Pilih provinsi');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [address, setAddress] = useState('');
@@ -61,7 +63,7 @@ const SellerRegister = () => {
         }
         setProvinces(provincesValues);
       })
-      .catch((err) => err);
+      .catch((err) => toast.error(err.response?.data?.message));
   };
 
   const getCities = async () => {
@@ -84,7 +86,7 @@ const SellerRegister = () => {
         }
         setCities(values);
       })
-      .catch((err) => err);
+      .catch((err) => toast.error(err.response?.data?.message));
   };
 
   const getProvinceId = (p:string) => {
@@ -154,7 +156,7 @@ const SellerRegister = () => {
       setShow(false);
       setMainAddress(true);
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message);
       navigate('/user', { replace: true });
     }
   };
@@ -179,7 +181,8 @@ const SellerRegister = () => {
           setMainAddress(true);
         }
       });
-    } catch (err) {
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
       navigate('/seller/register', { replace: true });
     }
   };
@@ -217,7 +220,7 @@ const SellerRegister = () => {
         }
       });
     } catch (err: any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message);
       navigate('/seller/register', { replace: true });
     }
   };
@@ -310,6 +313,7 @@ const SellerRegister = () => {
             </div>
           </div>
           <div className="button-group">
+            <Button buttonType="secondary mx-2" text="Batalkan pendaftaran" handleClickedButton={() => { logout().then(); navigate('/login'); }} />
             {!show && !mainAddress && (
               <Button
                 buttonType="primary alt"

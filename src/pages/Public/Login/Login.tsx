@@ -48,7 +48,7 @@ const Login = () => {
 
       navigate('/seller/register', { replace: true });
     } catch (err:any) {
-      toast.error(err.message);
+      toast.error(err.response?.data?.message);
       navigate('/register', { replace: true, state: err.response.data?.data?.user });
     }
   };
@@ -59,7 +59,7 @@ const Login = () => {
     if (google) {
       // @ts-ignore
       google.accounts.id.initialize({
-        client_id: '751840690856-m92j6st0agj7bgbuv3ok4t5j6sr7e8cm.apps.googleusercontent.com',
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
         callback: handleCallbackResponse,
       });
       // @ts-ignore

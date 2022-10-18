@@ -4,7 +4,7 @@ class VoucherAPI {
   }
 
   static FindVoucherByID(ax:any, id:any = '') {
-    return ax.get(`/vouchers/${id}`);
+    return ax.get(`/vouchers/${id}/detail`);
   }
 
   static DeleteVoucherByID(ax:any, id:any = '') {

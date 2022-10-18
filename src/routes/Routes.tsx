@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ROLES from '../constants/roles';
 import Layout from '../layouts/Layout';
 import SellerLayout from '../layouts/SellerLayout';
@@ -13,12 +13,16 @@ import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
-import Couriers from '../pages/Seller/Couriers/Couriers';
+import Couriers from '../pages/Seller/Register/Couriers/Couriers';
+import PageNotFound from '../pages/PageNotFound';
+import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
+import FormProduct from '../pages/Seller/Product/FormProduct';
 import Orders from '../pages/Seller/Orders/Orders';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Layout />}>
+    <Route path="" element={<Layout />}>
+      <Route path="" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
@@ -38,6 +42,12 @@ const AppRoutes = () => (
             <Route path="order">
               <Route path="" element={<Orders />} />
             </Route>
+            <Route path="product/">
+              <Route path="list" element={<DashboardProduct />} />
+              <Route path="new" element={<FormProduct formType="create" title="Buat Produk" />} />
+              <Route path="show/:productID" element={<FormProduct formType="show" title="Detail Produk" />} />
+              <Route path="update/:productID" element={<FormProduct formType="update" title="Update Produk" />} />
+            </Route>
           </Route>
         </Route>
 
@@ -49,6 +59,7 @@ const AppRoutes = () => (
 
       </Route>
     </Route>
+    <Route path="*" element={<PageNotFound />} />
 
   </Routes>
 );

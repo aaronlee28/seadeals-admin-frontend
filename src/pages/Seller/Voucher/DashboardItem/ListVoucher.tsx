@@ -3,8 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import Formatter from '../../../../utils/formatter';
 import ModalConfirmation from '../../../../components/Modal/ModalConfirmation/ModalConfirmation';
 import Button from '../../../../components/Button/Button';
+import Loading from '../../../../components/Loading/Loading';
 
-const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
+const ListVoucher:FC<any> = ({
+  vouchers, setDeletedID, handleDelete, loading,
+}) => {
   const navigate = useNavigate();
   const [showModalDelete, setShowModalDelete] = useState(false);
 
@@ -33,8 +36,10 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
               <th>Aksi</th>
             </tr>
           </thead>
-          <tbody>
-            {
+          {loading ? <tbody><tr><td colSpan={4}><Loading height={48} /></td></tr></tbody>
+            : (
+              <tbody>
+                {
             vouchers.length === 0
               ? <tr><td colSpan={5}>No vouchers</td></tr>
               : vouchers.map((v:any) => (
@@ -61,16 +66,17 @@ const ListVoucher:FC<any> = ({ vouchers, setDeletedID, handleDelete }) => {
                   </td>
                   <td>
                     <div className="d-flex flex-column align-items-start">
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/show/${v.id}`)} text="Rincian" />
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/update/${v.id}`)} isDisabled={v.status === 'ended'} text="Ubah" />
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => navigate(`/seller/voucher/new?copy=${v.id}`)} text="Duplikat" />
-                      <Button buttonType="plain voucher__action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(v.id); }} isDisabled={v.status !== 'upcoming'} text="Akhiri" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/voucher/show/${v.id}`)} text="Rincian" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/voucher/update/${v.id}`)} isDisabled={v.status === 'ended'} text="Ubah" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => navigate(`/seller/voucher/new?copy=${v.id}`)} text="Duplikat" />
+                      <Button buttonType="plain action-button" handleClickedButton={() => { setShowModalDelete(true); setDeletedID(v.id); }} isDisabled={v.status !== 'upcoming'} text="Akhiri" />
                     </div>
                   </td>
                 </tr>
               ))
           }
-          </tbody>
+              </tbody>
+            )}
         </table>
       </div>
     </div>

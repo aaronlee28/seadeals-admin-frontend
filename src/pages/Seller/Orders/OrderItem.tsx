@@ -34,7 +34,7 @@ const OrderItem:FC<OrderItemProps> = ({ order, couriers }) => (
           </p>
         </div>
         <div className="col-2">
-          <Link to={`seller/order/${order.id}`}>
+          <Link to={`${order.id}`}>
             <p>Lihat Detail</p>
           </Link>
         </div>

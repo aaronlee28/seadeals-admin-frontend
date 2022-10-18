@@ -3,12 +3,15 @@ import React, { useEffect, useState } from 'react';
 import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
+import toast from 'react-hot-toast';
 import axios from '../../../api/axios';
 import logo from '../../../assets/images/logo.png';
 import logo_xs from '../../../assets/images/logo_xs.png';
 import useAuth from '../../../hooks/useAuth';
+import useCheckLogged from '../../../hooks/useCheckLogged';
 
 const Register = () => {
+  useCheckLogged();
   const [revealed, setRevealed] = useState(false);
   const [confirmPasswordVis, setConfirmPasswordVis] = useState(false);
 
@@ -61,7 +64,6 @@ const Register = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || '/';
   const googleUser = location.state;
 
   const handleSubmit = async (e:any) => {
@@ -100,40 +102,18 @@ const Register = () => {
       setBirthDate('');
 
       navigate('/seller/register', { replace: true });
-    } catch (err) {
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
       navigate('/register', { replace: true });
     }
   };
-
-  const [status, setStatus] = useState('');
 
   useEffect(() => {
     if (googleUser) {
       setEmail(googleUser.email);
       setFullName(googleUser.name);
     }
-
-    const token:any = localStorage.getItem('access_token');
-    if (token !== null) {
-      const dateNow = new Date();
-      // @ts-ignore
-      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
-        setStatus('expired');
-        return;
-      }
-      setStatus('signed');
-      return;
-    }
-    setStatus('unsigned');
   }, []);
-
-  useEffect(() => {
-    if (status === 'signed') {
-      if (from === '/login' || from === '/register' || from === '/') {
-        navigate('/', { replace: true });
-      }
-    }
-  }, [status]);
 
   return (
     <div className="register_container">
