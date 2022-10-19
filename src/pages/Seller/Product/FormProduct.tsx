@@ -1,22 +1,28 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import VoucherConstant from '../../../constants/voucher';
 import Button from '../../../components/Button/Button';
 import ProductMainInfo from './FormItem/ProductMainInfo';
 import ProductVariantInfo from './FormItem/ProductVariantInfo';
 import ProductOtherInfo from './FormItem/ProductOtherInfo';
+import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+
+const CREATE_PRODUCT_URL = 'sellers/create-product';
 
 const FormProduct:FC<any> = ({
   title, formType,
 }) => {
   const navigate = useNavigate();
-  // const axiosPrivate = useAxiosPrivate();
+  const axiosPrivate = useAxiosPrivate();
 
   const [product, setProduct] = useState({
     name: '',
+    description: '',
+    category_id: 0,
     is_bulk_enabled: false,
-    min_quantity: 0,
-    max_quantity: 0,
+    min_quantity: '',
+    max_quantity: '',
     video_url: '',
     is_hazardous: false,
     condition_status: '',
@@ -41,11 +47,45 @@ const FormProduct:FC<any> = ({
     });
   };
 
-  const handleUpdate = () => {
-    console.log('ko');
+  const setCategoryID = (categoryID:any) => {
+    setProduct({
+      ...product,
+      category_id: categoryID,
+    });
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
+    try {
+      const response = await axiosPrivate.post(
+        CREATE_PRODUCT_URL,
+        JSON.stringify({
+          name: product.name,
+          category_id: product.category_id,
+          is_bulk_enabled: false,
+          min_quantity: Number(product.min_quantity),
+          max_quantity: Number(product.max_quantity),
+          product_detail_req: {
+            description: product.description,
+            video_url: product.video_url,
+            is_hazardous: product.is_hazardous,
+            condition_status: product.condition_status,
+            weight: Number(product.weight),
+            length: Number(product.length),
+            width: Number(product.width),
+            height: Number(product.height),
+          },
+        }),
+      );
+      if (response.status === 200) {
+        toast.success('produk baru berhasil dibuat');
+      }
+      navigate('/seller/product/list');
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
+    }
+  };
+
+  const handleUpdate = () => {
     console.log('ko');
   };
 
@@ -54,7 +94,12 @@ const FormProduct:FC<any> = ({
       <h3 className="mb-4 mt-2">{title}</h3>
       <div className="product-form__content">
         <form onSubmit={(e) => e.preventDefault()}>
-          <ProductMainInfo product={product} formType={formType} handleOnChange={handleOnChange} />
+          <ProductMainInfo
+            product={product}
+            formType={formType}
+            handleOnChange={handleOnChange}
+            setCategoryID={setCategoryID}
+          />
           <ProductVariantInfo
             product={product}
             formType={formType}
