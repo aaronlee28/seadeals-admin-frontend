@@ -26,7 +26,7 @@ const ListPromotions:FC<any> = ({ promotions }) => {
           <tbody>
             {
             promotions.length === 0
-              ? <tr><td colSpan={7} className="text-center">Tidak ada promosi</td></tr>
+              ? <tr><td colSpan={7} className="text-center">Tidak ada promosi!</td></tr>
               : promotions.map((promotion:any) => (
                 <tr key={promotion.id}>
                   <td>

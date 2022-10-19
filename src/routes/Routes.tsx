@@ -18,6 +18,7 @@ import PageNotFound from '../pages/PageNotFound';
 import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
 import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
+import PromotionForm from '../pages/Seller/Promotion/PromotionForm';
 
 const AppRoutes = () => (
   <Routes>
@@ -41,6 +42,7 @@ const AppRoutes = () => (
             </Route>
             <Route path="promotions/">
               <Route path="list" element={<PromotionsDashboard title="Promosi Toko" />} />
+              <Route path="new" element={<PromotionForm formType="create" title="Buat Promosi Toko" />} />
             </Route>
             <Route path="product/">
               <Route path="list" element={<DashboardProduct />} />
