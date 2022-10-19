@@ -1,13 +1,20 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import VoucherConstant from '../../../../constants/voucher';
 import Modal from '../../../../components/Modal/Modal';
 import CategoryInput from './CategoryInput';
 
-const ProductMainInfo:FC<any> = ({ product, formType, handleOnChange }) => {
+const ProductMainInfo:FC<any> = ({
+  product, formType, handleOnChange, setCategoryID,
+}) => {
   const [category, setCategory] = useState({
+    id: 0,
     name: '',
   });
   const [showCategoryModal, setShowCategoryModal] = useState(false);
+
+  useEffect(() => {
+    setCategoryID(category.id);
+  }, [category]);
 
   return (
     <div className="my-4">
