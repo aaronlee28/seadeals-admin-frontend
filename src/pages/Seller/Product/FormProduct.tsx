@@ -30,9 +30,14 @@ const FormProduct:FC<any> = ({
   });
 
   const handleOnChange = (e: any) => {
+    let isBool = false;
+    if (e.target.name === 'is_hazardous') {
+      isBool = true;
+    }
+
     setProduct({
       ...product,
-      [e.target.name]: e.target.value,
+      [e.target.name]: isBool ? Boolean(e.target.value) : e.target.value,
     });
   };
 
