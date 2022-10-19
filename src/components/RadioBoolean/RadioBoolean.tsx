@@ -13,7 +13,7 @@ const RadioBoolean:FC<any> = ({
         value="true"
         checked={data}
       />
-      <label htmlFor="hazardous" className="mx-1">Ya</label>
+      <label className="mx-1">Ya</label>
       <br />
     </div>
     <div>
@@ -26,7 +26,7 @@ const RadioBoolean:FC<any> = ({
         disabled={formType === VoucherConstant.SHOW}
         checked={!data}
       />
-      <label htmlFor="not_hazardous" className="mx-1">Tidak</label>
+      <label className="mx-1">Tidak</label>
       <br />
     </div>
   </div>

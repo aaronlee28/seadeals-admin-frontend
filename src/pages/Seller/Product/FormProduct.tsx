@@ -32,6 +32,8 @@ const FormProduct:FC<any> = ({
     weight: '',
     default_price: 0,
     default_stock: 0,
+    variant_1_name: '',
+    variant_2_name: '',
     product_photos: [],
   });
 
