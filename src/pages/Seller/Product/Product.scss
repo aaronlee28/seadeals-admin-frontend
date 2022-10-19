@@ -96,6 +96,41 @@
     margin: 0 auto;
     padding: 5%;
     border-radius: 8px;
+    .product-form__add-image{
+      display: none;
+    }
+    .product-form__image{
+      width: 100px;
+      height: 100px;
+      padding: 0;
+      margin-right: 1rem;
+      object-fit: fill;
+    }
+    .product-form__image{
+      width: 100px;
+      height: 100px;
+    }
+    .product-form__image__filter{
+      height: 100px;
+      width: 100px;
+      position: absolute;
+      text-align: center;
+      color: white;
+      opacity: 0;
+    }
+    .product-form__image__filter>div{
+      margin: auto 0;
+    }
+    .product-form__image__filter:hover {
+      opacity: 1;
+      z-index: 4;
+      background-color: rgba(0, 0, 0, 0.50);
+    }
+    .product-form__add-image-button{
+      width: 100px;
+      height: 100px;
+      border: 1px dot-dash #2658CD;
+    }
   }
 
   .product-form__category{
