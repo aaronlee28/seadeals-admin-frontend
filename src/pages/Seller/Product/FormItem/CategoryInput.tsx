@@ -31,9 +31,9 @@ const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
       setCategories3rd([]);
     }
     setCategory(defaultCat);
-    if (cat.children.length !== 0 && depth === 1) {
+    if (cat.children?.length !== 0 && depth === 1) {
       setCategories2nd(cat.children);
-    } else if (cat.children.length !== 0 && depth === 2) {
+    } else if (cat.children?.length !== 0 && depth === 2) {
       setCategories3rd(cat.children);
     } else {
       setCategory(cat);
@@ -56,9 +56,9 @@ const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
       <div className="category__container">
         <div className="category__scroll">
           {categories.map((item:any) => (
-            <div className="category__item" role="presentation" onClick={() => handleChooseCategory(item, 1)}>
+            <div className="category__item" key={item.id} role="presentation" onClick={() => handleChooseCategory(item, 1)}>
               <Button buttonType="plain category__item-button cat1" text={item.name} handleClickedButton={() => handleChooseCategory(item, 1)} />
-              {item.children.length !== 0 && React.createElement(IconChevron, { className: 'category__chevron-icon' })}
+              {item?.children?.length !== 0 && React.createElement(IconChevron, { className: 'category__chevron-icon' })}
             </div>
           ))}
         </div>
@@ -67,9 +67,9 @@ const CategoryInput:FC<any> = ({ handleClose, setCatData }) => {
           && (
           <div className="category__scroll">
             {categories2nd.map((item:any) => (
-              <div className="category__item">
+              <div className="category__item" key={item.id}>
                 <Button buttonType="plain category__item-button cat2" text={item.name} handleClickedButton={() => handleChooseCategory(item, 2)} />
-                {item.children.length !== 0 && React.createElement(IconChevron, { className: 'category__chevron-icon' })}
+                {item?.children?.length !== 0 && React.createElement(IconChevron, { className: 'category__chevron-icon' })}
               </div>
             ))}
           </div>
