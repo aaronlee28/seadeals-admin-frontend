@@ -1,12 +1,37 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import VoucherConstant from '../../../../constants/voucher';
 import RadioBoolean from '../../../../components/RadioBoolean/RadioBoolean';
 import Button from '../../../../components/Button/Button';
+
+interface DataVariant {
+  variant_1_value?: string,
+  variant_2_value?: string,
+  price?: number,
+  stock?: number,
+  code?: string,
+}
 
 const ProductVariantInfo:FC<any> = ({ product, formType, handleOnChange }) => {
   const [showVariantTable, setShowVariantTable] = useState(false);
   const [var1Length, setVar1Length] = useState(1);
   const [var2Length, setVar2Length] = useState(1);
+  const [dataVariants, setDataVariants] = useState<DataVariant[]>([]);
+
+  const rowVariant:FC<DataVariant> = (data) => (
+    <tr>
+      <td><input value={data.variant_1_value} /></td>
+      <td><input value={data.variant_2_value} /></td>
+      <td><input value={data.price} /></td>
+      <td><input value={data.stock} /></td>
+      <td><input value={data.code} /></td>
+      <td>X</td>
+    </tr>
+  );
+  console.log(setDataVariants);
+
+  useEffect(() => {
+    setDataVariants([...dataVariants]);
+  }, []);
 
   return (
     <div className="my-4">
@@ -130,7 +155,7 @@ const ProductVariantInfo:FC<any> = ({ product, formType, handleOnChange }) => {
                   <Button
                     buttonType="primary alt"
                     handleClickedButton={() => setVar1Length(var1Length + 1)}
-                    text="+"
+                    text="Tambah varian 1"
                   />
                   )}
                 </div>
@@ -155,7 +180,7 @@ const ProductVariantInfo:FC<any> = ({ product, formType, handleOnChange }) => {
                   <Button
                     buttonType="primary alt"
                     handleClickedButton={() => setVar2Length(var2Length + 1)}
-                    text="+"
+                    text="Tambah varian 2"
                   />
                   )}
                 </div>
@@ -164,18 +189,21 @@ const ProductVariantInfo:FC<any> = ({ product, formType, handleOnChange }) => {
             )}
             <div className="row my-3">
               <label className="col-3 text-end align-self-center">Daftar Variasi</label>
-              <div className="col-9">
-                <table>
+              <div className="col-9 p-0 table-responsive">
+                <table className="table border table-hover">
                   <thead>
-                    <tr>
-                      <th>Variasi</th>
-                      <th>Variasi</th>
-                      <th>Harga</th>
-                      <th>Stok</th>
-                      <th>Kode Variasi</th>
+                    <tr className="table-secondary">
+                      <th className="text-start">{product.variant_1_name || 'Variasi'}</th>
+                      <th className="text-start">{product.variant_2_name || 'Variasi 2'}</th>
+                      <th className="text-start">Harga</th>
+                      <th className="text-start">Stok</th>
+                      <th className="text-start">Kode Variasi</th>
+                      <th className="text-start">Hapus</th>
                     </tr>
                   </thead>
-                  <tbody />
+                  <tbody>
+                    {dataVariants.map((item:any) => rowVariant(item))}
+                  </tbody>
                 </table>
               </div>
             </div>
