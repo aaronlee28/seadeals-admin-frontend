@@ -12,12 +12,12 @@ const OrderItem:FC<OrderItemProps> = ({ order, couriers }) => (
   <div className="container text-start mb-3">
     <div className="rounded-top border border-bottom-0 p-2 px-4 bg-light d-flex justify-content-between">
       <small>{order.user_id}</small>
-      <small>{`No.Pesanan ${order.id}`}</small>
+      <small>{`No. Pesanan ${order.id}`}</small>
     </div>
     <div className="rounded-bottom border p-4 pb-2">
       <div className="row mb-2">
         <div className="col-6 row">
-          {order.order_items.map((orderItem:any) => (
+          {order?.order_items?.map((orderItem:any) => (
             <OrderItemProduct
               key={orderItem.id}
               product={orderItem}

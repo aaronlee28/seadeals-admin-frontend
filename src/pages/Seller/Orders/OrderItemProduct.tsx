@@ -10,11 +10,10 @@ const OrderItemProduct:FC<ProductProps> = ({ product }) => {
     console.log(product);
   }, []);
   const {
-    product_variant_detail: productVariant,
+    product_detail: productVariant,
     quantity,
     subtotal,
   } = product;
-  const productDetail = productVariant?.product;
 
   return (
     <>
@@ -23,7 +22,7 @@ const OrderItemProduct:FC<ProductProps> = ({ product }) => {
           <div className="order_item_image">
             <img src="https://loremflickr.com/56/56" alt="produk name" />
           </div>
-          <small className="fw-bold">{productDetail?.name}</small>
+          <small className="fw-bold">{productVariant?.name}</small>
         </div>
         <p>{`x${quantity}`}</p>
       </div>
