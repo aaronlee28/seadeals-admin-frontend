@@ -16,6 +16,8 @@ const FormProduct:FC<any> = ({
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
 
+  const [dataVariants, setDataVariants] = useState<any>({});
+  const [productPhoto, setProductPhoto] = useState<any[]>([]);
   const [product, setProduct] = useState({
     name: '',
     description: '',
@@ -58,29 +60,31 @@ const FormProduct:FC<any> = ({
 
   const handleSubmit = async () => {
     try {
+      const body = {
+        name: product.name,
+        category_id: product.category_id,
+        is_bulk_enabled: false,
+        min_quantity: Number(product.min_quantity),
+        max_quantity: Number(product.max_quantity),
+        variant_1_name: product.variant_1_name,
+        variant_2_name: product.variant_2_name,
+        default_price: Number(product.default_price) || 99,
+        default_stock: Number(product.default_stock) || 1,
+        product_detail_req: {
+          description: product.description,
+          video_url: product.video_url,
+          is_hazardous: product.is_hazardous,
+          condition_status: product.condition_status,
+          weight: Number(product.weight),
+          length: Number(product.length),
+          width: Number(product.width),
+          height: Number(product.height),
+        },
+      };
+      console.log(body);
       const response = await axiosPrivate.post(
         CREATE_PRODUCT_URL,
-        JSON.stringify({
-          name: product.name,
-          category_id: product.category_id,
-          is_bulk_enabled: false,
-          min_quantity: Number(product.min_quantity),
-          max_quantity: Number(product.max_quantity),
-          variant_1_name: product.variant_1_name,
-          variant_2_name: product.variant_2_name,
-          default_price: product.default_price || 99,
-          default_stock: product.default_stock || 1,
-          product_detail_req: {
-            description: product.description,
-            video_url: product.video_url,
-            is_hazardous: product.is_hazardous,
-            condition_status: product.condition_status,
-            weight: Number(product.weight),
-            length: Number(product.length),
-            width: Number(product.width),
-            height: Number(product.height),
-          },
-        }),
+        JSON.stringify(body),
       );
       if (response.status === 200) {
         toast.success('produk baru berhasil dibuat');
@@ -105,12 +109,16 @@ const FormProduct:FC<any> = ({
             formType={formType}
             handleOnChange={handleOnChange}
             setCategoryID={setCategoryID}
+            productPhoto={productPhoto}
+            setProductPhoto={setProductPhoto}
           />
           <ProductVariantInfo
             product={product}
             formType={formType}
             handleOnChange={handleOnChange}
             setProduct={setProduct}
+            dataVariants={dataVariants}
+            setDataVariants={setDataVariants}
           />
           <ProductOtherInfo product={product} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">

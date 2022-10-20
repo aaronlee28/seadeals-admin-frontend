@@ -7,7 +7,7 @@ import Modal from '../../../../components/Modal/Modal';
 import CategoryInput from './CategoryInput';
 
 const ProductMainInfo:FC<any> = ({
-  product, formType, handleOnChange, setCategoryID,
+  product, formType, handleOnChange, setCategoryID, productPhoto, setProductPhoto,
 }) => {
   const imageInputRef = useRef<any>();
   const [category, setCategory] = useState({
@@ -15,7 +15,6 @@ const ProductMainInfo:FC<any> = ({
     name: '',
   });
   const [showCategoryModal, setShowCategoryModal] = useState(false);
-  const [productPhoto, setProductPhoto] = useState<string[]>([]);
 
   useEffect(() => {
     setCategoryID(category.id);
@@ -42,7 +41,7 @@ const ProductMainInfo:FC<any> = ({
 
   const onDeleteClick = (idx:number) => (e:any) => {
     e.preventDefault();
-    setProductPhoto(productPhoto.filter((el, i) => (i !== idx)));
+    setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
   };
 
   return (
@@ -63,7 +62,7 @@ const ProductMainInfo:FC<any> = ({
         <label className="col-3 text-end align-self-center" htmlFor="photo">Foto Produk</label>
         <div className="col-9 p-0 d-flex justify-content-start">
           {productPhoto.map(
-            (el, i) => (
+            (el:any, i:any) => (
               <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
                 <div className="d-flex flex-column justify-content-center product-form__image__filter">
                   <div>
@@ -112,7 +111,7 @@ const ProductMainInfo:FC<any> = ({
       <div className="row my-3">
         <label className="col-3 text-end align-self-center">Kategori</label>
         <div className="col-9 product-form__category" role="presentation" onClick={() => setShowCategoryModal(true)}>
-          <span>{category.name || 'Pilih kategori'}</span>
+          <input value={category.name} placeholder="Pilih Kategori" required readOnly />
         </div>
       </div>
       <div className="row my-3">

@@ -1,61 +1,42 @@
 import React, {
-  FC, useEffect, useRef, useState,
+  FC, useRef, useState,
 } from 'react';
 import VoucherConstant from '../../../../constants/voucher';
 import RadioBoolean from '../../../../components/RadioBoolean/RadioBoolean';
 import Button from '../../../../components/Button/Button';
 import { ReactComponent as IconClose } from '../../../../assets/svg/icon_close.svg';
 
-interface DataVariant {
-  variant1: string,
-  variant2: string,
-  price?: number,
-  stock?: number,
-  code?: string,
-}
-
 const ProductVariantInfo:FC<any> = ({
-  product, formType, handleOnChange, setProduct,
+  product, formType, handleOnChange, setProduct, dataVariants, setDataVariants,
 }) => {
   const [showVariantTable, setShowVariantTable] = useState(false);
-  const [dataVariants, setDataVariants] = useState<any>({});
   const [variant1, setVariant1] = useState<any>([]);
   const [variant2, setVariant2] = useState<any>([]);
 
   const inputVariant1Ref = useRef(null);
   const inputVariant2Ref = useRef(null);
 
-  const rowVariant:FC<DataVariant> = (data) => (
-    <tr>
-      <td>{data.variant1}</td>
-      {product.variant_2_name && <td>{data.variant2}</td>}
-      <td><input value={data.price} /></td>
-      <td><input value={data.stock} /></td>
-      <td><input value={data.code} /></td>
-    </tr>
-  );
-
-  const removeVariantByIdx = (index:number) => {
-    setVariant1(variant1.filter((_:any, id:number) => id !== index));
+  const removeVariantByIdx = (varNum1:boolean, index:number) => {
+    if (varNum1) {
+      setVariant1(variant1.filter((_:any, id:number) => id !== index));
+    } else {
+      setVariant2(variant2.filter((_:any, id:number) => id !== index));
+    }
   };
 
   const handleChangeByName = (name:string, value:any) => {
-    setProduct({ ...product, [name]: value });
+    setProduct((data:any) => ({ ...data, [name]: value }));
   };
 
-  useEffect(() => {
-    const tmp = dataVariants;
-    variant1.forEach((item:any) => variant2.forEach((item2:any) => {
-      tmp[item + item2] = tmp[item + item2]
-        ? tmp[item + item2]
-        : { variant1: item, variant2: item2 };
-    }));
-    setDataVariants(
-      tmp,
-    );
-  }, [variant1, variant2]);
+  const handleChangeDataVariant = (e:any) => {
+    const { name } = e.target;
+    const [prop, uniqueID] = name.split('_');
+    const variantCode = uniqueID.split('-');
+    const tmp = dataVariants[uniqueID] || { variant1: variantCode[0], variant2: product.variant_2_name === '' ? '' : variantCode[1] };
+    tmp[prop] = e.target.value;
+    setDataVariants({ ...dataVariants, [uniqueID]: tmp });
+  };
 
-  console.log(dataVariants);
   return (
     <div className="my-4">
       <h5 className="text-start"><b>Informasi Penjualan</b></h5>
@@ -71,7 +52,6 @@ const ProductVariantInfo:FC<any> = ({
                   placeholder="Masukkan angka"
                   type="number"
                   onChange={handleOnChange}
-                  required
                   value={product.min_quantity}
                   min={1}
                   max={10000}
@@ -91,7 +71,6 @@ const ProductVariantInfo:FC<any> = ({
                   placeholder="Masukkan angka"
                   type="number"
                   onChange={handleOnChange}
-                  required
                   value={product.max_quantity}
                   min={1}
                   max={10000}
@@ -182,7 +161,16 @@ const ProductVariantInfo:FC<any> = ({
                       handleClickedButton={() => { setVariant1([...variant1, '']); }}
                       text="Tambah varian 1"
                     />
-                    {React.createElement(IconClose, { className: 'icon-remove', onClick: () => { setVariant1([]); handleChangeByName('variant_1_name', ''); } })}
+                    {React.createElement(IconClose, {
+                      className: 'icon-remove',
+                      onClick: () => {
+                        setVariant1([]);
+                        setVariant2([]);
+                        handleChangeByName('variant_1_name', '');
+                        handleChangeByName('variant_2_name', '');
+                        setDataVariants([]);
+                      },
+                    })}
                   </>
                   )}
                 </div>
@@ -200,12 +188,19 @@ const ProductVariantInfo:FC<any> = ({
                             const variant1Tmp = [...variant1];
                             variant1Tmp[index] = e.target.value;
                             setVariant1(variant1Tmp);
+                            setDataVariants([]);
                           }}
                           value={item}
                           readOnly={formType === VoucherConstant.SHOW}
                           disabled={formType === VoucherConstant.SHOW}
                         />
-                        {React.createElement(IconClose, { className: 'icon-remove small', onClick: () => removeVariantByIdx(index) })}
+                        {React.createElement(IconClose, {
+                          className: 'icon-remove small',
+                          onClick: () => {
+                            removeVariantByIdx(true, index);
+                            setDataVariants([]);
+                          },
+                        })}
                       </div>
                     </div>
                   ))}
@@ -235,7 +230,14 @@ const ProductVariantInfo:FC<any> = ({
                         handleClickedButton={() => { setVariant2([...variant2, '']); }}
                         text="Tambah varian 2"
                       />
-                      {React.createElement(IconClose, { className: 'icon-remove', onClick: () => { setVariant2([]); handleChangeByName('variant_2_name', ''); } })}
+                      {React.createElement(IconClose, {
+                        className: 'icon-remove',
+                        onClick: () => {
+                          setVariant2([]);
+                          handleChangeByName('variant_2_name', '');
+                          setDataVariants([]);
+                        },
+                      })}
                     </>
                   )}
                 </div>
@@ -253,12 +255,19 @@ const ProductVariantInfo:FC<any> = ({
                             const variant2Tmp = [...variant2];
                             variant2Tmp[index] = e.target.value;
                             setVariant2(variant2Tmp);
+                            setDataVariants([]);
                           }}
                           value={item}
                           readOnly={formType === VoucherConstant.SHOW}
                           disabled={formType === VoucherConstant.SHOW}
                         />
-                        {React.createElement(IconClose, { className: 'icon-remove small', onClick: () => removeVariantByIdx(index) })}
+                        {React.createElement(IconClose, {
+                          className: 'icon-remove small',
+                          onClick: () => {
+                            removeVariantByIdx(false, index);
+                            setDataVariants([]);
+                          },
+                        })}
                       </div>
                     </div>
                   ))}
@@ -273,14 +282,163 @@ const ProductVariantInfo:FC<any> = ({
                   <thead>
                     <tr className="table-secondary">
                       <th className="text-start">{product.variant_1_name || 'Variasi'}</th>
-                      {product.variant_2_name && <th className="text-start">{product.variant_2_name || 'Variasi 2'}</th>}
-                      <th className="text-start">Harga</th>
-                      <th className="text-start">Stok</th>
-                      <th className="text-start">Kode Variasi</th>
+                      {
+                        product.variant_2_name
+                          ? (
+                            <th className="d-flex gap-3">
+                              <div className="variant2">{product.variant_2_name || 'Variasi 2'}</div>
+                              <div className="d-flex justify-content-around w-100">
+                                <div className="">Harga</div>
+                                <div className="">Stok</div>
+                                <div className="">Kode Variasi</div>
+                              </div>
+                            </th>
+                          )
+                          : (
+                            <th className="gap-3 cell-standard">
+                              <div className="cell-standard__content">Harga</div>
+                              <div className="cell-standard__content">Stok</div>
+                              <div className="cell-standard__content">Kode Variasi</div>
+                            </th>
+                          )
+                      }
                     </tr>
                   </thead>
                   <tbody>
-                    {Object.keys(dataVariants).map((item:any) => rowVariant(item))}
+                    {
+                      variant1.map((item:any, index:string) => (
+                        <tr className="cell-content__row" key={`${item}${index + 1}`}>
+                          <td className="border pt-4">{item}</td>
+                          { product.variant_2_name !== '' ? (
+                            <>
+                              {
+                            variant2.map((item2: any, index2: string) => (
+                              <tr key={`${item2}${index + 1}`}>
+                                {
+                                  product.variant_2_name
+                                  && (
+                                    <td className="variant2 pt-4 px-4">
+                                      {item2}
+                                      {() => setDataVariants({ ...dataVariants, [index + index2]: '' })}
+                                    </td>
+                                  )
+                                }
+                                <td className="py-3">
+                                  <div className="gap-3 cell-standard">
+                                    <div>
+                                      <div className="input-group prefix">
+                                        <span className="input-group-addon">Rp</span>
+                                        <input
+                                          name={`price_${item}-${item2}-${index}-${index2}`}
+                                          className="form__input"
+                                          placeholder="Masukkan angka"
+                                          type="number"
+                                          required
+                                          min={99}
+                                          value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.price}
+                                          onChange={handleChangeDataVariant}
+                                          readOnly={formType === VoucherConstant.SHOW}
+                                          disabled={formType === VoucherConstant.SHOW}
+                                        />
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <div>
+                                        <div className="input-group suffix">
+                                          <input
+                                            name={`stock_${item}-${item2}-${index}-${index2}`}
+                                            className="form__input"
+                                            placeholder="Masukkan angka"
+                                            type="number"
+                                            required
+                                            onChange={handleChangeDataVariant}
+                                            min={1}
+                                            value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.stock}
+                                            readOnly={formType === VoucherConstant.SHOW}
+                                            disabled={formType === VoucherConstant.SHOW}
+                                          />
+                                          <span className="input-group-addon">pcs</span>
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div>
+                                      <input
+                                        name={`code_${item}-${item2}-${index}-${index2}`}
+                                        className="form__input"
+                                        placeholder="Masukkan kode"
+                                        type="text"
+                                        required
+                                        value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.code}
+                                        onChange={handleChangeDataVariant}
+                                        readOnly={formType === VoucherConstant.SHOW}
+                                        disabled={formType === VoucherConstant.SHOW}
+                                      />
+                                    </div>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))
+                          }
+                            </>
+                          )
+                            : (
+                              <td>
+                                <div className="gap-3 cell-standard">
+                                  <div>
+                                    <div className="input-group prefix">
+                                      <span className="input-group-addon">Rp</span>
+                                      <input
+                                        name={`price_${item}-${index}`}
+                                        className="form__input"
+                                        placeholder="Masukkan angka"
+                                        type="number"
+                                        min={99}
+                                        required
+                                        value={dataVariants[`${item}-${index}`]?.price}
+                                        onChange={handleChangeDataVariant}
+                                        readOnly={formType === VoucherConstant.SHOW}
+                                        disabled={formType === VoucherConstant.SHOW}
+                                      />
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <div>
+                                      <div className="input-group suffix">
+                                        <input
+                                          name={`stock_${item}-${index}`}
+                                          className="form__input"
+                                          placeholder="Masukkan angka"
+                                          type="number"
+                                          required
+                                          min={1}
+                                          value={dataVariants[`${item}-${index}`]?.stock}
+                                          onChange={handleChangeDataVariant}
+                                          readOnly={formType === VoucherConstant.SHOW}
+                                          disabled={formType === VoucherConstant.SHOW}
+                                        />
+                                        <span className="input-group-addon">pcs</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div>
+                                    <input
+                                      name={`code_${item}-${index}`}
+                                      className="form__input"
+                                      placeholder="Masukkan kode"
+                                      type="text"
+                                      required
+                                      value={dataVariants[`${item}-${index}`]?.code}
+                                      onChange={handleChangeDataVariant}
+                                      readOnly={formType === VoucherConstant.SHOW}
+                                      disabled={formType === VoucherConstant.SHOW}
+                                    />
+                                  </div>
+                                </div>
+                              </td>
+                            )}
+                        </tr>
+                      ))
+}
                   </tbody>
                 </table>
               </div>
