@@ -110,6 +110,7 @@ const FormProduct:FC<any> = ({
             product={product}
             formType={formType}
             handleOnChange={handleOnChange}
+            setProduct={setProduct}
           />
           <ProductOtherInfo product={product} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
