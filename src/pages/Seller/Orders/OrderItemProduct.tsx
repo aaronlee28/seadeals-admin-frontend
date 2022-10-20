@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
 import Formatter from '../../../utils/formatter';
 
 interface ProductProps {
@@ -6,12 +6,15 @@ interface ProductProps {
 }
 
 const OrderItemProduct:FC<ProductProps> = ({ product }) => {
+  useEffect(() => {
+    console.log(product);
+  }, []);
   const {
     product_variant_detail: productVariant,
     quantity,
     subtotal,
   } = product;
-  const { product: productDetail } = productVariant;
+  const productDetail = productVariant?.product;
 
   return (
     <>
@@ -20,7 +23,7 @@ const OrderItemProduct:FC<ProductProps> = ({ product }) => {
           <div className="order_item_image">
             <img src="https://loremflickr.com/56/56" alt="produk name" />
           </div>
-          <small className="fw-bold">{productDetail.name}</small>
+          <small className="fw-bold">{productDetail?.name}</small>
         </div>
         <p>{`x${quantity}`}</p>
       </div>

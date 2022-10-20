@@ -1,5 +1,8 @@
 const DisplayDatetime = (time: string) => {
   const { length } = time;
+  if (length === 27) {
+    return time.replace('T', ' ').substring(0, length - 11);
+  }
   return time.replace('T', ' ').substring(0, length - 4);
 };
 

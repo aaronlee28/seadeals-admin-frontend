@@ -17,6 +17,7 @@ import Couriers from '../pages/Seller/Register/Couriers/Couriers';
 import PageNotFound from '../pages/PageNotFound';
 import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
+import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
 import Orders from '../pages/Seller/Orders/Orders';
 
 const AppRoutes = () => (
@@ -41,6 +42,9 @@ const AppRoutes = () => (
             </Route>
             <Route path="order">
               <Route path="" element={<Orders />} />
+            </Route>
+            <Route path="promotions/">
+              <Route path="list" element={<PromotionsDashboard title="Promosi Toko" />} />
             </Route>
             <Route path="product/">
               <Route path="list" element={<DashboardProduct />} />

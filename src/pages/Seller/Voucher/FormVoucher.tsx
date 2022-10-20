@@ -106,9 +106,9 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
   };
 
   return (
-    <div className="voucher__container">
+    <div className="promotions-dashboard_container">
       <h3 className="mb-4 mt-2">{title}</h3>
-      <div className="voucher__content">
+      <div className="promotion_content">
         <form onSubmit={(e) => e.preventDefault()}>
           <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />

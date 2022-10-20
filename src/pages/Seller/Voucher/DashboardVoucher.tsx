@@ -9,6 +9,7 @@ import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Pagination from '../../../components/Pagination/Pagination';
 import FilterVoucher from './DashboardItem/FilterVoucher';
+import './Voucher.scss';
 
 const DashboardVoucher:FC<any> = ({ title }) => {
   const navigate = useNavigate();

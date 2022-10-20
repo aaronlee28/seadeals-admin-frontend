@@ -32,7 +32,7 @@ const Sidebar:FC<any> = ({ data }) => {
           </div>
           {
             data.map((item:any) => (
-              <SubMenu item={item} key={item.id} />
+              <SubMenu item={item} key={item.id} onChange={toggleNav} />
             ))
           }
         </div>
