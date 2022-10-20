@@ -61,36 +61,38 @@ const ProductMainInfo:FC<any> = ({
       <h5 className="text-start"><b>Informasi Dasar</b></h5>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="photo">Foto Produk</label>
-        {productPhoto.map(
-          (el, i) => (
-            <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
-              <div className="d-flex flex-column justify-content-center product-form__image__filter">
-                <div>
-                  X
+        <div className="col-9 p-0 d-flex justify-content-start">
+          {productPhoto.map(
+            (el, i) => (
+              <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
+                <div className="d-flex flex-column justify-content-center product-form__image__filter">
+                  <div>
+                    X
+                  </div>
                 </div>
+                <img className="img-fit product-form__image" alt={i.toString()} src={el} />
+              </button>
+            ),
+          )}
+          {productPhoto.length < 5 && (
+            <button className="product-form__add-image-button" type="button" onClick={() => { imageInputRef.current.click(); }}>
+              <div>
+                +
               </div>
-              <img className="img-fit product-form__image" alt={i.toString()} src={el} />
             </button>
-          ),
-        )}
-        {productPhoto.length < 5 && (
-          <button className="product-form__add-image-button" type="button" onClick={() => { imageInputRef.current.click(); }}>
-            <div>
-              +
-            </div>
-          </button>
-        )}
-        <input
-          name="image"
-          className="col-9 border rounded p-2 product-form__add-image"
-          type="file"
-          required
-          value={product.product_photos[0]}
-          readOnly={formType === VoucherConstant.SHOW}
-          disabled={formType === VoucherConstant.SHOW}
-          onInput={handleImageChange}
-          ref={imageInputRef}
-        />
+          )}
+          <input
+            name="image"
+            className="col-9 border rounded p-2 product-form__add-image"
+            type="file"
+            required
+            value={product.product_photos[0]}
+            readOnly={formType === VoucherConstant.SHOW}
+            disabled={formType === VoucherConstant.SHOW}
+            onInput={handleImageChange}
+            ref={imageInputRef}
+          />
+        </div>
       </div>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="name">Nama Produk</label>
