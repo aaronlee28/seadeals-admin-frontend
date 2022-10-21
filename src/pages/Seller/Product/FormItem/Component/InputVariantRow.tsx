@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
-import VoucherConstant from '../../../../../constants/voucher';
 
 const InputVariantRow:FC<any> = ({
-  item, item2, index, index2, handleChangeDataVariant, formType,
+  item, item2, index, index2, handleChangeDataVariant,
 }) => {
   const uniqueID = index2 && item2 ? `${item}-${item2}-${index}-${index2}` : `${item}-${index}`;
   return (
@@ -18,8 +17,6 @@ const InputVariantRow:FC<any> = ({
             required
             min={99}
             onChange={handleChangeDataVariant}
-            readOnly={formType === VoucherConstant.SHOW}
-            disabled={formType === VoucherConstant.SHOW}
           />
         </div>
       </div>
@@ -34,8 +31,6 @@ const InputVariantRow:FC<any> = ({
               required
               onChange={handleChangeDataVariant}
               min={1}
-              readOnly={formType === VoucherConstant.SHOW}
-              disabled={formType === VoucherConstant.SHOW}
             />
             <span className="input-group-addon">pcs</span>
           </div>
@@ -44,13 +39,11 @@ const InputVariantRow:FC<any> = ({
       <div>
         <input
           name={`variant_code__${uniqueID}`}
-          className="form__input"
+          className="form__input rounded"
           placeholder="Masukkan kode"
           type="text"
           required
           onChange={handleChangeDataVariant}
-          readOnly={formType === VoucherConstant.SHOW}
-          disabled={formType === VoucherConstant.SHOW}
         />
       </div>
     </div>

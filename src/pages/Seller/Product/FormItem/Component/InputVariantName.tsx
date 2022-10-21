@@ -18,6 +18,7 @@ const InputVariantName:FC<any> = ({
         setVariant(variant1Tmp);
         setDataVariants([]);
       }}
+      required
       readOnly={formType === VoucherConstant.SHOW}
       disabled={formType === VoucherConstant.SHOW}
     />
