@@ -33,8 +33,8 @@ const ProductListInfo:FC<any> = ({ products, discount, promotionType }) => (
                                 {' '}
                                 {promotionType === 'percentage' && '%'}
                               </td>
-                              <td className="text-center"><input className="form-control" /></td>
-                              <td><input className="form-control" /></td>
+                              <td className="text-center"><input type="number" className="form-control" min="0" step="1" id="amountInput" /></td>
+                              <td><input type="number" className="form-control" /></td>
                             </tr>
                           ))
                     }

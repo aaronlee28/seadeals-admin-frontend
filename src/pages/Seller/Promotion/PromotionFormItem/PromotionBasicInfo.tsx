@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import '../PromotionsDashboard.scss';
 import VoucherConstant from '../../../../constants/voucher';
 
-const PromotionBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
+const PromotionBasicInfo:FC<any> = ({ promotion, formType, handleOnChange }) => {
   const timeNow = `${new Date().toISOString().split('.')[0]}`;
 
   return (
@@ -17,7 +17,7 @@ const PromotionBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
           placeholder="Masukkan nama promosi"
           type="text"
           required
-          value={voucher.name}
+          value={promotion.name}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
@@ -30,12 +30,11 @@ const PromotionBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
             <div className="input-group prefix p-0">
               <textarea
                 className="form__input"
-                name="code"
+                name="description"
                 maxLength={5}
                 placeholder="Masukkan deskripsi promosi"
                 required
-                value={formType !== VoucherConstant.CREATE
-                  ? voucher.code.substring(4) : voucher.code}
+                value={promotion.description}
                 readOnly={formType !== VoucherConstant.CREATE}
                 disabled={formType !== VoucherConstant.CREATE}
                 onChange={handleOnChange}
@@ -53,7 +52,7 @@ const PromotionBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
           type="datetime-local"
           required
           step={1}
-          value={voucher.start_date ? voucher.start_date : timeNow}
+          value={promotion.start_date ? promotion.start_date : timeNow}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
@@ -62,11 +61,11 @@ const PromotionBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
         <input
           name="end_date"
           className="col-4 border rounded p-2"
-          min={voucher.start_date}
+          min={promotion.start_date}
           type="datetime-local"
           step={1}
           required
-          value={voucher.end_date ? voucher.end_date : timeNow}
+          value={promotion.end_date ? promotion.end_date : timeNow}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
