@@ -38,6 +38,7 @@
   background: inherit;
   &:disabled{
     color: #555555;
+    cursor: inherit;
   }
   &:hover:enabled{
     color: #FB3C00;
