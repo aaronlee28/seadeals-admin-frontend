@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import ROLES from '../constants/roles';
 import Layout from '../layouts/Layout';
 import SellerLayout from '../layouts/SellerLayout';
@@ -14,15 +14,22 @@ import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
 import DashboardVoucher from '../pages/Seller/Voucher/DashboardVoucher';
 import DeliverySettings from '../pages/Seller/Delivery/Settings/DeliverySettings';
+import Couriers from '../pages/Seller/Register/Couriers/Couriers';
+import PageNotFound from '../pages/PageNotFound';
+import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
+import FormProduct from '../pages/Seller/Product/FormProduct';
+import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
 
 const AppRoutes = () => (
   <Routes>
-    <Route path="/" element={<Layout />}>
+    <Route path="" element={<Layout />}>
+      <Route path="" element={<Navigate to="/login" replace />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/seller/register" element={<SellerRegister />} />
 
       <Route element={<PersistLogin />}>
+        <Route path="/seller/register" element={<SellerRegister />} />
+        <Route path="/seller/register/couriers" element={<Couriers />} />
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
           <Route path="/seller/" element={<SellerLayout />}>
@@ -36,6 +43,15 @@ const AppRoutes = () => (
             <Route path="delivery">
               <Route path="settings" element={<DeliverySettings />} />
             </Route>
+            <Route path="promotions/">
+              <Route path="list" element={<PromotionsDashboard title="Promosi Toko" />} />
+            </Route>
+            <Route path="product/">
+              <Route path="list" element={<DashboardProduct />} />
+              <Route path="new" element={<FormProduct formType="create" title="Buat Produk" />} />
+              <Route path="show/:productID" element={<FormProduct formType="show" title="Detail Produk" />} />
+              <Route path="update/:productID" element={<FormProduct formType="update" title="Update Produk" />} />
+            </Route>
           </Route>
         </Route>
 
@@ -47,6 +63,7 @@ const AppRoutes = () => (
 
       </Route>
     </Route>
+    <Route path="*" element={<PageNotFound />} />
 
   </Routes>
 );

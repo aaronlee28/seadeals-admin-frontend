@@ -2,6 +2,7 @@ import React, { FC, useEffect, useState } from 'react';
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import './Voucher.scss';
+import toast from 'react-hot-toast';
 import VoucherBasicInfo from './FormItem/VoucherBasicInfo';
 import VoucherBonusInfo from './FormItem/VoucherBonusInfo';
 import VoucherAPI from '../../../api/voucher';
@@ -51,11 +52,13 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           end_date: data.end_date.replace('Z', ''),
         });
       })
-      .catch((err:any) => err);
+      .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
   useEffect(() => {
-    findVoucherByID().then();
+    if (formType !== '' && (vID !== null || voucherID !== undefined)) {
+      findVoucherByID().then();
+    }
   }, []);
 
   const handleUpdate = async () => {
@@ -71,10 +74,12 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           end_date: `${voucher.end_date}+07:00`,
         }),
       );
-      console.log(response);
+      if (response.status === 200) {
+        toast.success('voucher berhasil diubah');
+      }
       navigate('/seller/voucher/list');
-    } catch (err) {
-      console.error(err);
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
     }
   };
 
@@ -91,24 +96,26 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           end_date: `${voucher.end_date}+07:00`,
         }),
       );
-      console.log(response);
+      if (response.status === 200) {
+        toast.success('voucher baru berhasil dibuat');
+      }
       navigate('/seller/voucher/list');
-    } catch (err) {
-      console.error(err);
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
     }
   };
 
   return (
-    <div className="voucher__container">
+    <div className="promotions-dashboard_container">
       <h3 className="mb-4 mt-2">{title}</h3>
-      <div className="voucher__content">
+      <div className="promotion_content">
         <form onSubmit={(e) => e.preventDefault()}>
           <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
             {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
             {formType === VoucherConstant.UPDATE && <Button isSubmit buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
-            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text="Kembali" />
+            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/voucher/list')} text={formType === VoucherConstant.SHOW ? 'Kembali' : 'Batal'} />
           </div>
         </form>
       </div>

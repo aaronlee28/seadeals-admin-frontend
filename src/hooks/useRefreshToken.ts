@@ -1,5 +1,6 @@
 import jwt_decode from 'jwt-decode';
 import { useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import axios from '../api/axios';
 import useAuth from './useAuth';
 
@@ -10,8 +11,9 @@ const useRefreshToken = () => {
   const refresh = async () => {
     const response:any = await axios.get('/refresh/access-token', {
       withCredentials: true,
-    }).catch((e:any) => {
-      if (e.status === 401) {
+    }).catch((err:any) => {
+      if (err.status === 401) {
+        toast.error(err.response?.data?.message);
         navigate('/login');
       }
     });

@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import jwt_decode from 'jwt-decode';
 import { useLocation, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 import useAuth from '../../../hooks/useAuth';
-import './Login.scss';
 import logo from '../../../assets/images/logo.png';
 import Button from '../../../components/Button/Button';
 import axios from '../../../api/axios';
+import useCheckLogged from '../../../hooks/useCheckLogged';
+import './Login.scss';
 
 const LOGIN_URL = '/sign-in';
 
 const Login = () => {
+  useCheckLogged();
+
   const { setAuth } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -17,33 +21,88 @@ const Login = () => {
   const location = useLocation();
   let from = location.state?.from?.pathname;
 
+  const handleCallbackResponse = async (response: any) => {
+    try {
+      const res = await axios.post(
+        '/google/sign-in',
+        JSON.stringify({ token_id: response.credential }),
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
+      const decode:any = jwt_decode(res.data.data.id_token);
+      const accessToken = res?.data?.data.id_token;
+      const { user, scope } = decode;
+
+      setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
+
+      if (scope.includes('seller')) {
+        navigate('/seller', { replace: true });
+        return;
+      }
+      if (scope.includes('admin')) {
+        navigate('/admin', { replace: true });
+        return;
+      }
+
+      navigate('/seller/register', { replace: true });
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
+      navigate('/register', { replace: true, state: err.response.data?.data?.user });
+    }
+  };
+
+  useEffect(() => {
+    /* global google */
+    // @ts-ignore
+    if (google) {
+      // @ts-ignore
+      google.accounts.id.initialize({
+        client_id: process.env.REACT_APP_GOOGLE_CLIENT_ID,
+        callback: handleCallbackResponse,
+      });
+      // @ts-ignore
+      google.accounts.id.renderButton(
+        document.getElementById('signInDiv'),
+        { theme: 'outline', size: 'large', width: '400' },
+      );
+    } else {
+      toast.error('Network problem');
+    }
+  }, []);
+
   const handleSubmit = async () => {
-    const response = await axios.post(
-      LOGIN_URL,
-      JSON.stringify({ email, password }),
-      {
-        withCredentials: true,
-      },
-    );
-    const decode:any = jwt_decode(response.data.data.id_token);
-    const accessToken = response?.data?.data.id_token;
-    const { user, scope } = decode;
+    try {
+      const response = await axios.post(
+        LOGIN_URL,
+        JSON.stringify({ email, password }),
+        {
+          withCredentials: true,
+        },
+      );
+      const decode: any = jwt_decode(response.data.data.id_token);
+      const accessToken = response?.data?.data.id_token;
+      const { user, scope } = decode;
 
-    setAuth({ user, roles: scope.split(' '), accessToken });
-    localStorage.setItem('access_token', accessToken);
+      setAuth({ user, roles: scope.split(' '), accessToken });
+      localStorage.setItem('access_token', accessToken);
 
-    setEmail('');
-    setPassword('');
+      setEmail('');
+      setPassword('');
 
-    if (scope.split(' ').includes('seller')) {
-      navigate('/seller/');
-      return;
+      if (scope.includes('seller')) {
+        navigate('/seller', { replace: true });
+        return;
+      }
+      if (scope.includes('admin')) {
+        navigate('/admin', { replace: true });
+        return;
+      }
+      navigate('/seller/register', { replace: true });
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
     }
-    if (scope.split(' ').includes('admin')) {
-      navigate('/admin/');
-      return;
-    }
-    navigate('/seller/register', { replace: true });
   };
 
   // mock token
@@ -81,6 +140,9 @@ const Login = () => {
             <input type="password" placeholder="Kata sandi" className="form-control mb-2" value={password} onChange={(event) => setPassword(event.target.value)} />
             <Button buttonType="primary" text="Login" handleClickedButton={handleSubmit} />
             <div className="hr-sect"><b>ATAU</b></div>
+            <div className="d-flex justify-content-center">
+              <div className="mb-4" id="signInDiv" />
+            </div>
             <p id="daftar-text">
               Belum punya akun SeaDeals?
               {' '}

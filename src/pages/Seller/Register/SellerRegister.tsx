@@ -2,16 +2,24 @@ import React, { useEffect, useState } from 'react';
 import './SellerRegister.scss';
 import { useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
-import Modal from 'react-bootstrap/Modal';
+import toast from 'react-hot-toast';
 import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Cities from '../../../api/cities';
+import Modal from '../../../components/Modal/Modal';
+import useCheckLogged from '../../../hooks/useCheckLogged';
+import useAuth from '../../../hooks/useAuth';
+import useLogout from '../../../hooks/useLogout';
 
 const SellerRegister = () => {
+  useCheckLogged();
   const uRLSellers = '/sellers';
   const uRLAddress = '/user/profiles/addresses';
   const [userId, setUserId] = useState('');
+  const { setAuth } = useAuth();
   const axiosPrivate = useAxiosPrivate();
+  const navigate = useNavigate();
+  const logout = useLogout();
 
   const getUserId = () => {
     const token = localStorage.getItem('access_token');
@@ -25,12 +33,13 @@ const SellerRegister = () => {
   const [provinceId, setProvinceId] = useState('');
   const [type, setType] = useState('');
   const [subDistrict, setSubDistrict] = useState('');
-  const [province, setProvince] = useState('');
+  const [province, setProvince] = useState('Pilih provinsi');
   const [city, setCity] = useState('');
   const [postalCode, setPostalCode] = useState('');
   const [address, setAddress] = useState('');
 
   const [show, setShow] = useState(false);
+  const [mainAddress, setMainAddress] = useState(false);
   const handleClose = () => setShow(false);
 
   const [provinces, setProvinces] = useState<any[]>([]);
@@ -54,7 +63,7 @@ const SellerRegister = () => {
         }
         setProvinces(provincesValues);
       })
-      .catch((err) => err);
+      .catch((err) => toast.error(err.response?.data?.message));
   };
 
   const getCities = async () => {
@@ -77,7 +86,7 @@ const SellerRegister = () => {
         }
         setCities(values);
       })
-      .catch((err) => err);
+      .catch((err) => toast.error(err.response?.data?.message));
   };
 
   const getProvinceId = (p:string) => {
@@ -129,7 +138,6 @@ const SellerRegister = () => {
     }
   }, [cities]);
 
-  const navigate = useNavigate();
   const handleSubmitModal = () => {
     try {
       axiosPrivate.post(
@@ -146,7 +154,9 @@ const SellerRegister = () => {
         }),
       );
       setShow(false);
-    } catch (err) {
+      setMainAddress(true);
+    } catch (err: any) {
+      toast.error(err.response?.data?.message);
       navigate('/user', { replace: true });
     }
   };
@@ -162,8 +172,6 @@ const SellerRegister = () => {
     setType(getCityType(e.target.value));
   };
 
-  const [mainAddress, setMainAddress] = useState(false);
-  const [addressChecked, setAddressChecked] = useState(false);
   const checkMainAddress = () => {
     try {
       axiosPrivate.get(
@@ -171,10 +179,10 @@ const SellerRegister = () => {
       ).then((res: any) => {
         if (res.data.data.length > 0) {
           setMainAddress(true);
-          setAddressChecked(true);
         }
       });
-    } catch (err) {
+    } catch (err:any) {
+      toast.error(err.response?.data?.message);
       navigate('/seller/register', { replace: true });
     }
   };
@@ -187,13 +195,7 @@ const SellerRegister = () => {
     if (userId !== '') {
       checkMainAddress();
     }
-  }, [userId]);
-
-  useEffect(() => {
-    if (!mainAddress && addressChecked) {
-      setShow(true);
-    }
-  }, [addressChecked]);
+  }, [userId, mainAddress]);
 
   const [shopName, setShopName] = useState('');
   const [description, setDescription] = useState('');
@@ -207,9 +209,18 @@ const SellerRegister = () => {
           shop_name: shopName,
           description,
         }),
-      );
-      navigate('/seller/register/couriers', { replace: true });
-    } catch (err) {
+      ).then((res: any) => {
+        if (res.data.statusCode === 200) {
+          const decode:any = jwt_decode(res.data.data.id_token);
+          const accessToken = res?.data?.data.id_token;
+          const { user, scope } = decode;
+          setAuth({ user, roles: scope.split(' '), accessToken });
+          localStorage.setItem('access_token', accessToken);
+          navigate('/seller/register/couriers', { replace: true });
+        }
+      });
+    } catch (err: any) {
+      toast.error(err.response?.data?.message);
       navigate('/seller/register', { replace: true });
     }
   };
@@ -218,83 +229,101 @@ const SellerRegister = () => {
     <div className="seller-register_container">
       <div className="registration-form-card">
         <div className="header"><p className="header-text">Atur informasi toko</p></div>
-        <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            <Modal.Title>Alamat Baru</Modal.Title>
-          </Modal.Header>
-          <Modal.Body>
-            <form>
-              <select className="form-select mb-2" onChange={handleSelectProvince} defaultValue={province}>
-                {provinces.map((prov) => (
-                  <option
-                    key={prov.province_id}
-                    value={prov.province_name}
-                  >
-                    {prov.province_name}
-                  </option>
-                ))}
-              </select>
-              {
-                  province && (
-                  <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
-                    {cities.map((ci) => (
-                      <option
-                        key={ci.city_id}
-                        value={ci.city_name}
-                      >
-                        {ci.city_name}
-                      </option>
-                    ))}
-                  </select>
+        {show && (
+        <Modal cancel={handleClose} modalType="">
+          <div className="d-flex flex-column p-4 w-75">
+            <div className="text-start mb-4">
+              <h5 className="text-main"><b>Alamat Baru</b></h5>
+              <p className="mt-0 pt-0">Anda perlu menyediakan alamat utama untuk melanjutkan pendaftaran sebagai seller</p>
+            </div>
+            <div>
+              <form>
+                <select className="form-select mb-2" onChange={handleSelectProvince}>
+                  <option>Pilih provinsi</option>
+                  {provinces.map((prov) => (
+                    <option
+                      key={prov.province_id}
+                      value={prov.province_name}
+                    >
+                      {prov.province_name}
+                    </option>
+                  ))}
+                </select>
+                {
+                  (province !== 'Pilih provinsi') && (
+                    <select className="form-select mb-2" onChange={handleSelectCity} defaultValue={city}>
+                      {cities.map((ci) => (
+                        <option
+                          key={ci.city_id}
+                          value={ci.city_name}
+                        >
+                          {ci.city_name}
+                        </option>
+                      ))}
+                    </select>
                   )
-              }
-              <input
-                className="form-control mb-2"
-                value={subDistrict}
-                onChange={(event) => setSubDistrict(event.target.value)}
-                id="sub-district"
-                placeholder="Kecamatan"
-                autoComplete="new-password"
-                required
-              />
-              <input
-                className="form-control mb-2"
-                value={postalCode}
-                onChange={(event) => setPostalCode(event.target.value)}
-                id="postal-code"
-                placeholder="Kode Pos"
-                autoComplete="new-password"
-                required
-              />
-              <textarea
-                className="form-control mb-2"
-                value={address}
-                onChange={(event) => setAddress(event.target.value)}
-                id="address"
-                placeholder="Isi alamat lengkap"
-                autoComplete="new-password"
-                required
-              />
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
-            <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmitModal} />
-          </Modal.Footer>
+                }
+                <input
+                  className="form-control mb-2"
+                  value={subDistrict}
+                  onChange={(event) => setSubDistrict(event.target.value)}
+                  id="sub-district"
+                  placeholder="Kecamatan"
+                  autoComplete="new-password"
+                  required
+                />
+                <input
+                  className="form-control mb-2"
+                  value={postalCode}
+                  onChange={(event) => setPostalCode(event.target.value)}
+                  id="postal-code"
+                  placeholder="Kode Pos"
+                  autoComplete="new-password"
+                  type="number"
+                  maxLength={5}
+                  required
+                />
+                <textarea
+                  className="form-control mb-2"
+                  value={address}
+                  onChange={(event) => setAddress(event.target.value)}
+                  id="address"
+                  placeholder="Isi alamat lengkap"
+                  autoComplete="new-password"
+                  required
+                />
+              </form>
+            </div>
+            <div className="d-flex justify-content-end gap-2 mt-4">
+              <Button buttonType="primary alt" text="Tutup" handleClickedButton={handleClose} />
+              <Button buttonType="primary" text="Simpan alamat" handleClickedButton={handleSubmitModal} />
+            </div>
+          </div>
         </Modal>
-        <div className="input-groups">
-          <div className="input-group row">
-            <div className="col-2">Nama toko:</div>
-            <div className="col-10"><input type="text" placeholder="Nama toko" className="form-control" value={shopName} onChange={(event) => setShopName(event.target.value)} /></div>
+        )}
+        <form onSubmit={(e) => e.preventDefault()}>
+          <div className="input-groups">
+            <div className="input-group row">
+              <div className="col-2">Nama toko:</div>
+              <div className="col-10"><input type="text" placeholder="Nama toko" className="form-control" value={shopName} onChange={(event) => setShopName(event.target.value)} required /></div>
+            </div>
+            <div className="input-group row">
+              <div className="col-2">Deskripsi:</div>
+              <div className="col-10"><textarea placeholder="Deskripsi" className="form-control" value={description} onChange={(event) => setDescription(event.target.value)} required /></div>
+            </div>
           </div>
-          <div className="input-group row">
-            <div className="col-2">Deskripsi:</div>
-            <div className="col-10"><textarea placeholder="Deskripsi" className="form-control" value={description} onChange={(event) => setDescription(event.target.value)} /></div>
+          <div className="button-group">
+            <Button buttonType="secondary mx-2" text="Batalkan pendaftaran" handleClickedButton={() => { logout().then(); navigate('/login'); }} />
+            {!show && !mainAddress && (
+              <Button
+                buttonType="primary alt"
+                text="Atur alamat"
+                handleClickedButton={() => setShow(true)}
+              />
+            )}
+            {mainAddress && <Button isSubmit buttonType="primary alt" text="Lanjut ke atur jasa kurir" handleClickedButton={handleSubmit} />}
           </div>
-        </div>
-        <div className="button-group">
-          <Button buttonType="primary alt" text="Lanjut ke atur jasa kurir" handleClickedButton={handleSubmit} />
-        </div>
+        </form>
       </div>
     </div>
   );
