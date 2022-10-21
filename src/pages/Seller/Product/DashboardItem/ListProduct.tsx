@@ -117,6 +117,7 @@ const ListProduct:FC<any> = ({
                         buttonType="plain action-button"
                         handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)}
                         text="Rincian"
+                        isDisabled
                       />
                       <Button
                         buttonType="plain action-button"
