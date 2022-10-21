@@ -37,6 +37,7 @@ const FormProduct:FC<any> = ({
     variant_1_name: '',
     variant_2_name: '',
     product_photos: [],
+    variant_array: [],
   });
 
   const handleOnChange = (e: any) => {
@@ -60,6 +61,18 @@ const FormProduct:FC<any> = ({
 
   const handleSubmit = async () => {
     try {
+      if (productPhoto.length < 1) {
+        toast.error('Minimal terdapat 1 foto produk');
+        return;
+      }
+
+      const variantArray:any = [];
+      if (dataVariants) {
+        Object.keys(dataVariants).forEach((dataVariant:any) => {
+          variantArray.push(dataVariants[dataVariant]);
+        });
+      }
+
       const body = {
         name: product.name,
         category_id: product.category_id,
@@ -68,8 +81,8 @@ const FormProduct:FC<any> = ({
         max_quantity: Number(product.max_quantity),
         variant_1_name: product.variant_1_name,
         variant_2_name: product.variant_2_name,
-        default_price: Number(product.default_price) || 99,
-        default_stock: Number(product.default_stock) || 1,
+        default_price: Number(product.default_price),
+        default_stock: Number(product.default_stock),
         product_detail_req: {
           description: product.description,
           video_url: product.video_url,
@@ -81,6 +94,7 @@ const FormProduct:FC<any> = ({
           height: Number(product.height),
         },
         product_photos: productPhoto,
+        variant_array: variantArray,
       };
       console.log(body);
       const response = await axiosPrivate.post(
@@ -104,7 +118,12 @@ const FormProduct:FC<any> = ({
     <div className="product-form__container">
       <h3 className="mb-4 mt-2">{title}</h3>
       <div className="product-form__content">
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={(e) => {
+          console.log(e);
+          e.preventDefault();
+          handleSubmit().then();
+        }}
+        >
           <ProductMainInfo
             product={product}
             formType={formType}
@@ -123,7 +142,7 @@ const FormProduct:FC<any> = ({
           />
           <ProductOtherInfo product={product} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
-            {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
+            {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={() => {}} text="Simpan" />}
             {formType === VoucherConstant.UPDATE && <Button isSubmit buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
             <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/product/list')} text="Batal" />
           </div>

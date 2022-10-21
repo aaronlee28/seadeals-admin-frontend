@@ -57,13 +57,11 @@ const ProductMainInfo:FC<any> = ({
     const photo = productPhoto[idx];
     const imgRef = ref(storage, `products/${photo.name}`);
 
-    console.log(`products/${photo.name}`);
     deleteObject(imgRef).then(() => {
       toast.success('image deleted');
       setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
     }).catch((errDelete:any) => {
-      // toast.error(errDelete);
-      console.log('delete failed: ', errDelete);
+      toast.error(errDelete);
     });
   };
 
@@ -107,7 +105,7 @@ const ProductMainInfo:FC<any> = ({
             name="image"
             className="col-9 border rounded p-2 product-form__add-image"
             type="file"
-            required
+            // required={productPhoto.length < 1}
             value={product.product_photos[0]}
             readOnly={formType === VoucherConstant.SHOW}
             disabled={formType === VoucherConstant.SHOW}

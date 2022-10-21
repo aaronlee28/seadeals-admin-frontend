@@ -30,10 +30,19 @@ const ProductVariantInfo:FC<any> = ({
 
   const handleChangeDataVariant = (e:any) => {
     const { name } = e.target;
-    const [prop, uniqueID] = name.split('_');
+    const [prop, uniqueID] = name.split('__');
     const variantCode = uniqueID.split('-');
-    const tmp = dataVariants[uniqueID] || { variant1: variantCode[0], variant2: product.variant_2_name === '' ? '' : variantCode[1] };
-    tmp[prop] = e.target.value;
+    const tmp = dataVariants[uniqueID] || {
+      product_variant_details: {
+        variant_1_value: variantCode[0],
+        variant_2_value: product.variant_2_name === '' ? '' : variantCode[1],
+      },
+    };
+    if (prop === 'stock' || prop === 'price') {
+      tmp.product_variant_details[prop] = parseInt(e.target.value, 10);
+    } else {
+      tmp.product_variant_details[prop] = e.target.value;
+    }
     setDataVariants({ ...dataVariants, [uniqueID]: tmp });
   };
 
@@ -105,7 +114,7 @@ const ProductVariantInfo:FC<any> = ({
                       placeholder="Masukkan angka"
                       type="number"
                       onChange={handleOnChange}
-                      required
+                      required={variant1.length === 0}
                       value={product.default_price}
                       readOnly={formType === VoucherConstant.SHOW}
                       disabled={formType === VoucherConstant.SHOW}
@@ -125,7 +134,7 @@ const ProductVariantInfo:FC<any> = ({
                       placeholder="Masukkan angka"
                       type="number"
                       onChange={handleOnChange}
-                      required
+                      required={variant1.length === 0}
                       value={product.default_stock}
                       readOnly={formType === VoucherConstant.SHOW}
                       disabled={formType === VoucherConstant.SHOW}
@@ -329,7 +338,7 @@ const ProductVariantInfo:FC<any> = ({
                                       <div className="input-group prefix">
                                         <span className="input-group-addon">Rp</span>
                                         <input
-                                          name={`price_${item}-${item2}-${index}-${index2}`}
+                                          name={`price__${item}-${item2}-${index}-${index2}`}
                                           className="form__input"
                                           placeholder="Masukkan angka"
                                           type="number"
@@ -346,7 +355,7 @@ const ProductVariantInfo:FC<any> = ({
                                       <div>
                                         <div className="input-group suffix">
                                           <input
-                                            name={`stock_${item}-${item2}-${index}-${index2}`}
+                                            name={`stock__${item}-${item2}-${index}-${index2}`}
                                             className="form__input"
                                             placeholder="Masukkan angka"
                                             type="number"
@@ -363,12 +372,12 @@ const ProductVariantInfo:FC<any> = ({
                                     </div>
                                     <div>
                                       <input
-                                        name={`code_${item}-${item2}-${index}-${index2}`}
+                                        name={`variant_code__${item}-${item2}-${index}-${index2}`}
                                         className="form__input"
                                         placeholder="Masukkan kode"
                                         type="text"
                                         required
-                                        value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.code}
+                                        value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.variant_code}
                                         onChange={handleChangeDataVariant}
                                         readOnly={formType === VoucherConstant.SHOW}
                                         disabled={formType === VoucherConstant.SHOW}
@@ -388,7 +397,7 @@ const ProductVariantInfo:FC<any> = ({
                                     <div className="input-group prefix">
                                       <span className="input-group-addon">Rp</span>
                                       <input
-                                        name={`price_${item}-${index}`}
+                                        name={`price__${item}-${index}`}
                                         className="form__input"
                                         placeholder="Masukkan angka"
                                         type="number"
@@ -405,7 +414,7 @@ const ProductVariantInfo:FC<any> = ({
                                     <div>
                                       <div className="input-group suffix">
                                         <input
-                                          name={`stock_${item}-${index}`}
+                                          name={`stock__${item}-${index}`}
                                           className="form__input"
                                           placeholder="Masukkan angka"
                                           type="number"
@@ -422,12 +431,12 @@ const ProductVariantInfo:FC<any> = ({
                                   </div>
                                   <div>
                                     <input
-                                      name={`code_${item}-${index}`}
+                                      name={`variant_code__${item}-${index}`}
                                       className="form__input"
                                       placeholder="Masukkan kode"
                                       type="text"
                                       required
-                                      value={dataVariants[`${item}-${index}`]?.code}
+                                      value={dataVariants[`${item}-${index}`]?.variant_code}
                                       onChange={handleChangeDataVariant}
                                       readOnly={formType === VoucherConstant.SHOW}
                                       disabled={formType === VoucherConstant.SHOW}
