@@ -46,6 +46,14 @@ const ProductVariantInfo:FC<any> = ({
     setDataVariants({ ...dataVariants, [uniqueID]: tmp });
   };
 
+  const cleanVariant = () => {
+    setVariant1([]);
+    setVariant2([]);
+    handleChangeByName('variant_1_name', '');
+    handleChangeByName('variant_2_name', '');
+    setDataVariants([]);
+  };
+
   return (
     <div className="my-4">
       <h5 className="text-start"><b>Informasi Penjualan</b></h5>
@@ -96,7 +104,17 @@ const ProductVariantInfo:FC<any> = ({
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="name">Tambah Produk Varian</label>
         <div className="col-9 p-0">
-          <RadioBoolean name="enable_variant" data={showVariantTable} handleOnChange={() => setShowVariantTable(!showVariantTable)} formType={formType} />
+          <RadioBoolean
+            name="enable_variant"
+            data={showVariantTable}
+            handleOnChange={() => {
+              cleanVariant();
+              handleChangeByName('default_price', '');
+              handleChangeByName('default_stock', '');
+              setShowVariantTable(!showVariantTable);
+            }}
+            formType={formType}
+          />
         </div>
       </div>
       {!showVariantTable
@@ -173,11 +191,7 @@ const ProductVariantInfo:FC<any> = ({
                     {React.createElement(IconClose, {
                       className: 'icon-remove',
                       onClick: () => {
-                        setVariant1([]);
-                        setVariant2([]);
-                        handleChangeByName('variant_1_name', '');
-                        handleChangeByName('variant_2_name', '');
-                        setDataVariants([]);
+                        cleanVariant();
                       },
                     })}
                   </>
