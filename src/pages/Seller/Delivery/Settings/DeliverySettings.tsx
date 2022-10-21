@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import courierIcon from '../../../../assets/svg/courier.svg';
 import printIcon from '../../../../assets/svg/print.svg';
@@ -9,18 +9,32 @@ import Button from '../../../../components/Button/Button';
 import Toggle from '../../../../components/Toggle/Toggle';
 import useSellerDeliveryOptions from '../../../../api/useDeliveryOptions';
 import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import PrintSettingsAPI from '../../../../api/printSettings';
+import LoadingPlain from '../../../../components/Loading/LoadingPlain';
 
 const DeliverySettings = () => {
   const axiosPrivate = useAxiosPrivate();
   const { loadingCouriers, couriers, setCouriers } = useSellerDeliveryOptions();
-  const [loadingUpdate, setLoadingOptions] = useState(false);
+  const [loadingPrintSettings, setLoadingPrintSettings] = useState(true);
+  const [printSettings, setPrintSettings] = useState({ modified: false, allowPrint: false });
 
-  // useEffect(() => {
-  //   console.log(loadingCouriers);
-  //   console.log(couriers);
-  // });
+  useEffect(() => {
+    const getSellerPrintSettings = async () => {
+      await PrintSettingsAPI.GetSellerPrintSettings(axiosPrivate)
+        .then((resp:any) => {
+          const { data } = resp.data;
+          const settings = { modified: false, allowPrint: data.allow_print };
+          setPrintSettings(settings);
+          setLoadingPrintSettings(false);
+        })
+        .catch((err:any) => toast.error(err.response?.data?.message));
+    };
+    getSellerPrintSettings().then();
+  }, []);
 
-  const updateCourierOptions = async () => {
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+
+  const updateOptions = async () => {
     const updateCourierURL = 'sellers/couriers';
     const updates = [];
     // eslint-disable-next-line no-restricted-syntax
@@ -35,18 +49,31 @@ const DeliverySettings = () => {
       JSON.stringify(update),
     ));
 
-    await Promise.all([...promises]);
+    const settingsPromise = PrintSettingsAPI.UpdateSellerPrintSettings(
+      axiosPrivate,
+      printSettings.allowPrint,
+    );
+
+    await Promise.all([...promises, settingsPromise]);
+  };
+
+  const togglePrintSettings = () => {
+    setPrintSettings((prevState) => ({
+      allowPrint: !prevState.allowPrint,
+      modified: !prevState.modified,
+    }));
   };
 
   const handleSaveOptions = async () => {
     if (loadingUpdate) return;
 
-    setLoadingOptions(true);
+    setLoadingUpdate(true);
     toast.loading('menyimpan perubahan');
     try {
-      await updateCourierOptions();
+      await updateOptions();
       toast.dismiss();
       toast.success('perubahan tersimpan!');
+      setLoadingUpdate(false);
     } catch (e) {
       toast.dismiss();
       toast.error('perubahan gagal disimpan');
@@ -86,7 +113,13 @@ const DeliverySettings = () => {
               <p className="fs-6 text-secondary">Aktifkan Cetak Mode Thermal jika kamu ingin mencetak label pengiriman untuk semua jasa kirim.</p>
             </div>
           </div>
-          <Toggle id={0} inputID="thermal" isChecked handleChange={(e) => console.log(e.target.checked)} />
+          {loadingPrintSettings
+            ? (
+              <div className="text-center py-2 text-secondary">
+                <LoadingPlain height={68} />
+              </div>
+            )
+            : <Toggle id={0} inputID="thermal" isChecked={printSettings.allowPrint} handleChange={() => togglePrintSettings()} />}
         </div>
       </div>
       <div className="container bg-white text-start border-bottom-dashed px-5 py-4">
