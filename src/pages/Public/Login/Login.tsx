@@ -106,10 +106,10 @@ const Login = () => {
   return (
     <div className="login_container">
       <div className="login_cards row">
-        <div className="logo mx-auto col-10 col-sm-6">
+        <div className="logo col-md-6 col-sm-12">
           <img alt="" className="img-fluid" src={logo} />
         </div>
-        <div className="forms_container col-sm-6 mx-4">
+        <div className="forms_container col-md-6 col-sm-12">
           <div className="login_forms">
             <p className="p-4"><b>Log in ke Sea Deals Seller Center</b></p>
             <input type="text" placeholder="Email" className="form-control mb-2" value={email} onChange={(event) => setEmail(event.target.value)} />
