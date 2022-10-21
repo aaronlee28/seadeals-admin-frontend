@@ -2,9 +2,14 @@ import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
 import toast from 'react-hot-toast';
+import { v4 } from 'uuid';
+import {
+  deleteObject, getDownloadURL, ref, uploadBytes,
+} from 'firebase/storage';
 import VoucherConstant from '../../../../constants/voucher';
 import Modal from '../../../../components/Modal/Modal';
 import CategoryInput from './CategoryInput';
+import storage from '../../../../firebase/firebase';
 
 const ProductMainInfo:FC<any> = ({
   product, formType, handleOnChange, setCategoryID, productPhoto, setProductPhoto,
@@ -32,7 +37,15 @@ const ProductMainInfo:FC<any> = ({
       return;
     }
     if (file) {
-      setProductPhoto(productPhoto.concat([URL.createObjectURL(file)]));
+      const namePhoto = `product-photo-${v4()}`;
+      const imgRef = ref(storage, `products/${namePhoto}`);
+
+      uploadBytes(imgRef, file).then((snapshot) => {
+        toast.success('image uploaded');
+        getDownloadURL(snapshot.ref).then((url) => {
+          setProductPhoto([...productPhoto, { name: namePhoto, file, photo_url: url }]);
+        });
+      });
       const reader = new FileReader();
       reader.readAsDataURL(file);
       imageInputRef.current.value = '';
@@ -41,7 +54,17 @@ const ProductMainInfo:FC<any> = ({
 
   const onDeleteClick = (idx:number) => (e:any) => {
     e.preventDefault();
-    setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
+    const photo = productPhoto[idx];
+    const imgRef = ref(storage, `products/${photo.name}`);
+
+    console.log(`products/${photo.name}`);
+    deleteObject(imgRef).then(() => {
+      toast.success('image deleted');
+      setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
+    }).catch((errDelete:any) => {
+      // toast.error(errDelete);
+      console.log('delete failed: ', errDelete);
+    });
   };
 
   return (
@@ -69,7 +92,7 @@ const ProductMainInfo:FC<any> = ({
                     X
                   </div>
                 </div>
-                <img className="img-fit product-form__image" alt={i.toString()} src={el} />
+                <img className="img-fit product-form__image" alt={i.toString()} src={el.photo_url} />
               </button>
             ),
           )}

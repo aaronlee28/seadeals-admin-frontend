@@ -92,6 +92,7 @@ const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
       <label className="col-3 text-end align-self-center" htmlFor="photo">Kondisi Produk</label>
       <div className="col-9 p-0">
         <select className="form-select mb-2" name="condition_status" required onChange={handleOnChange}>
+          <option>Pilih kondisi</option>
           {PRODUCT_STATUS.map((item) => (
             <option
               key={item.id}

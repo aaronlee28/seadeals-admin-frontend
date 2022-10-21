@@ -80,6 +80,7 @@ const FormProduct:FC<any> = ({
           width: Number(product.width),
           height: Number(product.height),
         },
+        product_photos: productPhoto,
       };
       console.log(body);
       const response = await axiosPrivate.post(
