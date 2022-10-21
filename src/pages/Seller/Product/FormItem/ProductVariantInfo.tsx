@@ -5,6 +5,8 @@ import VoucherConstant from '../../../../constants/voucher';
 import RadioBoolean from '../../../../components/RadioBoolean/RadioBoolean';
 import Button from '../../../../components/Button/Button';
 import { ReactComponent as IconClose } from '../../../../assets/svg/icon_close.svg';
+import InputVariantRow from './Component/InputVariantRow';
+import InputVariantName from './Component/InputVariantName';
 
 const ProductVariantInfo:FC<any> = ({
   product, formType, handleOnChange, setProduct, dataVariants, setDataVariants,
@@ -200,31 +202,15 @@ const ProductVariantInfo:FC<any> = ({
                 <div className="row mt-3">
                   {variant1.map((item:any, index:number) => (
                     <div className="col-4">
-                      <div className="d-flex">
-                        <input
-                          ref={inputVariant1Ref}
-                          className="form__input p-2 my-1 rounded"
-                          placeholder="Masukkan variasi"
-                          type="text"
-                          maxLength={20}
-                          onChange={(e) => {
-                            const variant1Tmp = [...variant1];
-                            variant1Tmp[index] = e.target.value;
-                            setVariant1(variant1Tmp);
-                            setDataVariants([]);
-                          }}
-                          value={item}
-                          readOnly={formType === VoucherConstant.SHOW}
-                          disabled={formType === VoucherConstant.SHOW}
-                        />
-                        {React.createElement(IconClose, {
-                          className: 'icon-remove small',
-                          onClick: () => {
-                            removeVariantByIdx(true, index);
-                            setDataVariants([]);
-                          },
-                        })}
-                      </div>
+                      <InputVariantName
+                        variantRef={inputVariant1Ref}
+                        variant={variant1}
+                        setVariant={setVariant1}
+                        index={index}
+                        setDataVariants={setDataVariants}
+                        removeVariantByIdx={removeVariantByIdx}
+                        formType={formType}
+                      />
                     </div>
                   ))}
                 </div>
@@ -267,31 +253,15 @@ const ProductVariantInfo:FC<any> = ({
                 <div className="row mt-3">
                   {variant2.map((item:any, index:number) => (
                     <div className="col-4">
-                      <div className="d-flex">
-                        <input
-                          ref={inputVariant2Ref}
-                          className="form__input p-2 my-1 rounded"
-                          placeholder="Masukkan variasi"
-                          type="text"
-                          maxLength={20}
-                          onChange={(e) => {
-                            const variant2Tmp = [...variant2];
-                            variant2Tmp[index] = e.target.value;
-                            setVariant2(variant2Tmp);
-                            setDataVariants([]);
-                          }}
-                          value={item}
-                          readOnly={formType === VoucherConstant.SHOW}
-                          disabled={formType === VoucherConstant.SHOW}
-                        />
-                        {React.createElement(IconClose, {
-                          className: 'icon-remove small',
-                          onClick: () => {
-                            removeVariantByIdx(false, index);
-                            setDataVariants([]);
-                          },
-                        })}
-                      </div>
+                      <InputVariantName
+                        variantRef={inputVariant2Ref}
+                        variant={variant2}
+                        setVariant={setVariant2}
+                        index={index}
+                        setDataVariants={setDataVariants}
+                        removeVariantByIdx={removeVariantByIdx}
+                        formType={formType}
+                      />
                     </div>
                   ))}
                 </div>
@@ -347,57 +317,14 @@ const ProductVariantInfo:FC<any> = ({
                                   )
                                 }
                                 <td className="py-3">
-                                  <div className="gap-3 cell-standard">
-                                    <div>
-                                      <div className="input-group prefix">
-                                        <span className="input-group-addon">Rp</span>
-                                        <input
-                                          name={`price__${item}-${item2}-${index}-${index2}`}
-                                          className="form__input"
-                                          placeholder="Masukkan angka"
-                                          type="number"
-                                          required
-                                          min={99}
-                                          value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.price}
-                                          onChange={handleChangeDataVariant}
-                                          readOnly={formType === VoucherConstant.SHOW}
-                                          disabled={formType === VoucherConstant.SHOW}
-                                        />
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <div>
-                                        <div className="input-group suffix">
-                                          <input
-                                            name={`stock__${item}-${item2}-${index}-${index2}`}
-                                            className="form__input"
-                                            placeholder="Masukkan angka"
-                                            type="number"
-                                            required
-                                            onChange={handleChangeDataVariant}
-                                            min={1}
-                                            value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.stock}
-                                            readOnly={formType === VoucherConstant.SHOW}
-                                            disabled={formType === VoucherConstant.SHOW}
-                                          />
-                                          <span className="input-group-addon">pcs</span>
-                                        </div>
-                                      </div>
-                                    </div>
-                                    <div>
-                                      <input
-                                        name={`variant_code__${item}-${item2}-${index}-${index2}`}
-                                        className="form__input"
-                                        placeholder="Masukkan kode"
-                                        type="text"
-                                        required
-                                        value={dataVariants[`${item}-${item2}-${index}-${index2}`]?.variant_code}
-                                        onChange={handleChangeDataVariant}
-                                        readOnly={formType === VoucherConstant.SHOW}
-                                        disabled={formType === VoucherConstant.SHOW}
-                                      />
-                                    </div>
-                                  </div>
+                                  <InputVariantRow
+                                    item={item}
+                                    item2={item2}
+                                    index={index}
+                                    index2={index2}
+                                    handleChangeDataVariant={handleChangeDataVariant}
+                                    formType={formType}
+                                  />
                                 </td>
                               </tr>
                             ))
@@ -406,57 +333,12 @@ const ProductVariantInfo:FC<any> = ({
                           )
                             : (
                               <td>
-                                <div className="gap-3 cell-standard">
-                                  <div>
-                                    <div className="input-group prefix">
-                                      <span className="input-group-addon">Rp</span>
-                                      <input
-                                        name={`price__${item}-${index}`}
-                                        className="form__input"
-                                        placeholder="Masukkan angka"
-                                        type="number"
-                                        min={99}
-                                        required
-                                        value={dataVariants[`${item}-${index}`]?.price}
-                                        onChange={handleChangeDataVariant}
-                                        readOnly={formType === VoucherConstant.SHOW}
-                                        disabled={formType === VoucherConstant.SHOW}
-                                      />
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <div>
-                                      <div className="input-group suffix">
-                                        <input
-                                          name={`stock__${item}-${index}`}
-                                          className="form__input"
-                                          placeholder="Masukkan angka"
-                                          type="number"
-                                          required
-                                          min={1}
-                                          value={dataVariants[`${item}-${index}`]?.stock}
-                                          onChange={handleChangeDataVariant}
-                                          readOnly={formType === VoucherConstant.SHOW}
-                                          disabled={formType === VoucherConstant.SHOW}
-                                        />
-                                        <span className="input-group-addon">pcs</span>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div>
-                                    <input
-                                      name={`variant_code__${item}-${index}`}
-                                      className="form__input"
-                                      placeholder="Masukkan kode"
-                                      type="text"
-                                      required
-                                      value={dataVariants[`${item}-${index}`]?.variant_code}
-                                      onChange={handleChangeDataVariant}
-                                      readOnly={formType === VoucherConstant.SHOW}
-                                      disabled={formType === VoucherConstant.SHOW}
-                                    />
-                                  </div>
-                                </div>
+                                <InputVariantRow
+                                  item={item}
+                                  index={index}
+                                  handleChangeDataVariant={handleChangeDataVariant}
+                                  formType={formType}
+                                />
                               </td>
                             )}
                         </tr>
