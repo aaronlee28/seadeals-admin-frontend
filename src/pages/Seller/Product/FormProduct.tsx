@@ -69,7 +69,7 @@ const FormProduct:FC<any> = ({
       const variantArray:any = [];
       if (dataVariants) {
         Object.keys(dataVariants).forEach((dataVariant:any) => {
-          variantArray.push(dataVariants[dataVariant]);
+          variantArray.push({ product_variant_details: dataVariants[dataVariant] });
         });
       }
 
@@ -77,8 +77,8 @@ const FormProduct:FC<any> = ({
         name: product.name,
         category_id: product.category_id,
         is_bulk_enabled: false,
-        min_quantity: Number(product.min_quantity),
-        max_quantity: Number(product.max_quantity),
+        min_quantity: Number(product.min_quantity) === 0 ? '' : Number(product.min_quantity),
+        max_quantity: Number(product.max_quantity) === 0 ? '' : Number(product.max_quantity),
         variant_1_name: product.variant_1_name,
         variant_2_name: product.variant_2_name,
         default_price: Number(product.default_price),

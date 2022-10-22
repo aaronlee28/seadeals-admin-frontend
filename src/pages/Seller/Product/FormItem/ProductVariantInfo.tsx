@@ -1,5 +1,5 @@
 import React, {
-  FC, useRef, useState,
+  FC, useEffect, useRef, useState,
 } from 'react';
 import VoucherConstant from '../../../../constants/voucher';
 import RadioBoolean from '../../../../components/RadioBoolean/RadioBoolean';
@@ -7,6 +7,7 @@ import Button from '../../../../components/Button/Button';
 import { ReactComponent as IconClose } from '../../../../assets/svg/icon_close.svg';
 import InputVariantRow from './Component/InputVariantRow';
 import InputVariantName from './Component/InputVariantName';
+import BulkEditVariant from './Component/BulkEditVariant';
 
 const ProductVariantInfo:FC<any> = ({
   product, formType, handleOnChange, setProduct, dataVariants, setDataVariants,
@@ -14,9 +15,38 @@ const ProductVariantInfo:FC<any> = ({
   const [showVariantTable, setShowVariantTable] = useState(false);
   const [variant1, setVariant1] = useState<any>([]);
   const [variant2, setVariant2] = useState<any>([]);
+  const defaultVariantValue = {
+    price: '',
+    stock: '',
+    variant_code: '',
+  };
+  const [bulkVariant, setBulkVariant] = useState<any>(defaultVariantValue);
 
   const inputVariant1Ref = useRef(null);
   const inputVariant2Ref = useRef(null);
+
+  useEffect(() => {
+    setDataVariants({});
+    const tmp:any = {};
+    variant1.forEach((v1:any, index:number) => {
+      if (variant2.length >= 1) {
+        variant2.forEach((v2: any, index2: number) => {
+          tmp[`${index}-${index2}`] = {
+            variant_1_value: v1,
+            variant_2_value: v2,
+            ...defaultVariantValue,
+          };
+        });
+      } else {
+        tmp[`${index}-${undefined}}`] = {
+          variant_1_value: v1,
+          variant_2_value: undefined,
+          ...defaultVariantValue,
+        };
+      }
+    });
+    setDataVariants(tmp);
+  }, [variant1, variant2]);
 
   const removeVariantByIdx = (varNum1:boolean, index:number) => {
     if (varNum1) {
@@ -33,27 +63,41 @@ const ProductVariantInfo:FC<any> = ({
   const handleChangeDataVariant = (e:any) => {
     const { name } = e.target;
     const [prop, uniqueID] = name.split('__');
-    const variantCode = uniqueID.split('-');
-    const tmp = dataVariants[uniqueID] || {
-      product_variant_details: {
-        variant_1_value: variantCode[0],
-        variant_2_value: product.variant_2_name === '' ? '' : variantCode[1],
-      },
-    };
+    const tmp = dataVariants[uniqueID];
     if (prop === 'stock' || prop === 'price') {
-      tmp.product_variant_details[prop] = parseInt(e.target.value, 10);
+      tmp[prop] = parseInt(e.target.value, 10);
     } else {
-      tmp.product_variant_details[prop] = e.target.value;
+      tmp[prop] = e.target.value;
     }
     setDataVariants({ ...dataVariants, [uniqueID]: tmp });
   };
+
+  const handleOnChangeBulkVariant = (e:any) => {
+    const { name } = e.target;
+    setBulkVariant({ ...bulkVariant, [name]: e.target.value });
+  };
+
+  const handleOnSubmitBulkVariant = () => {
+    const tmp = { ...dataVariants };
+    Object.keys(tmp).forEach((dataVariant:any) => {
+      Object.keys(bulkVariant).forEach((item:any) => {
+        let isNumber = false;
+        if (item === 'stock' || item === 'price') {
+          isNumber = true;
+        }
+        tmp[dataVariant][item] = isNumber ? Number(bulkVariant[item]) : bulkVariant[item];
+      });
+    });
+    setDataVariants(tmp);
+  };
+  console.log('DataVariants: ', dataVariants);
 
   const cleanVariant = () => {
     setVariant1([]);
     setVariant2([]);
     handleChangeByName('variant_1_name', '');
     handleChangeByName('variant_2_name', '');
-    setDataVariants([]);
+    setDataVariants({});
   };
 
   return (
@@ -208,7 +252,7 @@ const ProductVariantInfo:FC<any> = ({
                         setVariant={setVariant1}
                         index={index}
                         setDataVariants={setDataVariants}
-                        removeVariantByIdx={removeVariantByIdx}
+                        removeVariantByIdx={() => removeVariantByIdx(true, index)}
                         formType={formType}
                       />
                     </div>
@@ -244,7 +288,7 @@ const ProductVariantInfo:FC<any> = ({
                         onClick: () => {
                           setVariant2([]);
                           handleChangeByName('variant_2_name', '');
-                          setDataVariants([]);
+                          setDataVariants({});
                         },
                       })}
                     </>
@@ -259,7 +303,7 @@ const ProductVariantInfo:FC<any> = ({
                         setVariant={setVariant2}
                         index={index}
                         setDataVariants={setDataVariants}
-                        removeVariantByIdx={removeVariantByIdx}
+                        removeVariantByIdx={() => removeVariantByIdx(false, index)}
                         formType={formType}
                       />
                     </div>
@@ -268,6 +312,21 @@ const ProductVariantInfo:FC<any> = ({
               </div>
             </div>
             )}
+            {
+              variant1.length !== 0 && (
+                <div className="row my-3">
+                  <label className="col-3 text-end align-self-center">Edit Masal Variasi</label>
+                  <div className="col-9 p-0">
+                    <BulkEditVariant
+                      bulkData={bulkVariant}
+                      setDataVariants={setDataVariants}
+                      handleOnChange={handleOnChangeBulkVariant}
+                      handleOnSubmit={handleOnSubmitBulkVariant}
+                    />
+                  </div>
+                </div>
+              )
+            }
             <div className="row my-3">
               <label className="col-3 text-end align-self-center">Daftar Variasi</label>
               <div className="col-9 p-0 table-responsive">
@@ -312,19 +371,20 @@ const ProductVariantInfo:FC<any> = ({
                                   && (
                                     <td className="variant2 pt-4 px-4">
                                       {item2}
-                                      {() => setDataVariants({ ...dataVariants, [index + index2]: '' })}
                                     </td>
                                   )
                                 }
                                 <td className="py-3">
-                                  <InputVariantRow
-                                    item={item}
-                                    item2={item2}
-                                    index={index}
-                                    index2={index2}
-                                    handleChangeDataVariant={handleChangeDataVariant}
-                                    formType={formType}
-                                  />
+                                  {
+                                    item !== '' && item2 !== '' && (
+                                      <InputVariantRow
+                                        index={index}
+                                        index2={index2}
+                                        dataVariants={dataVariants}
+                                        handleChangeDataVariant={handleChangeDataVariant}
+                                      />
+                                    )
+                                  }
                                 </td>
                               </tr>
                             ))
@@ -333,12 +393,15 @@ const ProductVariantInfo:FC<any> = ({
                           )
                             : (
                               <td>
-                                <InputVariantRow
-                                  item={item}
-                                  index={index}
-                                  handleChangeDataVariant={handleChangeDataVariant}
-                                  formType={formType}
-                                />
+                                {
+                                  item !== '' && (
+                                    <InputVariantRow
+                                      index={index}
+                                      dataVariants={dataVariants}
+                                      handleChangeDataVariant={handleChangeDataVariant}
+                                    />
+                                  )
+                                }
                               </td>
                             )}
                         </tr>

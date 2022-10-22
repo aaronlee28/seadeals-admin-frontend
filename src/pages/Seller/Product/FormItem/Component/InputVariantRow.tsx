@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 
 const InputVariantRow:FC<any> = ({
-  item, item2, index, index2, handleChangeDataVariant,
+  index, index2, handleChangeDataVariant, dataVariants,
 }) => {
-  const uniqueID = index2 && item2 ? `${item}-${item2}-${index}-${index2}` : `${item}-${index}`;
+  const uniqueID = `${index}-${index2}`;
+
+  console.log('AFTER: ', dataVariants);
   return (
     <div className="gap-3 cell-standard">
       <div>
@@ -16,6 +18,7 @@ const InputVariantRow:FC<any> = ({
             type="number"
             required
             min={99}
+            value={dataVariants[uniqueID]?.price}
             onChange={handleChangeDataVariant}
           />
         </div>
@@ -31,6 +34,7 @@ const InputVariantRow:FC<any> = ({
               required
               onChange={handleChangeDataVariant}
               min={1}
+              value={dataVariants[uniqueID]?.stock}
             />
             <span className="input-group-addon">pcs</span>
           </div>
@@ -44,6 +48,7 @@ const InputVariantRow:FC<any> = ({
           type="text"
           required
           onChange={handleChangeDataVariant}
+          value={dataVariants[uniqueID]?.variant_code}
         />
       </div>
     </div>

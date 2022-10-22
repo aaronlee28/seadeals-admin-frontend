@@ -16,7 +16,6 @@ const InputVariantName:FC<any> = ({
         const variant1Tmp = [...variant];
         variant1Tmp[index] = e.target.value;
         setVariant(variant1Tmp);
-        setDataVariants([]);
       }}
       required
       readOnly={formType === VoucherConstant.SHOW}
@@ -26,7 +25,7 @@ const InputVariantName:FC<any> = ({
       className: 'icon-remove small',
       onClick: () => {
         removeVariantByIdx(true, index);
-        setDataVariants([]);
+        setDataVariants({});
       },
     })}
   </div>
