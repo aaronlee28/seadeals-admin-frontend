@@ -19,6 +19,8 @@ const ProductVariantInfo:FC<any> = ({
     price: '',
     stock: '',
     variant_code: '',
+    picture_url: '',
+    picture_name: '',
   };
   const [bulkVariant, setBulkVariant] = useState<any>(defaultVariantValue);
 
@@ -38,7 +40,7 @@ const ProductVariantInfo:FC<any> = ({
           };
         });
       } else {
-        tmp[`${index}-${undefined}}`] = {
+        tmp[`${index}-${undefined}`] = {
           variant_1_value: v1,
           variant_2_value: undefined,
           ...defaultVariantValue,
@@ -60,12 +62,15 @@ const ProductVariantInfo:FC<any> = ({
     setProduct((data:any) => ({ ...data, [name]: value }));
   };
 
-  const handleChangeDataVariant = (e:any) => {
+  const handleChangeDataVariant = (e:any, value:any) => {
     const { name } = e.target;
     const [prop, uniqueID] = name.split('__');
     const tmp = dataVariants[uniqueID];
     if (prop === 'stock' || prop === 'price') {
       tmp[prop] = parseInt(e.target.value, 10);
+    } else if (prop === 'picture_url') {
+      tmp[prop] = value.picture_url;
+      tmp.picture_name = value.picture_name;
     } else {
       tmp[prop] = e.target.value;
     }
@@ -339,18 +344,20 @@ const ProductVariantInfo:FC<any> = ({
                           ? (
                             <th className="d-flex gap-3">
                               <div className="variant2">{product.variant_2_name || 'Variasi 2'}</div>
-                              <div className="d-flex justify-content-around w-100">
-                                <div className="">Harga</div>
-                                <div className="">Stok</div>
-                                <div className="">Kode Variasi</div>
+                              <div className="d-flex justify-content-between w-100">
+                                <div className="cell-width large">Harga</div>
+                                <div className="cell-width large">Stok</div>
+                                <div className="cell-width">Kode Variasi</div>
+                                <div className="cell-width">Foto</div>
                               </div>
                             </th>
                           )
                           : (
                             <th className="gap-3 cell-standard">
-                              <div className="cell-standard__content">Harga</div>
-                              <div className="cell-standard__content">Stok</div>
-                              <div className="cell-standard__content">Kode Variasi</div>
+                              <div className="cell-standard__content cell-width large">Harga</div>
+                              <div className="cell-standard__content cell-width large">Stok</div>
+                              <div className="cell-standard__content cell-width">Kode Variasi</div>
+                              <div className="cell-standard__content cell-width">Foto</div>
                             </th>
                           )
                       }
@@ -360,7 +367,7 @@ const ProductVariantInfo:FC<any> = ({
                     {
                       variant1.map((item:any, index:string) => (
                         <tr className="cell-content__row" key={`${item}${index + 1}`}>
-                          <td className="border pt-4">{item}</td>
+                          <td className="border py-4 my-2">{item}</td>
                           { product.variant_2_name !== '' ? (
                             <>
                               {
@@ -369,8 +376,8 @@ const ProductVariantInfo:FC<any> = ({
                                 {
                                   product.variant_2_name
                                   && (
-                                    <td className="variant2 pt-4 px-4">
-                                      {item2}
+                                    <td className="variant2 p-4 my-2">
+                                      <span className="">{item2}</span>
                                     </td>
                                   )
                                 }
@@ -380,6 +387,7 @@ const ProductVariantInfo:FC<any> = ({
                                       <InputVariantRow
                                         index={index}
                                         index2={index2}
+                                        setDataVariants={setDataVariants}
                                         dataVariants={dataVariants}
                                         handleChangeDataVariant={handleChangeDataVariant}
                                       />
@@ -397,6 +405,7 @@ const ProductVariantInfo:FC<any> = ({
                                   item !== '' && (
                                     <InputVariantRow
                                       index={index}
+                                      setDataVariants={setDataVariants}
                                       dataVariants={dataVariants}
                                       handleChangeDataVariant={handleChangeDataVariant}
                                     />

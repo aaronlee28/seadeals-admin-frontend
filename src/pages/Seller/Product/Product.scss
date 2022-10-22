@@ -132,15 +132,36 @@
       border: 2px dashed #1E46A2;
     }
   }
+
+  .cell-width{
+    width: 196px;
+    &.large{
+      width: 250px;
+    }
+  }
+
 .cell-standard{
   display: flex;
   width: inherit;
-  justify-content: space-around;
+  justify-content: space-between;
   .cell-standard__content{
-    text-align: start;
+    text-align: center;
   }
   input{
     width: 196px;
+  }
+  .cell__image{
+    width: 196px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    .cell__image-item{
+      width: 56px;
+      height: 56px;
+      &.plus{
+        border: 2px dashed #1E46A2;
+      }
+    }
   }
 }
   .variant2{
@@ -149,6 +170,7 @@
     align-items: center;
     text-align: start;
     width: fit-content;
+    min-width: 128px;
   }
 
   .cell-content__row{
@@ -236,6 +258,10 @@
   &:hover{
     fill: #ed5a5a;
   }
+}
+
+.no-margin{
+  margin: 0 !important;
 }
 
 .input__caption{
