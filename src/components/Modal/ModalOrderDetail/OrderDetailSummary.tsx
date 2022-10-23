@@ -11,7 +11,7 @@ const OrderDetailSummary:FC<OrderDetailSummaryProps> = ({ order }) => {
     <>
       <div className="mb-4">
         <p className="fw-bold mb-1">Status Pesanan</p>
-        <p className="">{formatter.FormatTitle(order?.delivery?.status)}</p>
+        <p className="">{formatter.FormatTitle(order?.status)}</p>
       </div>
       <div className="mb-4">
         <p className="fw-bold mb-1">Alamat Pengiriman</p>
@@ -25,12 +25,18 @@ const OrderDetailSummary:FC<OrderDetailSummaryProps> = ({ order }) => {
         </p>
       </div>
       {hasVoucher
-                && (
-                <div className="mb-5">
-                  <p className="fw-bold mb-1">Diskon</p>
-                  <small className="">{`${order?.voucher.code} | ${formatter.DisplayPrice(order?.voucher.amount)}`}</small>
-                </div>
-                )}
+        && (
+        <div className="mb-5">
+          <p className="fw-bold mb-1">Diskon</p>
+          <small className="d-block">
+            {`${order?.voucher.code} | ${formatter.getDiscountDisplay(
+              order.voucher.amount,
+              order.voucher.voucher_type,
+            )}`}
+          </small>
+          <small>{`- ${formatter.DisplayPrice(order?.voucher.amount_reduced)}`}</small>
+        </div>
+        )}
       <div className="mb-4 fw-bold fs-5">
         <p className="mb-1">Total</p>
         <p className="fs-4 text-accent">

@@ -18,4 +18,16 @@ const FormatTitle = (title:any) => {
   return wordArr.map((word:any) => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
 };
 
-export default { DisplayDatetime, DisplayPrice, FormatTitle };
+const getDiscountDisplay = (amount:number, type:string) => {
+  if (type === 'percentage') {
+    return `${amount}%`;
+  }
+  if (type === 'nominal') {
+    return `Rp ${amount}`;
+  }
+  return 'Rp 0';
+};
+
+export default {
+  DisplayDatetime, DisplayPrice, FormatTitle, getDiscountDisplay,
+};

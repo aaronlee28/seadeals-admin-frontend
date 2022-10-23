@@ -8,7 +8,7 @@ interface OrderDetailItemListProps {
 const OrderDetailItemList:FC<OrderDetailItemListProps> = ({ orderItems }) => (
   <div className="mb-4">
     <p className="fw-bold mb-2">Produk Pesanan</p>
-    <div className="overflow-auto py-2" style={{ maxHeight: '608px' }}>
+    <div className="overflow-auto py-2" style={{ maxHeight: '572px' }}>
       {orderItems.map((item:any) => (
         <div key={item.id} className="d-flex gap-3 mb-3">
           <div className="order_item_image">

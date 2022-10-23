@@ -4,7 +4,7 @@ import OrderItem from './OrderItem';
 
 interface OrderListProps {
   orders: any[],
-  viewOrder: (order:any)=>void
+  viewOrder: (order:any)=>void,
 }
 
 const OrdersList:FC<OrderListProps> = ({ orders, viewOrder }) => (

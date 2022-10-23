@@ -23,33 +23,41 @@ const Orders = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState<any>(null);
 
+  const getSellerOrders = async (isMounted: boolean, controller: AbortController) => {
+    try {
+      const response = await axiosPrivate.get(`sellers/orders?filter=${filter}&page=${page}`, {
+        signal: controller.signal,
+      });
+      const { data } = response.data;
+      if (isMounted) {
+        setLoadingOrders(false);
+        setOrders(data.orders);
+        setTotalPage(data.total_page);
+      }
+    } catch (err) {
+      toast.error('gagal memuat daftar pesanan');
+    }
+  };
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
     setLoadingOrders(true);
 
-    const getSellerOrders = async () => {
-      try {
-        const response = await axiosPrivate.get(`sellers/orders?filter=${filter}&page=${page}`, {
-          signal: controller.signal,
-        });
-        const { data } = response.data;
-        if (isMounted) {
-          setLoadingOrders(false);
-          setOrders(data.orders);
-          setTotalPage(data.total_page);
-        }
-      } catch (err) {
-        toast.error('gagal memuat daftar pesanan');
-      }
-    };
-    getSellerOrders();
+    getSellerOrders(isMounted, controller);
 
     return () => {
       isMounted = false;
       controller.abort();
     };
   }, [filter, page]);
+
+  const refreshData = () => {
+    const isMounted = true;
+    const controller = new AbortController();
+    setLoadingOrders(true);
+    getSellerOrders(isMounted, controller);
+  };
 
   const setParam = (status:string) => {
     setSearchParam({ type: status });
@@ -63,7 +71,13 @@ const Orders = () => {
 
   return (
     <div className="py-4">
-      {showModal && <ModalOrderDetail setShow={setShowModal} order={selectedOrder} />}
+      {showModal && (
+      <ModalOrderDetail
+        setShow={setShowModal}
+        order={selectedOrder}
+        refreshData={refreshData}
+      />
+      )}
       <OrdersNav setParam={setParam} active={filter} />
       {loadingOrders
         ? <LoadingPlain height={64} />

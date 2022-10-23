@@ -1,35 +1,34 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import Modal from '../Modal';
-import OrderDetailItemList from './OrderDetailItemList';
-import OrderDetailSummary from './OrderDetailSummary';
-import Button from '../../Button/Button';
+import OrderDetail from './OrderDetail';
+import ConfirmDelivery from './ConfirmDelivery';
 
 interface ModalOrderDetailProps {
   setShow: (isShow:boolean)=>void,
   order: any,
+  refreshData: ()=>void,
 }
 
-const ModalOrderDetail:FC<ModalOrderDetailProps> = ({ setShow, order }) => {
-  const waitingForSeller = order.delivery.status === 'waiting for seller';
-  console.log(order.delivery);
+const ModalOrderDetail:FC<ModalOrderDetailProps> = ({ setShow, order, refreshData }) => {
+  const [showDelivery, setShowDelivery] = useState(false);
+  const [showComplant] = useState(false);
+
   const children = () => (
     <div className="p-5 pe-3 w-100 text-start">
-      <div className="row">
-        <div className="col-7">
-          <OrderDetailItemList orderItems={order?.order_items || []} />
-        </div>
-        <div className="col-5 border-start ps-4">
-          <OrderDetailSummary order={order} />
-          {waitingForSeller
-              && (
-              <Button
-                buttonType="secondary"
-                handleClickedButton={() => {}}
-                text="Buat Pengiriman"
-              />
-              )}
-        </div>
-      </div>
+      {!showDelivery && !showComplant && (
+        <OrderDetail
+          order={order}
+          toggleDelivery={() => setShowDelivery(true)}
+        />
+      )}
+      {showDelivery && (
+        <ConfirmDelivery
+          closeDelivery={() => setShowDelivery(false)}
+          order={order}
+          setShowModal={setShow}
+          refreshData={refreshData}
+        />
+      )}
     </div>
   );
 

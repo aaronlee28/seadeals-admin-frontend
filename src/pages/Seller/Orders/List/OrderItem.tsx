@@ -37,7 +37,7 @@ const OrderItem:FC<OrderItemProps> = ({ order, viewOrder }) => (
             onClick={() => viewOrder()}
             role="presentation"
           >
-            Lihat Detail
+            Lihat Rincian
           </p>
         </div>
         <div className="col-6 row pt-2">
