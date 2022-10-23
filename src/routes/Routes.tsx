@@ -20,6 +20,7 @@ import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
 import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
 import Orders from '../pages/Seller/Orders/List/Orders';
+import OrderThermal from '../pages/Seller/Orders/Thermal/OrderThermal';
 
 const AppRoutes = () => (
   <Routes>
@@ -46,6 +47,7 @@ const AppRoutes = () => (
             </Route>
             <Route path="order/">
               <Route path="" element={<Orders />} />
+              <Route path="thermal/:id" element={<OrderThermal />} />
             </Route>
             <Route path="promotions/">
               <Route path="list" element={<PromotionsDashboard title="Promosi Toko" />} />
