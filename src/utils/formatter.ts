@@ -11,4 +11,11 @@ const DisplayPrice = (price: number) => {
   return str.substring(0, str.length - 3);
 };
 
-export default { DisplayDatetime, DisplayPrice };
+const FormatTitle = (title:any) => {
+  if (!title) return title;
+  const wordArr = title.split(' ');
+
+  return wordArr.map((word:any) => word.charAt(0).toUpperCase() + word.substring(1)).join(' ');
+};
+
+export default { DisplayDatetime, DisplayPrice, FormatTitle };

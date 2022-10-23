@@ -1,14 +1,13 @@
 import React, { FC } from 'react';
-import { Link } from 'react-router-dom';
 import OrderItemProduct from './OrderItemProduct';
-import Formatter from '../../../utils/formatter';
+import formatter from '../../../../utils/formatter';
 
 interface OrderItemProps {
   order: any,
-  couriers: any[],
+  viewOrder: ()=>void,
 }
 
-const OrderItem:FC<OrderItemProps> = ({ order, couriers }) => (
+const OrderItem:FC<OrderItemProps> = ({ order, viewOrder }) => (
   <div className="container text-start mb-3">
     <div className="rounded-top border border-bottom-0 p-2 px-4 bg-light d-flex justify-content-between">
       <small>{order.user_id}</small>
@@ -25,24 +24,38 @@ const OrderItem:FC<OrderItemProps> = ({ order, couriers }) => (
           ))}
         </div>
         <div className="col-2 fw-bold">
-          <p>{order.status}</p>
+          <p>{formatter.FormatTitle(order.status)}</p>
         </div>
         <div className="col-2">
           <p>
-            {order?.delivery
-                  && couriers.find((cour) => cour.id === order.delivery.courier_id).name}
+            {formatter.FormatTitle(order?.delivery?.courier)}
           </p>
         </div>
         <div className="col-2">
-          <Link to={`${order.id}`}>
-            <p>Lihat Detail</p>
-          </Link>
+          <p
+            className="text-main hover-click"
+            onClick={() => viewOrder()}
+            role="presentation"
+          >
+            Lihat Detail
+          </p>
         </div>
         <div className="col-6 row pt-2">
+          {
+            order.voucher && (
+            <>
+              <div className="col-8" />
+              <div className="col-4 text-secondary mb-2">
+                <small className="d-block">{`Voucher: ${order.voucher.code}`}</small>
+                <small className="fw-bold">{formatter.DisplayPrice(order.voucher.amount_reduced)}</small>
+              </div>
+            </>
+            )
+          }
           <div className="col-8" />
           <div className="col-4">
             <p>Total:</p>
-            <p className="fw-bold">{Formatter.DisplayPrice(order.total)}</p>
+            <p className="fw-bold">{formatter.DisplayPrice(order.total_order_price_after_disc)}</p>
           </div>
         </div>
       </div>

@@ -3,16 +3,16 @@ import toast from 'react-hot-toast';
 import { useSearchParams } from 'react-router-dom';
 import OrdersNav from './OrdersNav';
 import OrdersList from './OrdersList';
-import './Orders.scss';
-import LoadingPlain from '../../../components/Loading/LoadingPlain';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
-import Pagination from '../../../components/Pagination/Pagination';
+import '../Orders.scss';
+import LoadingPlain from '../../../../components/Loading/LoadingPlain';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import Pagination from '../../../../components/Pagination/Pagination';
+import ModalOrderDetail from '../../../../components/Modal/ModalOrderDetail/ModalOrderDetail';
 
 const Orders = () => {
   const axiosPrivate = useAxiosPrivate();
   const [searchParam, setSearchParam] = useSearchParams();
 
-  const [couriers, setCouriers] = useState([]);
   const [loadingOrders, setLoadingOrders] = useState(true);
   const [orders, setOrders] = useState([]);
 
@@ -20,18 +20,16 @@ const Orders = () => {
   const [page, setPage] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
 
+  const [showModal, setShowModal] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState<any>(null);
+
   useEffect(() => {
     let isMounted = true;
     const controller = new AbortController();
+    setLoadingOrders(true);
 
     const getSellerOrders = async () => {
       try {
-        setLoadingOrders(true);
-        const couriersRes = await axiosPrivate.get('couriers', {
-          signal: controller.signal,
-        });
-        setCouriers(couriersRes.data.data);
-
         const response = await axiosPrivate.get(`sellers/orders?filter=${filter}&page=${page}`, {
           signal: controller.signal,
         });
@@ -58,12 +56,18 @@ const Orders = () => {
     setFilter(status);
   };
 
+  const viewOrder = (order:any) => {
+    setSelectedOrder(order);
+    setShowModal(true);
+  };
+
   return (
     <div className="py-4">
+      {showModal && <ModalOrderDetail setShow={setShowModal} order={selectedOrder} />}
       <OrdersNav setParam={setParam} active={filter} />
       {loadingOrders
         ? <LoadingPlain height={64} />
-        : <OrdersList orders={orders} couriers={couriers} />}
+        : <OrdersList orders={orders} viewOrder={viewOrder} />}
       <Pagination
         page={!page ? 1 : page}
         totalPage={totalPage}

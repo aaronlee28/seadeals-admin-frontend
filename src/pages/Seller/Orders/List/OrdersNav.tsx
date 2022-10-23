@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import Button from '../../../components/Button/Button';
-import ORDER_FILTER from '../../../constants/orderFilter';
+import Button from '../../../../components/Button/Button';
+import ORDER_FILTER from '../../../../constants/orderFilter';
 
 interface OrdersNavProps {
   setParam: (param:any)=>void
@@ -36,9 +36,9 @@ const OrdersNav:FC<OrdersNavProps> = ({ setParam, active }) => {
           handleClickedButton={() => handleNavClick(ORDER_FILTER.REFUNDED)}
         />
         <Button
-          text="Sampai"
-          buttonType={`navtab ${active === ORDER_FILTER.DELIVERED && 'active'}`}
-          handleClickedButton={() => handleNavClick(ORDER_FILTER.DELIVERED)}
+          text="Komplain"
+          buttonType={`navtab ${active === ORDER_FILTER.COMPLAINT && 'active'}`}
+          handleClickedButton={() => handleNavClick(ORDER_FILTER.COMPLAINT)}
         />
       </div>
     </div>
