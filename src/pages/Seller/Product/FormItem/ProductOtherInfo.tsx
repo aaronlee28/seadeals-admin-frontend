@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
-import VoucherConstant from '../../../../constants/voucher';
 import RadioBoolean from '../../../../components/RadioBoolean/RadioBoolean';
 import PRODUCT_STATUS from '../../../../constants/product';
 
-const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
+const ProductOtherInfo:FC<any> = ({ product, handleOnChange }) => (
   <div className="my-4">
     <h5 className="text-start"><b>Informasi Lainnya</b></h5>
     <div className="row my-3">
@@ -20,8 +19,6 @@ const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
               required
               value={product.weight}
               max={10000}
-              readOnly={formType === VoucherConstant.SHOW}
-              disabled={formType === VoucherConstant.SHOW}
             />
             <span className="input-group-addon">gr</span>
           </div>
@@ -42,8 +39,6 @@ const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
               required
               value={product.length}
               max={100000}
-              readOnly={formType === VoucherConstant.SHOW}
-              disabled={formType === VoucherConstant.SHOW}
             />
             <span className="input-group-addon">cm</span>
           </div>
@@ -58,8 +53,6 @@ const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
               required
               value={product.width}
               max={100000}
-              readOnly={formType === VoucherConstant.SHOW}
-              disabled={formType === VoucherConstant.SHOW}
             />
             <span className="input-group-addon">cm</span>
           </div>
@@ -74,8 +67,6 @@ const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
               required
               value={product.height}
               max={100000}
-              readOnly={formType === VoucherConstant.SHOW}
-              disabled={formType === VoucherConstant.SHOW}
             />
             <span className="input-group-addon">cm</span>
           </div>
@@ -85,7 +76,7 @@ const ProductOtherInfo:FC<any> = ({ product, formType, handleOnChange }) => (
     <div className="row my-3">
       <label className="col-3 text-end align-self-center" htmlFor="photo">Produk Berbahaya</label>
       <div className="col-9 p-0">
-        <RadioBoolean name="is_hazardous" data={product.is_hazardous} handleOnChange={handleOnChange} formType={formType} />
+        <RadioBoolean name="is_hazardous" data={product.is_hazardous} handleOnChange={handleOnChange} />
       </div>
     </div>
     <div className="row my-3">

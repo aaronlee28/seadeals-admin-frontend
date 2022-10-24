@@ -1,8 +1,7 @@
 import React, { FC } from 'react';
-import VoucherConstant from '../../constants/voucher';
 
 const RadioBoolean:FC<any> = ({
-  name, data, handleOnChange, formType,
+  name, data, handleOnChange,
 }) => (
   <div className="d-flex gap-3">
     <div>
@@ -22,8 +21,6 @@ const RadioBoolean:FC<any> = ({
         name={name}
         onChange={handleOnChange}
         value=""
-        readOnly={formType === VoucherConstant.SHOW}
-        disabled={formType === VoucherConstant.SHOW}
         checked={!data}
       />
       <label className="mx-1">Tidak</label>

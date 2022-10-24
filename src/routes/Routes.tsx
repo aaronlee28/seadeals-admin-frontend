@@ -52,9 +52,8 @@ const AppRoutes = () => (
             </Route>
             <Route path="product/">
               <Route path="list" element={<DashboardProduct />} />
-              <Route path="new" element={<FormProduct formType="create" title="Buat Produk" />} />
-              <Route path="show/:productID" element={<FormProduct formType="show" title="Detail Produk" />} />
-              <Route path="update/:productID" element={<FormProduct formType="update" title="Update Produk" />} />
+              <Route path="new" element={<FormProduct title="Buat Produk" />} />
+              <Route path="show/:productID" element={<FormProduct title="Detail Produk" />} />
             </Route>
           </Route>
         </Route>
