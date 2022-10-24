@@ -1,45 +1,27 @@
-import React from 'react';
+import React, { FC } from 'react';
 import './Toggle.scss';
-import VoucherConstant from '../../constants/voucher';
 
-type ToggleRequiredProps = {
-  value: string,
+interface ToggleProps {
+  id: number,
   inputID: string,
-  handleOnChange: () => void;
-};
+  isChecked: boolean,
+  handleChange: (e:any)=>void
+}
 
-type ToggleOptionalProps = {
-  formType?: string;
-};
-
-interface ToggleProps
-  extends ToggleRequiredProps,
-  ToggleOptionalProps {}
-
-const defaultProps: ToggleOptionalProps = {
-  formType: '',
-};
-
-const Toggle = (props: ToggleProps) => {
-  const {
-    value, inputID, handleOnChange, formType,
-  } = props;
-  return (
-    <>
-      <input
-        type="checkbox"
-        id={inputID}
-        name={inputID}
-        className="toggle-switch"
-        value={value}
-        readOnly={formType === VoucherConstant.SHOW}
-        disabled={formType === VoucherConstant.SHOW}
-        onChange={handleOnChange}
-      />
-      <label htmlFor={inputID} className="toggle-label">Toggle</label>
-    </>
-  );
-};
-Toggle.defaultProps = defaultProps;
+const Toggle:FC<ToggleProps> = ({
+  id, inputID, isChecked, handleChange,
+}) => (
+  <>
+    <input
+      type="checkbox"
+      id={inputID}
+      className="toggle-switch"
+      defaultChecked={isChecked}
+      value={id}
+      onChange={handleChange}
+    />
+    <label htmlFor={inputID} className="toggle-label">Toggle</label>
+  </>
+);
 
 export default Toggle;

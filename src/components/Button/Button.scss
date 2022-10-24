@@ -89,6 +89,13 @@
       background: #EFEFEF;
     }
   }
+  &.disabled{
+      color: #5f5f5f;
+      background: #CCCCCC;
+      border: solid 1px #CCCCCC;
+      padding: 10px 20px;
+      cursor: unset;
+  }
   &.plain {
     .text {
 
@@ -96,5 +103,19 @@
     .icon {
 
     }
+  }
+  &.navtab {
+      padding-bottom:0.5rem;
+      background: #FFFFFF;
+      border-radius: 0;
+      .text {
+        font-weight: 800;
+      }
+      &:hover {
+        color: #1E46A2;
+      }
+      &.active {
+        border-bottom: solid 2px #2658CD;
+      }
   }
 }
