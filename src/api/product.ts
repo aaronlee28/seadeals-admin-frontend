@@ -10,6 +10,10 @@ class ProductAPI {
   static DeleteProductByID(ax:any, id:any = '') {
     return ax.delete(`/sellers/${id}/delete-product`);
   }
+
+  static FindAllCategories(ax:any, filter:any) {
+    return ax.get(`/categories?${filter}`);
+  }
 }
 
 export default ProductAPI;

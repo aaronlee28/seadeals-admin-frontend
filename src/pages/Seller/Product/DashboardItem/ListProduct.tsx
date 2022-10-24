@@ -79,12 +79,12 @@ const ListProduct:FC<any> = ({
                             <div className="d-flex justify-content-between gap-4 my-1" key={pvd.id}>
                               <span className="product-list__variant cell-content small">{pvd.variant_code || '-'}</span>
                               {
-                                pvd.variant_1_value || pvd.variant_2_value
+                                pvd.variant1_value || pvd.variant2_value
                                   ? (
                                     <span
                                       className="product-list__variant cell-content large"
                                     >
-                                      {`${pvd.variant_1_value || ''}${pvd.variant_1_value && pvd.variant_2_value ? ',' : ''} ${pvd.variant_2_value || ''}`}
+                                      {`${pvd.variant1_value || ''}${pvd.variant1_value && pvd.variant2_value ? ',' : ''} ${pvd.variant2_value || ''}`}
                                     </span>
                                   )
                                   : <span className="product-list__variant cell-content large">-</span>
@@ -117,6 +117,7 @@ const ListProduct:FC<any> = ({
                         buttonType="plain action-button"
                         handleClickedButton={() => navigate(`/seller/product/show/${p.id}`)}
                         text="Rincian"
+                        isDisabled
                       />
                       <Button
                         buttonType="plain action-button"
