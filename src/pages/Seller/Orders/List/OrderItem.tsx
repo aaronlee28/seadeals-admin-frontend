@@ -10,7 +10,7 @@ interface OrderItemProps {
 const OrderItem:FC<OrderItemProps> = ({ order, viewOrder }) => (
   <div className="container text-start mb-3">
     <div className="rounded-top border border-bottom-0 p-2 px-4 bg-light d-flex justify-content-between">
-      <small>{order.user_id}</small>
+      <small>{order?.buyer_name}</small>
       <small>{`No. Pesanan ${order.id}`}</small>
     </div>
     <div className="rounded-bottom border p-4 pb-2">
