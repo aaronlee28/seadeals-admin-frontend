@@ -20,7 +20,7 @@ import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
 import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
 import Orders from '../pages/Seller/Orders/List/Orders';
-import DetailProduct from "../pages/Seller/Product/DetailProduct";
+import DetailProduct from '../pages/Seller/Product/DetailProduct/DetailProduct';
 
 const AppRoutes = () => (
   <Routes>
