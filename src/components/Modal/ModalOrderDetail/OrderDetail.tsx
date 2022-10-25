@@ -6,12 +6,23 @@ import Button from '../../Button/Button';
 interface OrderDetailProps {
   order:any,
   toggleDelivery: ()=>void
+  toggleComplaint: ()=>void
 }
 
-const OrderDetail:FC<OrderDetailProps> = ({ order, toggleDelivery }) => (
+const OrderDetail:FC<OrderDetailProps> = ({ order, toggleDelivery, toggleComplaint }) => (
   <>
     <div className="mb-3">
-      <h4 className="fw-bold mb-0">Rincian Pesanan</h4>
+      <div className="d-flex gap-4">
+        <h4 className="fw-bold mb-0">Rincian Pesanan</h4>
+        {order.complaint
+          && (
+          <Button
+            buttonType="plain text-accent border border-accent py-1 px-2"
+            handleClickedButton={() => toggleComplaint()}
+            text="Lihat Komplain"
+          />
+          )}
+      </div>
       <small className="pe-5 text-secondary">{`No. Pesanan: ${order?.id}`}</small>
     </div>
     <div className="row">
