@@ -6,13 +6,12 @@ import { v4 } from 'uuid';
 import {
   deleteObject, getDownloadURL, ref, uploadBytes,
 } from 'firebase/storage';
-import VoucherConstant from '../../../../constants/voucher';
 import Modal from '../../../../components/Modal/Modal';
 import CategoryInput from './CategoryInput';
 import storage from '../../../../firebase/firebase';
 
 const ProductMainInfo:FC<any> = ({
-  product, formType, handleOnChange, setCategoryID, productPhoto, setProductPhoto,
+  product, handleOnChange, setCategoryID, productPhoto, setProductPhoto,
 }) => {
   const imageInputRef = useRef<any>();
   const [category, setCategory] = useState({
@@ -105,10 +104,7 @@ const ProductMainInfo:FC<any> = ({
             name="image"
             className="col-9 border rounded p-2 product-form__add-image"
             type="file"
-            // required={productPhoto.length < 1}
             value={product.product_photos[0]}
-            readOnly={formType === VoucherConstant.SHOW}
-            disabled={formType === VoucherConstant.SHOW}
             onInput={handleImageChange}
             ref={imageInputRef}
           />
@@ -124,8 +120,6 @@ const ProductMainInfo:FC<any> = ({
           type="text"
           required
           value={product.name}
-          readOnly={formType === VoucherConstant.SHOW}
-          disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
         />
       </div>
@@ -144,8 +138,6 @@ const ProductMainInfo:FC<any> = ({
           placeholder="Masukkan deskripsi produk"
           required
           value={product.description}
-          readOnly={formType === VoucherConstant.SHOW}
-          disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
         />
       </div>

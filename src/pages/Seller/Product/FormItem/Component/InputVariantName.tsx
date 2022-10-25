@@ -1,9 +1,8 @@
 import React, { FC } from 'react';
-import VoucherConstant from '../../../../../constants/voucher';
 import { ReactComponent as IconClose } from '../../../../../assets/svg/icon_close.svg';
 
 const InputVariantName:FC<any> = ({
-  variantRef, variant, setVariant, index, setDataVariants, removeVariantByIdx, formType,
+  variantRef, variant, setVariant, index, setDataVariants, removeVariantByIdx,
 }) => (
   <div className="d-flex">
     <input
@@ -18,8 +17,6 @@ const InputVariantName:FC<any> = ({
         setVariant(variant1Tmp);
       }}
       required
-      readOnly={formType === VoucherConstant.SHOW}
-      disabled={formType === VoucherConstant.SHOW}
     />
     {React.createElement(IconClose, {
       className: 'icon-remove small',

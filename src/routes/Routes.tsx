@@ -19,6 +19,7 @@ import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
 import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
 import Orders from '../pages/Seller/Orders/List/Orders';
+import DetailProduct from '../pages/Seller/Product/DetailProduct/DetailProduct';
 
 const AppRoutes = () => (
   <Routes>
@@ -51,9 +52,8 @@ const AppRoutes = () => (
             </Route>
             <Route path="product/">
               <Route path="list" element={<DashboardProduct />} />
-              <Route path="new" element={<FormProduct formType="create" title="Buat Produk" />} />
-              <Route path="show/:productID" element={<FormProduct formType="show" title="Detail Produk" />} />
-              <Route path="update/:productID" element={<FormProduct formType="update" title="Update Produk" />} />
+              <Route path="new" element={<FormProduct title="Buat Produk" />} />
+              <Route path="show/:productID" element={<DetailProduct />} />
             </Route>
           </Route>
         </Route>

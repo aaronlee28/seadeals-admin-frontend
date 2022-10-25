@@ -4,7 +4,7 @@ class ProductAPI {
   }
 
   static FindProductByID(ax:any, id:any = '') {
-    return ax.get(`/sellers/products/${id}`);
+    return ax.get(`/products/detail/${id}`);
   }
 
   static DeleteProductByID(ax:any, id:any = '') {

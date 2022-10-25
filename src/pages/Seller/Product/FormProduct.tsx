@@ -1,7 +1,6 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import VoucherConstant from '../../../constants/voucher';
 import Button from '../../../components/Button/Button';
 import ProductMainInfo from './FormItem/ProductMainInfo';
 import ProductVariantInfo from './FormItem/ProductVariantInfo';
@@ -11,7 +10,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 const CREATE_PRODUCT_URL = 'sellers/create-product';
 
 const FormProduct:FC<any> = ({
-  title, formType,
+  title,
 }) => {
   const navigate = useNavigate();
   const axiosPrivate = useAxiosPrivate();
@@ -96,7 +95,6 @@ const FormProduct:FC<any> = ({
         product_photos: productPhoto,
         variant_array: variantArray,
       };
-      console.log(body);
       const response = await axiosPrivate.post(
         CREATE_PRODUCT_URL,
         JSON.stringify(body),
@@ -110,23 +108,17 @@ const FormProduct:FC<any> = ({
     }
   };
 
-  const handleUpdate = () => {
-    console.log('ko');
-  };
-
   return (
     <div className="product-form__container">
       <h3 className="mb-4 mt-2">{title}</h3>
       <div className="product-form__content">
         <form onSubmit={(e) => {
-          console.log(e);
           e.preventDefault();
           handleSubmit().then();
         }}
         >
           <ProductMainInfo
             product={product}
-            formType={formType}
             handleOnChange={handleOnChange}
             setCategoryID={setCategoryID}
             productPhoto={productPhoto}
@@ -134,16 +126,14 @@ const FormProduct:FC<any> = ({
           />
           <ProductVariantInfo
             product={product}
-            formType={formType}
             handleOnChange={handleOnChange}
             setProduct={setProduct}
             dataVariants={dataVariants}
             setDataVariants={setDataVariants}
           />
-          <ProductOtherInfo product={product} formType={formType} handleOnChange={handleOnChange} />
+          <ProductOtherInfo product={product} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
-            {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={() => {}} text="Simpan" />}
-            {formType === VoucherConstant.UPDATE && <Button isSubmit buttonType="primary" handleClickedButton={handleUpdate} text="Simpan Perubahan" />}
+            <Button isSubmit buttonType="primary" handleClickedButton={() => {}} text="Simpan" />
             <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/product/list')} text="Batal" />
           </div>
         </form>

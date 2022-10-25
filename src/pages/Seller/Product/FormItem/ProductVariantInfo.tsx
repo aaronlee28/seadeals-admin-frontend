@@ -1,7 +1,6 @@
 import React, {
   FC, useEffect, useRef, useState,
 } from 'react';
-import VoucherConstant from '../../../../constants/voucher';
 import RadioBoolean from '../../../../components/RadioBoolean/RadioBoolean';
 import Button from '../../../../components/Button/Button';
 import { ReactComponent as IconClose } from '../../../../assets/svg/icon_close.svg';
@@ -10,7 +9,7 @@ import InputVariantName from './Component/InputVariantName';
 import BulkEditVariant from './Component/BulkEditVariant';
 
 const ProductVariantInfo:FC<any> = ({
-  product, formType, handleOnChange, setProduct, dataVariants, setDataVariants,
+  product, handleOnChange, setProduct, dataVariants, setDataVariants,
 }) => {
   const [showVariantTable, setShowVariantTable] = useState(false);
   const [variant1, setVariant1] = useState<any>([]);
@@ -95,7 +94,6 @@ const ProductVariantInfo:FC<any> = ({
     });
     setDataVariants(tmp);
   };
-  console.log('DataVariants: ', dataVariants);
 
   const cleanVariant = () => {
     setVariant1([]);
@@ -123,8 +121,6 @@ const ProductVariantInfo:FC<any> = ({
                   value={product.min_quantity}
                   min={1}
                   max={10000}
-                  readOnly={formType === VoucherConstant.SHOW}
-                  disabled={formType === VoucherConstant.SHOW}
                 />
                 <span className="input-group-addon">pcs</span>
               </div>
@@ -142,8 +138,6 @@ const ProductVariantInfo:FC<any> = ({
                   value={product.max_quantity}
                   min={1}
                   max={10000}
-                  readOnly={formType === VoucherConstant.SHOW}
-                  disabled={formType === VoucherConstant.SHOW}
                 />
                 <span className="input-group-addon">pcs</span>
               </div>
@@ -164,7 +158,6 @@ const ProductVariantInfo:FC<any> = ({
               handleChangeByName('default_stock', '');
               setShowVariantTable(!showVariantTable);
             }}
-            formType={formType}
           />
         </div>
       </div>
@@ -185,8 +178,6 @@ const ProductVariantInfo:FC<any> = ({
                       onChange={handleOnChange}
                       required={variant1.length === 0}
                       value={product.default_price}
-                      readOnly={formType === VoucherConstant.SHOW}
-                      disabled={formType === VoucherConstant.SHOW}
                     />
                   </div>
                 </div>
@@ -205,8 +196,6 @@ const ProductVariantInfo:FC<any> = ({
                       onChange={handleOnChange}
                       required={variant1.length === 0}
                       value={product.default_stock}
-                      readOnly={formType === VoucherConstant.SHOW}
-                      disabled={formType === VoucherConstant.SHOW}
                     />
                     <span className="input-group-addon">Pcs</span>
                   </div>
@@ -229,8 +218,6 @@ const ProductVariantInfo:FC<any> = ({
                     type="text"
                     onChange={handleOnChange}
                     value={product.variant_1_name}
-                    readOnly={formType === VoucherConstant.SHOW}
-                    disabled={formType === VoucherConstant.SHOW}
                   />
                   {product.variant_1_name !== '' && (
                   <>
@@ -258,7 +245,6 @@ const ProductVariantInfo:FC<any> = ({
                         index={index}
                         setDataVariants={setDataVariants}
                         removeVariantByIdx={() => removeVariantByIdx(true, index)}
-                        formType={formType}
                       />
                     </div>
                   ))}
@@ -278,8 +264,6 @@ const ProductVariantInfo:FC<any> = ({
                     type="text"
                     onChange={handleOnChange}
                     value={product.variant_2_name}
-                    readOnly={formType === VoucherConstant.SHOW}
-                    disabled={formType === VoucherConstant.SHOW}
                   />
                   {product.variant_2_name !== '' && (
                     <>
@@ -309,7 +293,6 @@ const ProductVariantInfo:FC<any> = ({
                         index={index}
                         setDataVariants={setDataVariants}
                         removeVariantByIdx={() => removeVariantByIdx(false, index)}
-                        formType={formType}
                       />
                     </div>
                   ))}
