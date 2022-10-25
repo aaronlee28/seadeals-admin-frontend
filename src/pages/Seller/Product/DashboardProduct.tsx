@@ -23,7 +23,7 @@ const DashboardProduct:FC<any> = () => {
   const [deletedID, setDeletedID] = useState(undefined);
 
   const findProductBySellerID = async () => {
-    const filter = `page=${page}&limit=10`;
+    const filter = `page=${page}&limit=10&sortBy=date&sort=desc`;
     await ProductAPI.FindProductBySellerID(axiosPrivate, filter)
       .then((resp:any) => {
         const { data } = resp.data;

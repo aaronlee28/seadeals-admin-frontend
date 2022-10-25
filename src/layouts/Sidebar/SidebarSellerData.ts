@@ -2,16 +2,34 @@ import { ReactComponent as IconChevron } from '../../assets/svg/icon_chevron_rig
 import { ReactComponent as IconProduct } from '../../assets/svg/icon_product.svg';
 import { ReactComponent as IconVoucher } from '../../assets/svg/icon_voucher.svg';
 import { ReactComponent as IconPromotion } from '../../assets/svg/icon_shoutout.svg';
+import { ReactComponent as IconCourier } from '../../assets/svg/courier.svg';
+import { ReactComponent as IconSettings } from '../../assets/svg/settings.svg';
+import { ReactComponent as IconOrders } from '../../assets/svg/order.svg';
 
 const SidebarSellerData = [
+  // {
+  //   id: 1,
+  //   title: 'Beranda',
+  //   path: '/seller',
+  //   icon: IconVoucher,
+  //   iconClosed: IconChevron,
+  //   iconOpened: IconChevron,
+  //   subNav: null,
+  // },
   {
     id: 1,
-    title: 'Beranda',
-    path: '/seller',
-    icon: IconVoucher,
+    title: 'Pesanan',
+    path: '',
+    icon: IconOrders,
     iconClosed: IconChevron,
     iconOpened: IconChevron,
-    subNav: null,
+    subNav: [
+      {
+        title: 'Daftar Pesanan',
+        path: '/seller/order',
+        icon: IconOrders,
+      },
+    ],
   },
   {
     id: 3,
@@ -55,7 +73,7 @@ const SidebarSellerData = [
   },
   {
     id: 4,
-    title: 'Pomosi',
+    title: 'Promosi',
     path: '',
     icon: IconPromotion,
     iconClosed: IconChevron,
@@ -70,6 +88,21 @@ const SidebarSellerData = [
         title: 'Buat promosi',
         path: '/seller/promotions/new',
         icon: IconPromotion,
+      },
+    ],
+  },
+  {
+    id: 6,
+    title: 'Pengaturan',
+    path: '',
+    icon: IconSettings,
+    iconClosed: IconChevron,
+    iconOpened: IconChevron,
+    subNav: [
+      {
+        title: 'Pengiriman',
+        path: '/seller/settings/delivery',
+        icon: IconCourier,
       },
     ],
   },
