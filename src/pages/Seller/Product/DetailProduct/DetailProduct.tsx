@@ -126,7 +126,16 @@ const DetailProduct:FC<any> = () => {
                                 <td className="cell-width text-center">{item.stock}</td>
                                 <td className="cell-width text-center">{item.variant_code}</td>
                                 <td className="cell-width text-center">
-                                  <img className="img-fit product-form__image rounded m-0" src={item.picture_url} alt={`${item.variant1_value},${item.variant2_value}`} />
+                                  { item.picture_url
+                                    ? (
+                                      <img
+                                        className="img-fit product-form__image rounded m-0"
+                                        src={item.picture_url}
+                                        alt={`${item.variant1_value},${item.variant2_value}`}
+                                      />
+                                    ) : (
+                                      <span>Tidak ada gambar</span>
+                                    )}
                                 </td>
                               </tr>
                             ))
