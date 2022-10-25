@@ -9,7 +9,7 @@ import { axiosPrivate } from '../../../../api/axios';
 import ProductAPI from '../../../../api/product';
 
 const PromotionBonusInfo:FC<any> = ({
-  promotion, formType, handleOnChange,
+  promotion, setReqProducts, formType, handleOnChange,
 }) => {
   const [show, setShow] = useState<any>(false);
 
@@ -131,17 +131,23 @@ const PromotionBonusInfo:FC<any> = ({
       <h5 className="text-start"><b>Pengaturan Bawaan (Ganti Semua)</b></h5>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="quota">Kuota promosi</label>
-        <input
-          name="quota"
-          className="col-9 border rounded p-2"
-          type="number"
-          placeholder="Masukkan angka"
-          required
-          value={promotion.quota}
-          readOnly={formType === VoucherConstant.SHOW}
-          disabled={formType === VoucherConstant.SHOW}
-          onChange={handleOnChange}
-        />
+        <div className="col-9">
+          <div className="row">
+            <div className="input-group prefix p-0">
+              <input
+                name="quota"
+                className="form__input"
+                placeholder="Masukkan angka"
+                type="number"
+                required
+                value={promotion.quota}
+                readOnly={formType === VoucherConstant.SHOW}
+                disabled={formType === VoucherConstant.SHOW}
+                onChange={handleOnChange}
+              />
+            </div>
+          </div>
+        </div>
       </div>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="max_quota">Kuantitas maksimal</label>
@@ -164,7 +170,7 @@ const PromotionBonusInfo:FC<any> = ({
         </div>
       </div>
       {
-        (promotion.amount > 0 && promotion.amount && promotion.max_quota) && (
+        (promotion.amount > 0 && promotion.quota !== '' && promotion.max_quota !== '') && (
         <>
           <h5 className="text-start"><b>Pengaturan Produk</b></h5>
           <div className="row my-3">
@@ -180,7 +186,8 @@ const PromotionBonusInfo:FC<any> = ({
                                   <div className="row mt-2 mb-5">
                                     <label className="col-3 text-end align-self-center mb-3" htmlFor="product">Pilih produk</label>
                                     <div className="col-9 p-0 mb-3">
-                                      <select className="form-select my-auto" onChange={handleSetCurrentProduct}>
+                                      <select className="form-select my-auto" onChange={handleSetCurrentProduct} defaultValue="choose product">
+                                        <option value="choose product" disabled>Pilih produk</option>
                                         {
                                                             products.map(
                                                               (
@@ -220,6 +227,8 @@ const PromotionBonusInfo:FC<any> = ({
           <ProductListInfo
             addedProduct={addedProduct}
             products={products}
+            promotion={promotion}
+            setReqProducts={setReqProducts}
             setDeletedID={setDeletedID}
             discount={promotion.amount}
             quota={quota === '' ? promotion.quota : quota}

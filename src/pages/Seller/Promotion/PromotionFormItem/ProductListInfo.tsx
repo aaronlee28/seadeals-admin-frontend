@@ -4,7 +4,8 @@ import Button from '../../../../components/Button/Button';
 import Modal from '../../../../components/Modal/Modal';
 
 const ProductListInfo:FC<any> = ({
-  addedProduct, products, discount, promotionType, quota, maxQuota, setQuota, setMaxQuota,
+  addedProduct, products, discount, promotionType, quota, maxQuota,
+  setQuota, setMaxQuota, setReqProducts,
 }) => {
   const [productList, setProductList] = useState<any>([]);
   const [productIds, setProductIds] = useState<any>([]);
@@ -25,6 +26,12 @@ const ProductListInfo:FC<any> = ({
       }
     }
   }, [addedProduct]);
+
+  useEffect(() => {
+    if (productList.length > 0) {
+      setReqProducts(productList);
+    }
+  }, [productList]);
 
   const [newQuota, setNewQuota] = useState<any>('');
   const [newMaxQuota, setNewMaxQuota] = useState<any>('');
@@ -51,7 +58,6 @@ const ProductListInfo:FC<any> = ({
         for (let j = i + 1; j < productList.length; j += 1) {
           if (productList[i].product_id === productList[j].product_id) {
             setProductList(productList.splice(i, 1));
-            console.log(productList);
             return;
           }
         }
@@ -100,7 +106,13 @@ const ProductListInfo:FC<any> = ({
                     <td className="text-center">{product.max_quota}</td>
                     {
                      !show && (
-                     <td className="d-inline-block"><Button buttonType="secondary alt" text="Ubah kuota" handleClickedButton={() => setShow(true)} /></td>
+                     <td>
+                       <div className="row">
+                         <div className="d-flex col justify-content-center">
+                           <Button buttonType="secondary alt" text="Ubah kuota" handleClickedButton={() => setShow(true)} />
+                         </div>
+                       </div>
+                     </td>
                      )
                     }
                     { show && (

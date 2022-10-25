@@ -29,9 +29,8 @@ const PromotionBasicInfo:FC<any> = ({ promotion, formType, handleOnChange }) => 
           <div className="row">
             <div className="input-group prefix p-0">
               <textarea
-                className="form__input"
+                className="form__input form-control"
                 name="description"
-                maxLength={5}
                 placeholder="Masukkan deskripsi promosi"
                 required
                 value={promotion.description}

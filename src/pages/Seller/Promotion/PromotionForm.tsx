@@ -7,23 +7,14 @@ import PromotionBasicInfo from './PromotionFormItem/PromotionBasicInfo';
 import PromotionBonusInfo from './PromotionFormItem/PromotionBonusInfo';
 import PromotionsAPI from '../../../api/promotions';
 import Button from '../../../components/Button/Button';
-// import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import VoucherConstant from '../../../constants/voucher';
-
-// const PROMOTION_URL = '/promotions';
 
 const PromotionForm:FC<any> = ({ title, formType }) => {
   const navigate = useNavigate();
-  // const [searchParams] = useSearchParams();
-  // const vID = searchParams.get('copy');
-  // const axiosPrivate = useAxiosPrivate();
+  const [reqProducts, setReqProducts] = useState<any>([]);
 
   const [promotion, setPromotion] = useState({
-    product: {
-      product_id: '',
-      quota: '',
-      max_quota: '',
-    },
+    products: reqProducts,
     name: '',
     description: '',
     start_date: '',
@@ -65,17 +56,31 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
   // };
 
   const handleSubmit = async () => {
+    console.log(JSON.stringify({
+      products: reqProducts,
+      name: promotion.name,
+      description: promotion.description,
+      start_date: `${promotion.start_date}+07:00`,
+      end_date: `${promotion.end_date}+07:00`,
+      quota: Number(promotion.quota),
+      amount: Number(promotion.amount),
+      amount_type: promotion.amount_type,
+      max_quota: Number(promotion.max_quota),
+      banner_url: promotion.banner_url,
+    }));
     try {
       const response = await PromotionsAPI.AddPromotion(
         JSON.stringify({
-          ...promotion,
+          products: reqProducts,
           name: promotion.name,
           description: promotion.description,
-          quota: Number(promotion.quota),
-          amount: Number(promotion.amount),
-          max_quota: Number(promotion.max_quota),
           start_date: `${promotion.start_date}+07:00`,
           end_date: `${promotion.end_date}+07:00`,
+          quota: Number(promotion.quota),
+          amount: Number(promotion.amount),
+          amount_type: promotion.amount_type,
+          max_quota: Number(promotion.max_quota),
+          banner_url: promotion.banner_url,
         }),
       );
       if (response.status === 200) {
@@ -99,6 +104,7 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
           />
           <PromotionBonusInfo
             promotion={promotion}
+            setReqProducts={setReqProducts}
             formType={formType}
             handleOnChange={handleOnChange}
           />
