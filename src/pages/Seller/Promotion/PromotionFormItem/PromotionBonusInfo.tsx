@@ -169,8 +169,12 @@ const PromotionBonusInfo:FC<any> = ({
           </div>
         </div>
       </div>
+      <div className="row my-3">
+        <label className="col-3 text-end align-self-center" htmlFor="max_quota">Ubah Semua</label>
+        <div className="col-9" />
+      </div>
       {
-        (promotion.amount > 0 && promotion.quota !== '' && promotion.max_quota !== '') && (
+        promotion.amount > 0 && (
         <>
           <h5 className="text-start"><b>Pengaturan Produk</b></h5>
           <div className="row my-3">

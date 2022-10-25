@@ -36,34 +36,20 @@ const ProductListInfo:FC<any> = ({
   const [newQuota, setNewQuota] = useState<any>('');
   const [newMaxQuota, setNewMaxQuota] = useState<any>('');
 
-  const handleChangeQuotas = (e:any) => {
-    const values = e.target.value.split(',');
-    for (let i = 0; i < productList.length; i += 1) {
-      if (productList[i].product_id.toString() === values[0]) {
-        const newProd = {
-          product_id: productList[i].product_id,
-          product_name: productList[i].product_name,
-          quota: newQuota === '' ? productList[i].quota : newQuota,
-          max_quota: newMaxQuota === '' ? productList[i].max_quota : newMaxQuota,
-        };
-        setShow(false);
-        setProductList([...productList, newProd]);
-      }
-    }
-  };
+  const handleChangeQuotas = (e:any, id:any) => {
+    const temp = [...productList];
 
-  useEffect(() => {
-    if (productList.length > 1) {
-      for (let i = 0; i < productList.length; i += 1) {
-        for (let j = i + 1; j < productList.length; j += 1) {
-          if (productList[i].product_id === productList[j].product_id) {
-            setProductList(productList.splice(i, 1));
-            return;
-          }
-        }
+    temp.forEach((item:any, index:number) => {
+      if (item.product_id === id) {
+        const tempItem:any = {};
+        tempItem.quota = newQuota || temp[index].quota;
+        tempItem.max_quota = newMaxQuota || temp[index].max_quota;
+        temp[index] = { ...item, ...tempItem };
       }
-    }
-  }, [productList]);
+    });
+    setProductList(temp);
+    setShow(false);
+  };
 
   // const handleChangeMaxQuota = (e:any) => {
   //   setMaxQuota(e.target.value);
@@ -89,21 +75,20 @@ const ProductListInfo:FC<any> = ({
                 ? <tr key={productList.length}><td colSpan={6} className="text-center">Tambah produk!</td></tr>
                 : productList.map((product:any) => (
                   <tr key={product.product_id}>
-                    <td className="text-center">
+                    <td className="align-middle text-center">
                       {product.product_id}
                     </td>
-                    <td>
+                    <td className="align-middle">
                       {product.product_name}
                     </td>
-                    <td className="text-center">
+                    <td className="align-middle text-center">
                       {promotionType === 'nominal' && 'Rp.'}
                       {' '}
                       {discount}
-                      {' '}
                       {promotionType === 'percentage' && '%'}
                     </td>
-                    <td className="text-center">{product.quota}</td>
-                    <td className="text-center">{product.max_quota}</td>
+                    <td className="align-middle text-center">{product.quota}</td>
+                    <td className="align-middle text-center">{product.max_quota}</td>
                     {
                      !show && (
                      <td>
@@ -124,16 +109,16 @@ const ProductListInfo:FC<any> = ({
                             <div className="row mt-2 mb-5">
                               <label className="col-3 text-end align-self-center mb-3" htmlFor="product">Kuota Promosi</label>
                               <div className="col-9 p-0 mb-3">
-                                <input className="form-control" placeholder="Masukkan jumlah kuota promosi" onChange={(e) => setNewQuota(e.target.value)} />
+                                <input className="form-control" name="quota" placeholder="Masukkan jumlah kuota promosi" onChange={(e) => setNewQuota(e.target.value)} />
                               </div>
                               <label className="col-3 text-end align-self-center" htmlFor="product">Jumlah Maksimal</label>
                               <div className="col-9 p-0">
-                                <input className="form-control" placeholder="Masukkan jumlah maksimal" onChange={(e) => setNewMaxQuota(e.target.value)} />
+                                <input className="form-control" name="max_quota" placeholder="Masukkan jumlah maksimal" onChange={(e) => setNewMaxQuota(e.target.value)} />
                               </div>
                             </div>
                             <div className="d-inline-flex justify-content-end gap-3">
                               <Button buttonType="secondary alt" text="Tutup" handleClickedButton={() => setShow(false)} />
-                              <button value={[product.product_id, newQuota, newMaxQuota]} type="button" className="btn edit-button" onClick={handleChangeQuotas}>Ubah kuota</button>
+                              <button type="button" className="btn edit-button" onClick={(e:any) => handleChangeQuotas(e, product.product_id)}>Ubah kuota</button>
                             </div>
                           </div>
                         </div>
