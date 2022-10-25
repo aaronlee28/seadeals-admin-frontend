@@ -10,11 +10,11 @@ const ComplaintPhotos:FC<any> = ({ order }) => {
         Foto Komplain:
         <small className="text-secondary"> (klik gambar untuk buka di tab baru)</small>
       </p>
-      <div className="d-flex gap-2 mb-3 hover-click">
+      <div className="d-flex gap-2 mb-3">
         {order?.complaint?.complaint_photos.map((photo:any) => (
           <div
             key={photo.id}
-            className="order_item_image"
+            className="order_item_image border rounded hover-click"
             role="presentation"
             onClick={() => openInNewTab(photo.photo_url)}
           >
