@@ -7,12 +7,14 @@ import Button from '../../../../components/Button/Button';
 import Loading from '../../../../components/Loading/Loading';
 import RowContent from './RowContent';
 import InputPreSuffix from './InputPreSuffix';
+import formatter from '../../../../utils/formatter';
 
 const DetailProduct:FC<any> = () => {
   const navigate = useNavigate();
   const { productID } = useParams();
   const axiosPrivate = useAxiosPrivate();
   const [product, setProduct] = useState<any>({});
+  const [productVariant, setProductVariant] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const findProductByID = async () => {
@@ -20,6 +22,7 @@ const DetailProduct:FC<any> = () => {
       .then((resp:any) => {
         const { data } = resp.data;
         setProduct(data.product_detail);
+        setProductVariant(data.product_detail.product.product_variant_detail);
       })
       .catch((err:any) => toast.error(err.response?.data?.message))
       .finally(() => setLoading(false));
@@ -31,8 +34,6 @@ const DetailProduct:FC<any> = () => {
     }
   }, []);
 
-  console.log(product);
-  console.log(loading);
   return (
     <div className="product-form__container">
       <h3 className="mb-4 mt-2">Detail Produk</h3>
@@ -73,32 +74,70 @@ const DetailProduct:FC<any> = () => {
                 <RowContent label="Nama" value={product.product.name} />
                 <RowContent label="Kategori" value={product.product.category.name} />
                 <RowContent label="Deskripsi" element="textarea" value={product.product.product_detail.description} />
-                { product.product.product_variant_detail[0].product_variant1.name !== ''
-                  && product.product.product_variant_detail[0].product_variant2.name !== ''
+                { productVariant[0].product_variant1.name === ''
                   && (
                   <>
                     <RowContent label="Harga">
-                      <InputPreSuffix value={product.product.product_variant_detail.price} unit="Rp" />
+                      <InputPreSuffix value={productVariant[0].price} unit="Rp" />
                     </RowContent>
                     <RowContent label="Stok" element="children">
-                      <InputPreSuffix value={product.product.product_variant_detail.stock} unit="pcs" isSuffix />
+                      <InputPreSuffix value={productVariant[0].stock} unit="pcs" isSuffix />
                     </RowContent>
                   </>
                   )}
               </div>
-              <div className="my-4 text-start">
-                <h5>Informasi Varian Produk</h5>
-                <RowContent label="Kondisi" value={product.product.product_detail.condition_status} />
-                <RowContent label="Ukuran (P*L*T)" element="children">
-                  <div className="d-flex gap-2 align-items-center">
-                    <InputPreSuffix value={product.product.product_detail.length} unit="cm" isSuffix />
-                    <span>X</span>
-                    <InputPreSuffix value={product.product.product_detail.width} unit="cm" isSuffix />
-                    <span>X</span>
-                    <InputPreSuffix value={product.product.product_detail.height} unit="cm" isSuffix />
+              {
+                product.product.product_variant_detail[0].product_variant1.name
+                && (
+                  <div className="my-4 text-start">
+                    <h5>Informasi Varian Produk</h5>
+                    <RowContent label="Tabel Varian" element="children">
+                      <div className="table-responsive">
+                        <table className="table table-bordered table-hover">
+                          <thead className="table-secondary">
+                            <tr className="d-flex">
+                              <td className="cell-width text-center">
+                                {productVariant[0].product_variant1.name}
+                              </td>
+                              {productVariant[0].product_variant2.name
+                              && (
+                                <td className="cell-width text-center">
+                                  {productVariant[0].product_variant2.name}
+                                </td>
+                              )}
+                              <td className="cell-width text-center">Harga</td>
+                              <td className="cell-width text-center">Stok</td>
+                              <td className="cell-width text-center">Kode Varian</td>
+                              <td className="cell-width text-center">Gambar</td>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {
+                            productVariant.map((item:any) => (
+                              <tr key={item.id} className="d-flex">
+                                <td className="cell-width text-center">{item.variant1_value}</td>
+                                {productVariant[0].product_variant2.name
+                                  && (
+                                    <td className="cell-width text-center">
+                                      {item.variant2_value}
+                                    </td>
+                                  )}
+                                <td className="cell-width text-end">{formatter.DisplayPrice(item.price)}</td>
+                                <td className="cell-width text-center">{item.stock}</td>
+                                <td className="cell-width text-center">{item.variant_code}</td>
+                                <td className="cell-width text-center">
+                                  <img className="img-fit product-form__image rounded m-0" src={item.picture_url} alt={`${item.variant1_value},${item.variant2_value}`} />
+                                </td>
+                              </tr>
+                            ))
+                          }
+                          </tbody>
+                        </table>
+                      </div>
+                    </RowContent>
                   </div>
-                </RowContent>
-              </div>
+                )
+              }
               <div className="my-4 text-start">
                 <h5>Informasi Lainnya</h5>
                 <RowContent label="Kondisi" value={product.product.product_detail.condition_status} />
