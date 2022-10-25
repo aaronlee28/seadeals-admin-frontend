@@ -111,3 +111,22 @@
   overflow-x: auto;
   white-space: nowrap;
 }
+
+.product-list-info_container {
+  .edit-button {
+    border: 1px solid #2658CD;
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #2658CD;
+  }
+
+  .edit-button:hover {
+    background: #2658CD;
+    color: #FFFFFF;
+  }
+}

@@ -7,16 +7,16 @@ import PromotionBasicInfo from './PromotionFormItem/PromotionBasicInfo';
 import PromotionBonusInfo from './PromotionFormItem/PromotionBonusInfo';
 import PromotionsAPI from '../../../api/promotions';
 import Button from '../../../components/Button/Button';
-import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+// import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import VoucherConstant from '../../../constants/voucher';
 
-const PROMOTION_URL = '/promotions';
+// const PROMOTION_URL = '/promotions';
 
 const PromotionForm:FC<any> = ({ title, formType }) => {
   const navigate = useNavigate();
   // const [searchParams] = useSearchParams();
   // const vID = searchParams.get('copy');
-  const axiosPrivate = useAxiosPrivate();
+  // const axiosPrivate = useAxiosPrivate();
 
   const [promotion, setPromotion] = useState({
     product: {
@@ -66,8 +66,7 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axiosPrivate.post(
-        PROMOTION_URL,
+      const response = await PromotionsAPI.AddPromotion(
         JSON.stringify({
           ...promotion,
           name: promotion.name,
@@ -99,7 +98,7 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
             handleOnChange={handleOnChange}
           />
           <PromotionBonusInfo
-            promotions={promotion}
+            promotion={promotion}
             formType={formType}
             handleOnChange={handleOnChange}
           />

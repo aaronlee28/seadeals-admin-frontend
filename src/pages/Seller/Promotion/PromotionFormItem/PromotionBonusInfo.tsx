@@ -8,11 +8,16 @@ import ProductListInfo from './ProductListInfo';
 import { axiosPrivate } from '../../../../api/axios';
 import ProductAPI from '../../../../api/product';
 
-const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) => {
+const PromotionBonusInfo:FC<any> = ({
+  promotion, formType, handleOnChange,
+}) => {
   const [show, setShow] = useState<any>(false);
 
   const [products, setProducts] = useState<any>([]);
   const [deletedID, setDeletedID] = useState(undefined);
+
+  const [quota, setQuota] = useState<any>('');
+  const [maxQuota, setMaxQuota] = useState<any>('');
 
   const findProducts = async () => {
     await ProductAPI.FindProductBySellerID(axiosPrivate, null)
@@ -26,6 +31,18 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
   useEffect(() => {
     findProducts();
   }, [deletedID]);
+
+  const [addedProduct, setAddedProduct] = useState<any>();
+  const [currentProduct, setCurrentProduct] = useState<any>();
+
+  const handleSetCurrentProduct = (e:any) => {
+    setCurrentProduct(e.target.value);
+  };
+
+  const handleAddProduct = () => {
+    setAddedProduct(currentProduct);
+    setShow(false);
+  };
 
   return (
     <div className="my-4">
@@ -43,7 +60,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
                 value="percentage"
                 readOnly={formType === VoucherConstant.SHOW}
                 disabled={formType === VoucherConstant.SHOW}
-                checked={promotions.amount_type === VoucherConstant.PERCENTAGE}
+                checked={promotion.amount_type === VoucherConstant.PERCENTAGE}
               />
               <label htmlFor="percentage" className="mx-1">Persentase</label>
               <br />
@@ -57,7 +74,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
                 value="nominal"
                 readOnly={formType === VoucherConstant.SHOW}
                 disabled={formType === VoucherConstant.SHOW}
-                checked={promotions.amount_type === VoucherConstant.NOMINAL}
+                checked={promotion.amount_type === VoucherConstant.NOMINAL}
               />
               <label htmlFor="nominal" className="mx-1">Nominal</label>
               <br />
@@ -70,7 +87,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
         <div className="col-9">
           <div className="row">
             {
-                          promotions.amount_type === VoucherConstant.NOMINAL
+                          promotion.amount_type === VoucherConstant.NOMINAL
                           && (
                           <div className="input-group prefix p-0">
                             <span className="input-group-addon">Rp</span>
@@ -81,7 +98,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
                               type="number"
                               onChange={handleOnChange}
                               required
-                              value={promotions.amount}
+                              value={promotion.amount}
                               readOnly={formType === VoucherConstant.SHOW}
                               disabled={formType === VoucherConstant.SHOW}
                             />
@@ -89,7 +106,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
                           )
                       }
             {
-                          promotions.amount_type === VoucherConstant.PERCENTAGE
+                          promotion.amount_type === VoucherConstant.PERCENTAGE
                           && (
                           <div className="input-group suffix p-0">
                             <input
@@ -100,7 +117,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
                               type="number"
                               onChange={handleOnChange}
                               required
-                              value={promotions.amount}
+                              value={promotion.amount}
                               readOnly={formType === VoucherConstant.SHOW}
                               disabled={formType === VoucherConstant.SHOW}
                             />
@@ -111,7 +128,7 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
           </div>
         </div>
       </div>
-      <h5 className="text-start"><b>Pengaturan Bawaan / Global</b></h5>
+      <h5 className="text-start"><b>Pengaturan Bawaan (Ganti Semua)</b></h5>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="quota">Kuota promosi</label>
         <input
@@ -120,24 +137,24 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
           type="number"
           placeholder="Masukkan angka"
           required
-          value={promotions.quota}
+          value={promotion.quota}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
         />
       </div>
       <div className="row my-3">
-        <label className="col-3 text-end align-self-center" htmlFor="min_spending">Kuantitas maksimal</label>
+        <label className="col-3 text-end align-self-center" htmlFor="max_quota">Kuantitas maksimal</label>
         <div className="col-9">
           <div className="row">
             <div className="input-group prefix p-0">
               <input
-                name="min_spending"
+                name="max_quota"
                 className="form__input"
                 placeholder="Masukkan angka"
                 type="number"
                 required
-                value={promotions.min_spending}
+                value={promotion.max_quota}
                 readOnly={formType === VoucherConstant.SHOW}
                 disabled={formType === VoucherConstant.SHOW}
                 onChange={handleOnChange}
@@ -145,59 +162,75 @@ const PromotionBonusInfo:FC<any> = ({ promotions, formType, handleOnChange }) =>
             </div>
           </div>
         </div>
-        <div className="row my-3">
-          <label className="col-3 text-end align-self-center" htmlFor="promodi-per-produk">Ubah semua</label>
-          <div className="col-9">
-            <Button buttonType="secondary" text="Ganti" handleClickedButton={() => setShow(true)} />
+      </div>
+      {
+        (promotion.amount > 0 && promotion.amount && promotion.max_quota) && (
+        <>
+          <h5 className="text-start"><b>Pengaturan Produk</b></h5>
+          <div className="row my-3">
+            <label className="col-3 text-end align-self-center" htmlFor="promosi-per-produk">Produk</label>
+            <div className="col-9">
+              <Button buttonType="secondary alt" text="Tambah" handleClickedButton={() => setShow(true)} />
+              {
+                            show && (
+                            <Modal modalType="" cancel={() => setShow(false)}>
+                              <div className="d-flex py-5 justify-content-center">
+                                <div className="row px-5">
+                                  <h5 className="text-start mb-4"><b>Tambah promosi per produk</b></h5>
+                                  <div className="row mt-2 mb-5">
+                                    <label className="col-3 text-end align-self-center mb-3" htmlFor="product">Pilih produk</label>
+                                    <div className="col-9 p-0 mb-3">
+                                      <select className="form-select my-auto" onChange={handleSetCurrentProduct}>
+                                        {
+                                                            products.map(
+                                                              (
+                                                                product:any,
+                                                              ) => (
+                                                                <option
+                                                                  key={product.id}
+                                                                  value={product.id}
+                                                                >
+                                                                  {product.name}
+                                                                </option>
+                                                              ),
+                                                            )
+                                        }
+                                      </select>
+                                    </div>
+                                    <label className="col-3 text-end align-self-center mb-3" htmlFor="product">Kuota Promosi</label>
+                                    <div className="col-9 p-0 mb-3">
+                                      <input className="form-control" placeholder="Masukkan jumlah kuota promosi" onChange={(e) => setQuota(e.target.value)} />
+                                    </div>
+                                    <label className="col-3 text-end align-self-center" htmlFor="product">Jumlah Maksimal</label>
+                                    <div className="col-9 p-0">
+                                      <input className="form-control" placeholder="Masukkan jumlah maksimal" onChange={(e) => setMaxQuota(e.target.value)} />
+                                    </div>
+                                  </div>
+                                  <div className="d-inline-flex justify-content-end gap-3">
+                                    <Button buttonType="secondary alt" text="Tutup" handleClickedButton={() => setShow(false)} />
+                                    <Button buttonType="primary" text="Tambah" handleClickedButton={handleAddProduct} />
+                                  </div>
+                                </div>
+                              </div>
+                            </Modal>
+                            )
+                        }
+            </div>
           </div>
-        </div>
-      </div>
-      <h5 className="text-start"><b>Pengaturan Produk</b></h5>
-      <div className="row my-3">
-        <label className="col-3 text-end align-self-center" htmlFor="promodi-per-produk">Produk</label>
-        <div className="col-9">
-          <Button buttonType="secondary alt" text="Tambah" handleClickedButton={() => setShow(true)} />
-          {
-                show && (
-                <Modal modalType="" cancel={() => setShow(false)}>
-                  <div className="d-flex py-5 justify-content-center">
-                    <div className="row px-5">
-                      <h5 className="text-start mb-4"><b>Tambah promosi per produk</b></h5>
-                      <div className="row mt-2 mb-5">
-                        <label className="col-3 text-end align-self-center" htmlFor="product">Pilih produk</label>
-                        <div className="col-9 p-0">
-                          <select className="form-select my-auto">
-                            {
-                                  products.map(
-                                    (
-                                      product:any,
-                                    ) => (
-                                      <option key={product.id}>
-                                        {product.name}
-                                      </option>
-                                    ),
-                                  )
-                            }
-                          </select>
-                        </div>
-                      </div>
-                      <div className="d-inline-flex justify-content-end gap-3">
-                        <Button buttonType="secondary alt" text="Tutup" handleClickedButton={() => setShow(false)} />
-                        <Button buttonType="primary" text="Tambah" handleClickedButton={() => setShow(false)} />
-                      </div>
-                    </div>
-                  </div>
-                </Modal>
-                )
-            }
-        </div>
-      </div>
-      <ProductListInfo
-        products={products}
-        setDeletedID={setDeletedID}
-        discount={promotions.amount}
-        promotionType={promotions.amount_type}
-      />
+          <ProductListInfo
+            addedProduct={addedProduct}
+            products={products}
+            setDeletedID={setDeletedID}
+            discount={promotion.amount}
+            quota={quota === '' ? promotion.quota : quota}
+            setQuota={setQuota}
+            maxQuota={maxQuota === '' ? promotion.max_quota : maxQuota}
+            setMaxQuota={setMaxQuota}
+            promotionType={promotion.amount_type}
+          />
+        </>
+        )
+        }
     </div>
   );
 };
