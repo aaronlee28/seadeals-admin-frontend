@@ -39,7 +39,7 @@ const SubMenu:FC<any> = ({ item }) => {
       <div className="d-flex flex-column align-items-start ms-4">
         {showSubNav && item.subNav?.map((t:any) => (
           <Link to={t.path} key={t.path} className={t.path === location.pathname ? 'sub-menu active' : 'sub-menu'}>
-            {React.createElement(item.icon, { className: 'nav-icon' })}
+            {React.createElement(t.icon, { className: 'nav-icon' })}
             <span className="sub-menu__label">{t.title}</span>
           </Link>
         ))}
