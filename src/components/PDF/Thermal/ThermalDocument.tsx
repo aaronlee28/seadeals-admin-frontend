@@ -71,7 +71,7 @@ const styles = StyleSheet.create(
     },
     title: {
       fontWeight: 'bold',
-      fontSize: '36px',
+      fontSize: '24',
     },
     description: {
       fontWeight: 'bold',
@@ -104,7 +104,7 @@ const ThermalDocument = ({ data }:{ data:Thermal }) => {
   }
   return (
     <Document>
-      <Page size="A4">
+      <Page size={[525, 625]}>
 
         <View style={styles.container}>
           <View style={[styles.content_row, { marginTop: '6px', marginBottom: '12px' }]}>
