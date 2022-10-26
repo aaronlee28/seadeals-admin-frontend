@@ -7,14 +7,29 @@ import { ReactComponent as IconSettings } from '../../assets/svg/settings.svg';
 import { ReactComponent as IconOrders } from '../../assets/svg/order.svg';
 
 const SidebarSellerData = [
+  // {
+  //   id: 1,
+  //   title: 'Beranda',
+  //   path: '/seller',
+  //   icon: IconVoucher,
+  //   iconClosed: IconChevron,
+  //   iconOpened: IconChevron,
+  //   subNav: null,
+  // },
   {
     id: 1,
-    title: 'Beranda',
-    path: '/seller',
-    icon: IconVoucher,
+    title: 'Pesanan',
+    path: '',
+    icon: IconOrders,
     iconClosed: IconChevron,
     iconOpened: IconChevron,
-    subNav: null,
+    subNav: [
+      {
+        title: 'Daftar Pesanan',
+        path: '/seller/order',
+        icon: IconOrders,
+      },
+    ],
   },
   {
     id: 3,
@@ -73,21 +88,6 @@ const SidebarSellerData = [
         title: 'Buat promosi',
         path: '/seller/promotions/new',
         icon: IconPromotion,
-      },
-    ],
-  },
-  {
-    id: 5,
-    title: 'Pesanan',
-    path: '',
-    icon: IconOrders,
-    iconClosed: IconChevron,
-    iconOpened: IconChevron,
-    subNav: [
-      {
-        title: 'Daftar Pesanan',
-        path: '/seller/order',
-        icon: IconOrders,
       },
     ],
   },

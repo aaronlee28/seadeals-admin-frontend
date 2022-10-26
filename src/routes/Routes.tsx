@@ -8,7 +8,6 @@ import PersistLogin from '../components/PersistLogin';
 import RequireAuth from '../components/RequireAuth';
 import SellerRegister from '../pages/Seller/Register/SellerRegister';
 import AdminHome from '../pages/Admin/AdminHome';
-import SellerHome from '../pages/Seller/SellerHome';
 import Login from '../pages/Public/Login/Login';
 import FormVoucher from '../pages/Seller/Voucher/FormVoucher';
 import Register from '../pages/Public/Register/Register';
@@ -20,6 +19,7 @@ import DashboardProduct from '../pages/Seller/Product/DashboardProduct';
 import FormProduct from '../pages/Seller/Product/FormProduct';
 import PromotionsDashboard from '../pages/Seller/Promotion/PromotionsDashboard';
 import Orders from '../pages/Seller/Orders/List/Orders';
+import DetailProduct from '../pages/Seller/Product/DetailProduct/DetailProduct';
 import OrderThermal from '../pages/Seller/Orders/Thermal/OrderThermal';
 
 const AppRoutes = () => (
@@ -35,7 +35,7 @@ const AppRoutes = () => (
 
         <Route element={<RequireAuth allowedRoles={[ROLES.Seller]} />}>
           <Route path="seller" element={<SellerLayout />}>
-            <Route path="" element={<SellerHome />} />
+            <Route path="" element={<Navigate to="/seller/order" replace />} />
             <Route path="voucher/">
               <Route path="list" element={<DashboardVoucher title="Voucher Toko" />} />
               <Route path="new" element={<FormVoucher formType="create" title="Buat Voucher Toko" />} />
@@ -54,9 +54,8 @@ const AppRoutes = () => (
             </Route>
             <Route path="product/">
               <Route path="list" element={<DashboardProduct />} />
-              <Route path="new" element={<FormProduct formType="create" title="Buat Produk" />} />
-              <Route path="show/:productID" element={<FormProduct formType="show" title="Detail Produk" />} />
-              <Route path="update/:productID" element={<FormProduct formType="update" title="Update Produk" />} />
+              <Route path="new" element={<FormProduct title="Buat Produk" />} />
+              <Route path="show/:productID" element={<DetailProduct />} />
             </Route>
           </Route>
         </Route>

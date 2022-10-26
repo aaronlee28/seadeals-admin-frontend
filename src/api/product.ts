@@ -4,11 +4,15 @@ class ProductAPI {
   }
 
   static FindProductByID(ax:any, id:any = '') {
-    return ax.get(`/sellers/products/${id}`);
+    return ax.get(`/products/detail/${id}`);
   }
 
   static DeleteProductByID(ax:any, id:any = '') {
     return ax.delete(`/sellers/${id}/delete-product`);
+  }
+
+  static FindAllCategories(ax:any, filter:any) {
+    return ax.get(`/categories?${filter}`);
   }
 }
 

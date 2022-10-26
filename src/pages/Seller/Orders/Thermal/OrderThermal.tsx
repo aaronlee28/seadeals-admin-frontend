@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import { PDFDownloadLink } from '@react-pdf/renderer';
+import { PDFViewer } from '@react-pdf/renderer';
 import { useParams } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import ThermalDocument, { Thermal } from '../../../../components/PDF/Thermal/ThermalDocument';
+import Thermal from '../../../../constants/thermal';
+import ThermalDocument from '../../../../components/PDF/Thermal/ThermalDocument';
 import useAxiosPrivateWithoutNavigate from '../../../../hooks/useAxiosPrivateWithoutNavigation';
 
 const UserOrder = () => {
   const { id } = useParams();
 
   const [data, setData] = useState<Thermal>({
+    courier: { code: '', name: '' },
+    issued_at: '',
+    price: 0,
     buyer: { address: '', city: '', name: '' },
     delivery_number: '',
     origin_city: '',
@@ -50,9 +54,9 @@ const UserOrder = () => {
 
   return (
     <div className="d-flex my-4 col-8">
-      <PDFDownloadLink document={<ThermalDocument data={data} />} fileName="thermal.pdf">
-        {({ loading }) => ((loading || thermalLoading) ? 'Loading...' : 'Donwload')}
-      </PDFDownloadLink>
+      <PDFViewer width="100%" height={2000}>
+        <ThermalDocument data={data} />
+      </PDFViewer>
     </div>
   );
 };
