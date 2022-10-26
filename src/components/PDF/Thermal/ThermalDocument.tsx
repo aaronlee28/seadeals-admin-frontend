@@ -11,6 +11,7 @@ import Jne from '../../../assets/png/JNE.png';
 import Tiki from '../../../assets/png/TIKI.png';
 import ThermalLeftDetail from './ThermalLeftDetail';
 import ThermalRightDetail from './ThermalRightDetail';
+import ThermalTableSeller from './ThermalTableProduct';
 
 const styles = StyleSheet.create(
   {
@@ -35,7 +36,7 @@ const styles = StyleSheet.create(
     },
 
     content: {
-      marginTop: '24px',
+      marginTop: '9px',
     },
     content_row: {
       flexDirection: 'row',
@@ -149,6 +150,18 @@ const ThermalDocument = ({ data }:{ data:Thermal }) => {
             </View>
           </View>
 
+        </View>
+
+        <View style={[styles.container, styles.border_right_cut, { paddingTop: '12px' }]}>
+          <View style={[styles.container, styles.content_column]}>
+            <View style={styles.content_row}>
+              <Text>Daftar Produk</Text>
+              <Text>{`NO.PESANAN   ${data.delivery_number}`}</Text>
+            </View>
+
+            <ThermalTableSeller products={data.products} />
+
+          </View>
         </View>
       </Page>
     </Document>
