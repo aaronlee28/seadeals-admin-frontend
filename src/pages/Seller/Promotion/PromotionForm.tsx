@@ -26,7 +26,26 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
     banner_url: '',
   });
 
+  const min = 0;
+  const max = 100;
+
   const handleOnChange = (e: any) => {
+    if (e.target.name === 'amount' && promotion.amount_type === VoucherConstant.PERCENTAGE) {
+      const newValue = Math.max(min, Math.min(max, Number(e.target.value)));
+      if (newValue === 0) {
+        setPromotion({
+          ...promotion,
+          [e.target.name]: null,
+        });
+      }
+      if (newValue > 0) {
+        setPromotion({
+          ...promotion,
+          [e.target.name]: newValue,
+        });
+      }
+      return;
+    }
     setPromotion({
       ...promotion,
       [e.target.name]: e.target.value,

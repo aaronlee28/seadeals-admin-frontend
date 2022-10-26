@@ -31,6 +31,7 @@ const PromotionBasicInfo:FC<any> = ({ promotion, formType, handleOnChange }) => 
               <textarea
                 className="form__input form-control"
                 name="description"
+                maxLength={255}
                 placeholder="Masukkan deskripsi promosi"
                 required
                 value={promotion.description}

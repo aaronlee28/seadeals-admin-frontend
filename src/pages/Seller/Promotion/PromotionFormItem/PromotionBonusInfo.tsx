@@ -111,6 +111,7 @@ const PromotionBonusInfo:FC<any> = ({
                           <div className="input-group suffix p-0">
                             <input
                               name="amount"
+                              min={0}
                               max={100}
                               className="form__input"
                               placeholder="Masukkan angka"
