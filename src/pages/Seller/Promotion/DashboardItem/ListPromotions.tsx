@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Formatter from '../../../../utils/formatter';
 import Button from '../../../../components/Button/Button';
-import '../PromotionsDashboard.scss';
+import '../Promotions.scss';
 
 const ListPromotions:FC<any> = ({ promotions }) => {
   const navigate = useNavigate();

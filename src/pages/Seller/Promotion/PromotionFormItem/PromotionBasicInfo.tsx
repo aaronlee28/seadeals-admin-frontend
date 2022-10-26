@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import '../PromotionsDashboard.scss';
+import '../Promotions.scss';
 import VoucherConstant from '../../../../constants/voucher';
 
 const PromotionBasicInfo:FC<any> = ({ promotion, formType, handleOnChange }) => {

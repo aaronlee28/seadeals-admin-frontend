@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from 'react';
-import '../PromotionsDashboard.scss';
+import '../Promotions.scss';
 import Button from '../../../../components/Button/Button';
 import Modal from '../../../../components/Modal/Modal';
 

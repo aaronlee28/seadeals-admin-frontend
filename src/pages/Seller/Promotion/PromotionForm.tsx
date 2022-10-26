@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import './PromotionsDashboard.scss';
+import './Promotions.scss';
 import toast from 'react-hot-toast';
 import PromotionBasicInfo from './PromotionFormItem/PromotionBasicInfo';
 import PromotionBonusInfo from './PromotionFormItem/PromotionBonusInfo';
