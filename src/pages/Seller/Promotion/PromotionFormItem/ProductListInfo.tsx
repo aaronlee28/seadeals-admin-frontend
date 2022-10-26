@@ -10,6 +10,7 @@ const ProductListInfo:FC<any> = ({
   const [productList, setProductList] = useState<any>([]);
   const [productIds, setProductIds] = useState<any>([]);
   const [show, setShow] = useState<any>(false);
+  const [productIdForModal, setProductIdForModal] = useState<any>('');
 
   useEffect(() => {
     if (addedProduct !== undefined) {
@@ -40,20 +41,21 @@ const ProductListInfo:FC<any> = ({
     const temp = [...productList];
 
     temp.forEach((item:any, index:number) => {
-      if (item.product_id === id) {
+      if (item.product_id.toString() === id) {
         const tempItem:any = {};
         tempItem.quota = newQuota || temp[index].quota;
         tempItem.max_quota = newMaxQuota || temp[index].max_quota;
-        temp[index] = { ...item, ...tempItem };
+        temp[index] = { ...temp[index], ...tempItem };
       }
     });
     setProductList(temp);
     setShow(false);
   };
 
-  // const handleChangeMaxQuota = (e:any) => {
-  //   setMaxQuota(e.target.value);
-  // };
+  const handleOpenModal = (e:any) => {
+    setShow(true);
+    setProductIdForModal(e.target.value);
+  };
 
   return (
     <div className="product-list-info_container">
@@ -90,18 +92,20 @@ const ProductListInfo:FC<any> = ({
                     <td className="align-middle text-center">{product.quota}</td>
                     <td className="align-middle text-center">{product.max_quota}</td>
                     {
-                     !show && (
-                     <td>
-                       <div className="row">
-                         <div className="d-flex col justify-content-center">
-                           <Button buttonType="secondary alt" text="Ubah kuota" handleClickedButton={() => setShow(true)} />
-                         </div>
-                       </div>
-                     </td>
-                     )
-                    }
-                    { show && (
-                    <td>
+                            !show && (
+                            <td>
+                              <div className="row">
+                                <div className="d-flex col justify-content-center">
+                                  <button type="button" value={product.product_id} className="btn edit-button-secondary" onClick={handleOpenModal}>
+                                    Ubah kuota
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                            )
+                        }
+                    <td className="modal-td">
+                      { show && (
                       <Modal modalType="" cancel={() => setShow(false)}>
                         <div className="d-flex py-5 justify-content-center">
                           <div className="row px-5">
@@ -109,22 +113,24 @@ const ProductListInfo:FC<any> = ({
                             <div className="row mt-2 mb-5">
                               <label className="col-3 text-end align-self-center mb-3" htmlFor="product">Kuota Promosi</label>
                               <div className="col-9 p-0 mb-3">
-                                <input className="form-control" name="quota" placeholder="Masukkan jumlah kuota promosi" onChange={(e) => setNewQuota(e.target.value)} />
+                                <input className="form-control" name="quota" type="number" placeholder="Masukkan jumlah kuota promosi" onChange={(e) => setNewQuota(e.target.value)} />
                               </div>
                               <label className="col-3 text-end align-self-center" htmlFor="product">Jumlah Maksimal</label>
                               <div className="col-9 p-0">
-                                <input className="form-control" name="max_quota" placeholder="Masukkan jumlah maksimal" onChange={(e) => setNewMaxQuota(e.target.value)} />
+                                <input className="form-control" name="max_quota" type="number" placeholder="Masukkan jumlah maksimal" onChange={(e) => setNewMaxQuota(e.target.value)} />
                               </div>
                             </div>
                             <div className="d-inline-flex justify-content-end gap-3">
                               <Button buttonType="secondary alt" text="Tutup" handleClickedButton={() => setShow(false)} />
-                              <button type="button" className="btn edit-button" onClick={(e:any) => handleChangeQuotas(e, product.product_id)}>Ubah kuota</button>
+                              <button type="button" className="btn edit-button" onClick={(e:any) => handleChangeQuotas(e, productIdForModal)}>
+                                Ubah kuota
+                              </button>
                             </div>
                           </div>
                         </div>
                       </Modal>
+                      )}
                     </td>
-                    )}
                   </tr>
                 ))
           }

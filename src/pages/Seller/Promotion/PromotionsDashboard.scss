@@ -129,4 +129,26 @@
     background: #2658CD;
     color: #FFFFFF;
   }
+
+  .edit-button-secondary {
+    border: 1px solid #FB3C00;
+    border-radius: 10px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 10px;
+    text-align: center;
+    cursor: pointer;
+    color: #FB3C00;
+  }
+
+  .edit-button-secondary:hover {
+    background: #FB3C00;
+    color: #FFFFFF;
+  }
+
+  .modal-td {
+    padding: 0;
+    width: 0;
+  }
 }
