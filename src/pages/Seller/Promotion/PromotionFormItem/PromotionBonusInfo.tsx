@@ -19,6 +19,8 @@ const PromotionBonusInfo:FC<any> = ({
   const [quota, setQuota] = useState<any>('');
   const [maxQuota, setMaxQuota] = useState<any>('');
 
+  const [globalQuota, setGlobalQuota] = useState<any>(false);
+
   const findProducts = async () => {
     await ProductAPI.FindProductBySellerID(axiosPrivate, null)
       .then((resp:any) => {
@@ -172,7 +174,9 @@ const PromotionBonusInfo:FC<any> = ({
       </div>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="max_quota">Ubah Semua</label>
-        <div className="col-9" />
+        <div className="col-9">
+          <Button buttonType="secondary alt" text="Ubah" handleClickedButton={() => setGlobalQuota(true)} />
+        </div>
       </div>
       {
         promotion.amount > 0 && (
@@ -237,6 +241,10 @@ const PromotionBonusInfo:FC<any> = ({
             setDeletedID={setDeletedID}
             discount={promotion.amount}
             quota={quota === '' ? promotion.quota : quota}
+            globalQuota={globalQuota}
+            setGlobalQuota={setGlobalQuota}
+            globalQuotaValue={quota === '' ? promotion.quota : quota}
+            globalMaxQuotaValue={maxQuota === '' ? promotion.max_quota : maxQuota}
             setQuota={setQuota}
             maxQuota={maxQuota === '' ? promotion.max_quota : maxQuota}
             setMaxQuota={setMaxQuota}

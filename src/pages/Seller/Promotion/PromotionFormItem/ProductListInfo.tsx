@@ -4,8 +4,9 @@ import Button from '../../../../components/Button/Button';
 import Modal from '../../../../components/Modal/Modal';
 
 const ProductListInfo:FC<any> = ({
-  addedProduct, products, discount, promotionType, quota, maxQuota,
-  setQuota, setMaxQuota, setReqProducts,
+  addedProduct, products, discount, promotionType, quota, globalQuota, maxQuota,
+  setQuota, setMaxQuota, setReqProducts, globalQuotaValue, globalMaxQuotaValue,
+  setGlobalQuota,
 }) => {
   const [productList, setProductList] = useState<any>([]);
   const [productIds, setProductIds] = useState<any>([]);
@@ -56,6 +57,21 @@ const ProductListInfo:FC<any> = ({
     setShow(true);
     setProductIdForModal(e.target.value);
   };
+
+  useEffect(() => {
+    if (globalQuota) {
+      const temp = [...productList];
+
+      temp.forEach((item:any, index: number) => {
+        const tempItem:any = {};
+        tempItem.quota = globalQuotaValue || temp[index].quota;
+        tempItem.max_quota = globalMaxQuotaValue || temp[index].max_quota;
+        temp[index] = { ...temp[index], ...tempItem };
+      });
+      setProductList(temp);
+      setGlobalQuota(false);
+    }
+  }, [globalQuota]);
 
   return (
     <div className="product-list-info_container">
