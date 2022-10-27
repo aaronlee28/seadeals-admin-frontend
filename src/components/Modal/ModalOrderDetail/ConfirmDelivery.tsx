@@ -8,6 +8,7 @@ import formatter from '../../../utils/formatter';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Thermal from '../../../constants/thermal';
 import ThermalDocument from '../../PDF/Thermal/ThermalDocument';
+import PrintSettingsAPI from '../../../api/printSettings';
 
 interface Props {
   closeDelivery: ()=>void,
@@ -22,6 +23,7 @@ const ConfirmDelivery:FC<Props> = ({
   const axiosPrivate = useAxiosPrivate();
 
   const [loadingDelivery, setLoadingDelivery] = useState(false);
+  const [allowPrint, setAllowSettings] = useState(false);
 
   const deliverOrder = async () => {
     if (loadingDelivery) return;
@@ -41,6 +43,18 @@ const ConfirmDelivery:FC<Props> = ({
       toast.error('Gagal Mengubah Status Pengiriman');
     }
   };
+
+  useEffect(() => {
+    const getSellerPrintSettings = async () => {
+      await PrintSettingsAPI.GetSellerPrintSettings(axiosPrivate)
+        .then((resp:any) => {
+          const { data } = resp.data;
+          setAllowSettings(data.allow_print);
+        })
+        .catch((err:any) => toast.error(err.response?.data?.message));
+    };
+    getSellerPrintSettings().then();
+  }, []);
 
   const [thermal, setThermal] = useState<Thermal>({
     buyer: {
@@ -126,31 +140,32 @@ const ConfirmDelivery:FC<Props> = ({
             </div>
           </div>
         </div>
-        <div className="d-flex">
-          {!notDelivered && !loadingThermal && (
-          <PDFDownloadLink document={<ThermalDocument data={thermal} />} fileName="thermal.pdf">
-            {loadingThermal ? (
-              <div>
-                Loading...
-              </div>
-            ) : (
-              <Button
-                buttonType="plain text-main"
-                handleClickedButton={() => {}}
-                text="Cetak Resi"
-              />
+        {allowPrint ? (
+          <div className="d-flex">
+            {!notDelivered && !loadingThermal && (
+            <PDFDownloadLink document={<ThermalDocument data={thermal} />} fileName="thermal.pdf">
+              {loadingThermal ? (
+                <div>
+                  Loading...
+                </div>
+              ) : (
+                <Button
+                  buttonType="plain text-main"
+                  handleClickedButton={() => {}}
+                  text="Cetak Resi"
+                />
+              )}
+            </PDFDownloadLink>
             )}
-
-          </PDFDownloadLink>
-          )}
-          {notDelivered && (
-          <Button
-            buttonType={`secondary ms-auto ${loadingDelivery && 'disabled'}`}
-            handleClickedButton={() => deliverOrder()}
-            text="Konfirmasi Pengiriman"
-          />
-          )}
-        </div>
+            {notDelivered && (
+            <Button
+              buttonType={`secondary ms-auto ${loadingDelivery && 'disabled'}`}
+              handleClickedButton={() => deliverOrder()}
+              text="Konfirmasi Pengiriman"
+            />
+            )}
+          </div>
+        ) : <small className="text-secondary">delivery thermal printing is disabled in settings</small>}
       </div>
     </div>
   );
