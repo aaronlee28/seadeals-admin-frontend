@@ -118,6 +118,7 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
         <form onSubmit={(e) => e.preventDefault()}>
           <PromotionBasicInfo
             promotion={promotion}
+            setPromotion={setPromotion}
             formType={formType}
             handleOnChange={handleOnChange}
           />
