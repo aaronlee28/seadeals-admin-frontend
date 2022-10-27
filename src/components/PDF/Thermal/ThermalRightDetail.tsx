@@ -51,7 +51,7 @@ const ThermalRightDetail = ({ thermal }:{ thermal:Thermal }) => (
       }]}
       >
         <Text style={{ fontSize: '12px' }}>
-          $
+          {'  '}
           {thermal.delivery_number}
         </Text>
       </View>

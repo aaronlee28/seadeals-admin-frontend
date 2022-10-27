@@ -2,10 +2,10 @@ import React from 'react';
 import {
   Document, Page, StyleSheet, View, Text, Image,
 } from '@react-pdf/renderer';
+import JSBarcode from 'jsbarcode';
 import Thermal from '../../../constants/thermal';
 import dateFormatter from '../../../utils/dateFormatter';
 import Logo from '../../../assets/png/logo_sea_deals.png';
-import Barcode from '../../../assets/png/barcode.png';
 import Pos from '../../../assets/png/POS_Indonesia.png';
 import Jne from '../../../assets/png/JNE.png';
 import Tiki from '../../../assets/png/TIKI.png';
@@ -102,6 +102,11 @@ const ThermalDocument = ({ data }:{ data:Thermal }) => {
       courierService = 'JNE - Reguler';
       break;
   }
+
+  const canvas = document.createElement('canvas');
+  JSBarcode(canvas, data?.delivery_number || 'TEST');
+  const barcode = canvas.toDataURL();
+
   return (
     <Document>
       <Page size={[525, 625]}>
@@ -128,7 +133,7 @@ const ThermalDocument = ({ data }:{ data:Thermal }) => {
                 <Image src={Logo} style={{ maxHeight: '25px', marginRight: '15%' }} />
                 <Image src={courier} style={{ maxHeight: '35px', marginRight: '50%' }} />
               </View>
-              <Image src={Barcode} style={{ width: '45%', height: '70px' }} />
+              <Image src={barcode} style={{ width: '45%', height: '70px' }} />
               <Text style={[styles.title, { width: '25%' }]}>
                 {`${data.origin_city.substring(0, 3).toUpperCase()}-${data.buyer.city.substring(0, 3).toUpperCase()}`}
               </Text>

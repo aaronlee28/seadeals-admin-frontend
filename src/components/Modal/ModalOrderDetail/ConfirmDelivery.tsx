@@ -63,7 +63,7 @@ const ConfirmDelivery:FC<Props> = ({
 
   let isMounted = true;
   const controller = new AbortController();
-  const [loadingThermal, setLoadingThermal] = useState(false);
+  const [loadingThermal, setLoadingThermal] = useState(true);
   const getThermal = async () => {
     try {
       setLoadingThermal(true);
