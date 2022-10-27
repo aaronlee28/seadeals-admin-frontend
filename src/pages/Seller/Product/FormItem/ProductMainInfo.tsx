@@ -39,9 +39,9 @@ const ProductMainInfo:FC<any> = ({
       const namePhoto = `product-photo-${v4()}`;
       const imgRef = ref(storage, `products/${namePhoto}`);
 
-      uploadBytes(imgRef, file).then((snapshot) => {
+      uploadBytes(imgRef, file).then((snapshot:any) => {
         toast.success('image uploaded');
-        getDownloadURL(snapshot.ref).then((url) => {
+        getDownloadURL(snapshot.ref).then((url:any) => {
           setProductPhoto([...productPhoto, { name: namePhoto, file, photo_url: url }]);
         });
       });

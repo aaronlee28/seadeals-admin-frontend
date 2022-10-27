@@ -78,6 +78,7 @@ const Orders = () => {
         refreshData={refreshData}
       />
       )}
+      <h3 className="my-3 title">Daftar Pesanan</h3>
       <OrdersNav setParam={setParam} active={filter} />
       {loadingOrders
         ? <LoadingPlain height={64} />
