@@ -1,12 +1,20 @@
-import React, { FC } from 'react';
+import React, { FC, useEffect } from 'react';
+import moment from 'moment';
 import useAuth from '../../../../hooks/useAuth';
 import '../Voucher.scss';
 import VoucherConstant from '../../../../constants/voucher';
 
-const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
-  const timeNow = `${new Date().toISOString().split('.')[0]}`;
+const VoucherBasicInfo:FC<any> = ({
+  voucher, formType, handleOnChange, setVoucher,
+}) => {
+  const dt = moment(new Date()).add(2, 'minutes');
+  const timeNow = `${moment(dt).format('YYYY-MM-DDThh:mm')}`;
   const auth = useAuth();
   const prefixCode = auth.auth.user.username.substring(0, 4).toUpperCase();
+
+  useEffect(() => {
+    setVoucher({ ...voucher, start_date: timeNow, end_date: timeNow });
+  }, []);
 
   return (
     <div className="my-4">
@@ -63,7 +71,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
           type="datetime-local"
           required
           step={1}
-          value={voucher.start_date ? voucher.start_date : timeNow}
+          value={voucher.start_date}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
@@ -76,7 +84,7 @@ const VoucherBasicInfo:FC<any> = ({ voucher, formType, handleOnChange }) => {
           type="datetime-local"
           step={1}
           required
-          value={voucher.end_date ? voucher.end_date : timeNow}
+          value={voucher.end_date}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
