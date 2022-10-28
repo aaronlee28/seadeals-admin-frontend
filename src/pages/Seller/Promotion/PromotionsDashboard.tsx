@@ -9,7 +9,7 @@ import Button from '../../../components/Button/Button';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Pagination from '../../../components/Pagination/Pagination';
 import FilterPromotions from './DashboardItem/FilterPromotions';
-import './PromotionsDashboard.scss';
+import './Promotions.scss';
 
 const PromotionsDashboard:FC<any> = ({ title }) => {
   const navigate = useNavigate();
