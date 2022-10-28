@@ -1,13 +1,86 @@
-import React, { FC } from 'react';
+import React, { FC, useRef } from 'react';
 import '../Promotions.scss';
+import toast from 'react-hot-toast';
+import { v4 } from 'uuid';
+import {
+  deleteObject, getDownloadURL, ref, uploadBytes,
+} from 'firebase/storage';
 import VoucherConstant from '../../../../constants/voucher';
+import storage from '../../../../firebase/firebase';
 
-const PromotionBasicInfo:FC<any> = ({ promotion, formType, handleOnChange }) => {
+const PromotionBasicInfo:FC<any> = ({
+  promotion, formType, handleOnChange, setPromotion,
+}) => {
   const timeNow = `${new Date().toISOString().split('.')[0]}`;
+  const imageInputRef = useRef<any>();
+
+  const handleImageChange = (e:any) => {
+    e.preventDefault();
+    const [file] = e.target.files;
+    // In MegaByte
+    if ((file.size / 1024 / 1024) > 2) {
+      toast.error('Photo tidak bisa lebih dari 2MB');
+      return;
+    }
+    if (file) {
+      const namePhoto = `promotion-photo-${promotion.name}-${v4()}`;
+      const imgRef = ref(storage, `banners/${namePhoto}`);
+
+      uploadBytes(imgRef, file).then((snapshot:any) => {
+        toast.success('image uploaded');
+        getDownloadURL(snapshot.ref).then((url:any) => {
+          setPromotion({ ...promotion, banner_name: namePhoto, banner_url: url });
+        });
+      });
+      imageInputRef.current.value = '';
+    }
+  };
+
+  const onDeleteClick = (e:any) => {
+    e.preventDefault();
+    const imgRef = ref(storage, `banners/${promotion.banner_name}`);
+
+    deleteObject(imgRef).then(() => {
+      toast.success('image deleted');
+      setPromotion({ ...promotion, banner_name: '', banner_url: '' });
+    }).catch((errDelete:any) => {
+      toast.error(errDelete);
+    });
+  };
 
   return (
     <div className="my-4">
       <h5 className="text-start"><b>Rincian Dasar</b></h5>
+      <div className="row my-3">
+        <label className="col-3 text-end align-self-center" htmlFor="name">Banner Promosi</label>
+        <div className="col-9 p-0 d-flex justify-content-start">
+          {
+            promotion.banner_url ? (
+              <button className="promo-image" type="button" onClick={onDeleteClick}>
+                <div className="d-flex flex-column justify-content-center promo-image__filter">
+                  <div>
+                    X
+                  </div>
+                </div>
+                <img className="img-fit promo-image" alt={promotion.name} src={promotion.banner_url} />
+              </button>
+            ) : (
+              <button className="promo-image bordered" type="button" onClick={() => { imageInputRef.current.click(); }}>
+                <div>
+                  +
+                </div>
+              </button>
+            )
+          }
+          <input
+            name="image"
+            className="d-none"
+            type="file"
+            onInput={handleImageChange}
+            ref={imageInputRef}
+          />
+        </div>
+      </div>
       <div className="row my-3">
         <label className="col-3 text-end align-self-center" htmlFor="name">Nama Promosi</label>
         <input
