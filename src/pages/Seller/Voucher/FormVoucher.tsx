@@ -86,7 +86,6 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
 
   const handleSubmit = async () => {
     try {
-      console.log(JSON.stringify(moment(voucher.start_date)));
       const response = await axiosPrivate.post(
         VOUCHERS_URL,
         JSON.stringify({
