@@ -66,9 +66,8 @@ const Register = () => {
   const location = useLocation();
   const googleUser = location.state;
 
-  const handleSubmit = async (e:any) => {
-    e.preventDefault();
-
+  const handleSubmit = async () => {
+    const toastLoading = toast.loading('Waiting for register');
     try {
       const response = await axios.post(
         uRL,
@@ -105,6 +104,8 @@ const Register = () => {
     } catch (err:any) {
       toast.error(err.response?.data?.message);
       navigate('/register', { replace: true });
+    } finally {
+      toast.dismiss(toastLoading);
     }
   };
 
@@ -135,7 +136,13 @@ const Register = () => {
                 </b>
               </h1>
               <div className="justify-content-center row">
-                <form className="register_form col-md-10">
+                <form
+                  className="register_form col-md-10"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    handleSubmit().then();
+                  }}
+                >
                   <input
                     className="form-control mb-2"
                     value={email}
@@ -259,7 +266,7 @@ const Register = () => {
                     required
                   />
                   <div className="mb-4">
-                    <button className="register-button" type="button" onClick={handleSubmit}><b>Daftar</b></button>
+                    <button className="register-button" type="submit"><b>Daftar</b></button>
                   </div>
                   <div className="d-flex justify-content-center mb-2">
                     <p id="daftar-text">

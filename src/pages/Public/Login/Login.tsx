@@ -71,6 +71,7 @@ const Login = () => {
   }, []);
 
   const handleSubmit = async () => {
+    const toastLoading = toast.loading('Waiting for login');
     try {
       const response = await axios.post(
         LOGIN_URL,
@@ -100,6 +101,8 @@ const Login = () => {
       navigate('/seller/register', { replace: true });
     } catch (err:any) {
       toast.error(err.response?.data?.message);
+    } finally {
+      toast.dismiss(toastLoading);
     }
   };
 
@@ -112,9 +115,17 @@ const Login = () => {
         <div className="forms_container col-md-6 col-sm-12">
           <div className="login_forms">
             <p className="p-4"><b>Log in ke Sea Deals Seller Center</b></p>
-            <input type="text" placeholder="Email" className="form-control mb-2" value={email} onChange={(event) => setEmail(event.target.value)} />
-            <input type="password" placeholder="Kata sandi" className="form-control mb-2" value={password} onChange={(event) => setPassword(event.target.value)} />
-            <Button buttonType="primary" text="Login" handleClickedButton={handleSubmit} />
+            <form
+              className=""
+              onSubmit={(e) => {
+                e.preventDefault();
+                handleSubmit().then();
+              }}
+            >
+              <input type="email" placeholder="Email" className="form-control mb-2" value={email} required onChange={(event) => setEmail(event.target.value)} />
+              <input type="password" placeholder="Kata sandi" className="form-control mb-2" value={password} required onChange={(event) => setPassword(event.target.value)} />
+              <Button buttonType="primary" text="Login" isSubmit handleClickedButton={() => {}} />
+            </form>
             <div className="hr-sect"><b>ATAU</b></div>
             <div className="d-flex justify-content-center">
               <div className="mb-4" id="signInDiv" />
