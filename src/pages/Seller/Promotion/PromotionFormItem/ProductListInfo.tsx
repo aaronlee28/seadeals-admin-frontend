@@ -15,12 +15,14 @@ const ProductListInfo:FC<any> = ({
 
   useEffect(() => {
     if (addedProduct !== undefined) {
+      console.log(products);
       for (let i = 0; i < products.length; i += 1) {
         if (addedProduct === products[i].id.toString() && !productIds.includes(products[i].id)) {
           const promoPerProduct = {
             ...promotion,
             product_id: products[i].id,
             product_name: products[i].name,
+            photo: products[i].photo,
             quota,
             max_quota: maxQuota,
           };
@@ -83,7 +85,8 @@ const ProductListInfo:FC<any> = ({
         <table className="table table-hover promotion-dashboard__table">
           <thead>
             <tr className="table-secondary" key={promotionList.length}>
-              <th className="col-2 text-center" scope="row">Id Produk</th>
+              <th className="col-1 text-center" scope="row">Id Produk</th>
+              <th className="col-2 text-center" scope="row">Gambar Produk</th>
               <th>Nama Produk</th>
               <th className="text-center">Diskon</th>
               <th className="text-center">Kuota Pemakaian</th>
@@ -100,6 +103,9 @@ const ProductListInfo:FC<any> = ({
                     <td className="align-middle text-center">
                       {product.product_id}
                     </td>
+                    <td className="align-middle text-center">
+                      <img src={product.photo} alt={product.product_name} className="product-list__photo" />
+                    </td>
                     <td className="align-middle">
                       {product.product_name}
                     </td>
@@ -113,7 +119,7 @@ const ProductListInfo:FC<any> = ({
                     <td className="align-middle text-center">{product.max_quota}</td>
                     {
                             !show && (
-                            <td>
+                            <td className="align-middle">
                               <div className="row">
                                 <div className="d-flex col justify-content-center">
                                   <button type="button" value={product.product_id} className="btn edit-button-secondary" onClick={handleOpenModal}>
