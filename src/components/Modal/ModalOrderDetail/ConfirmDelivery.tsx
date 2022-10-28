@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useState } from 'react';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 import Button from '../../Button/Button';
 import DeliveryInfoItem from './DeliveryInfoItem';
 import dateFormatter from '../../../utils/dateFormatter';
@@ -140,32 +141,39 @@ const ConfirmDelivery:FC<Props> = ({
             </div>
           </div>
         </div>
-        {allowPrint ? (
-          <div className="d-flex">
-            {!notDelivered && !loadingThermal && (
-            <PDFDownloadLink document={<ThermalDocument data={thermal} />} fileName="thermal.pdf">
-              {loadingThermal ? (
-                <div>
-                  Loading...
-                </div>
-              ) : (
-                <Button
-                  buttonType="plain text-main"
-                  handleClickedButton={() => {}}
-                  text="Cetak Resi"
-                />
-              )}
-            </PDFDownloadLink>
-            )}
-            {notDelivered && (
+        <div className="d-flex align-items-center">
+          {!notDelivered && !loadingThermal && (
+            allowPrint
+              ? (
+                <PDFDownloadLink document={<ThermalDocument data={thermal} />} fileName="thermal.pdf">
+                  {loadingThermal ? (
+                    <div>
+                      Loading...
+                    </div>
+                  ) : (
+                    <Button
+                      buttonType="plain text-main"
+                      handleClickedButton={() => {}}
+                      text="Cetak Resi"
+                    />
+                  )}
+                </PDFDownloadLink>
+              )
+              : (
+                <small className="text-secondary">
+                  {'receipt printing is disabled in '}
+                  <Link to="/seller/settings/delivery/">settings</Link>
+                </small>
+              )
+          )}
+          {notDelivered && (
             <Button
               buttonType={`secondary ms-auto ${loadingDelivery && 'disabled'}`}
               handleClickedButton={() => deliverOrder()}
               text="Konfirmasi Pengiriman"
             />
-            )}
-          </div>
-        ) : <small className="text-secondary">delivery thermal printing is disabled in settings</small>}
+          )}
+        </div>
       </div>
     </div>
   );

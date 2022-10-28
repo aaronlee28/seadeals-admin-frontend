@@ -26,6 +26,11 @@ const OrdersNav:FC<OrdersNavProps> = ({ setParam, active }) => {
           handleClickedButton={() => handleNavClick(ORDER_FILTER.WAIT_SELLER)}
         />
         <Button
+          text="Dikirim"
+          buttonType={`navtab ${active === ORDER_FILTER.ON_DELIVERY && 'active'}`}
+          handleClickedButton={() => handleNavClick(ORDER_FILTER.ON_DELIVERY)}
+        />
+        <Button
           text="Selesai"
           buttonType={`navtab ${active === ORDER_FILTER.DONE && 'active'}`}
           handleClickedButton={() => handleNavClick(ORDER_FILTER.DONE)}
