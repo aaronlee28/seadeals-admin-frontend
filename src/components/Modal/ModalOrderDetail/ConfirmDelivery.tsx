@@ -10,6 +10,7 @@ import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
 import Thermal from '../../../constants/thermal';
 import ThermalDocument from '../../PDF/Thermal/ThermalDocument';
 import PrintSettingsAPI from '../../../api/printSettings';
+import ModalConfirmation from '../ModalConfirmation/ModalConfirmation';
 
 interface Props {
   closeDelivery: ()=>void,
@@ -23,6 +24,7 @@ const ConfirmDelivery:FC<Props> = ({
 }) => {
   const axiosPrivate = useAxiosPrivate();
 
+  const [showConfirm, setShowConfirm] = useState(false);
   const [loadingDelivery, setLoadingDelivery] = useState(false);
   const [allowPrint, setAllowSettings] = useState(false);
 
@@ -42,6 +44,27 @@ const ConfirmDelivery:FC<Props> = ({
     } catch (e) {
       toast.dismiss();
       toast.error('Gagal Mengubah Status Pengiriman');
+    }
+  };
+
+  const cancelOrder = async () => {
+    if (loadingDelivery) return;
+    try {
+      setLoadingDelivery(true);
+      toast.loading('Membatalkan pesanan..');
+      await axiosPrivate.post(
+        '/cancel/orders',
+        JSON.stringify({ order_id: order.id }),
+      );
+      refreshData();
+      setShowModal(false);
+      toast.success('Status pesanan dibatalkan');
+    } catch (e) {
+      toast.dismiss();
+      toast.error('Gagal membatalkan pesanan');
+    } finally {
+      setShowConfirm(false);
+      toast.dismiss();
     }
   };
 
@@ -167,14 +190,33 @@ const ConfirmDelivery:FC<Props> = ({
               )
           )}
           {notDelivered && (
-            <Button
-              buttonType={`secondary ms-auto ${loadingDelivery && 'disabled'}`}
-              handleClickedButton={() => deliverOrder()}
-              text="Konfirmasi Pengiriman"
-            />
+            <div className="d-flex gap-4 justify-content-end w-100">
+              <Button
+                buttonType={`secondary alt ${loadingDelivery && 'disabled'}`}
+                handleClickedButton={() => setShowConfirm(true)}
+                text="Batalkan Pesanan"
+              />
+              <Button
+                buttonType={`secondary ${loadingDelivery && 'disabled'}`}
+                handleClickedButton={() => deliverOrder()}
+                text="Konfirmasi Pengiriman"
+              />
+            </div>
           )}
         </div>
       </div>
+      {
+        showConfirm && (
+          <div>
+            <ModalConfirmation
+              text="Apakah anda yakin untuk membatalkan pesanan ini?"
+              handleClose={() => setShowConfirm(false)}
+              handleConfirm={() => cancelOrder()}
+              setShowModal={setShowConfirm}
+            />
+          </div>
+        )
+      }
     </div>
   );
 };
