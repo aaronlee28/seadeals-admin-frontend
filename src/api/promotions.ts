@@ -3,8 +3,8 @@ class PromotionsAPI {
     return ax.get(`/promotions?${filter}`);
   }
 
-  static AddPromotion(ax:any) {
-    return ax.post('/promotions');
+  static AddPromotion(ax:any, body:any) {
+    return ax.post('/promotions', body);
   }
 
   static ViewPromotionDetail(ax:any, id:any = '') {
