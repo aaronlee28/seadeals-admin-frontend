@@ -3,15 +3,13 @@ import React, {
 } from 'react';
 import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
-import {
-  deleteObject, getDownloadURL, ref, uploadBytes,
-} from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import Modal from '../../../../components/Modal/Modal';
 import CategoryInput from './CategoryInput';
 import storage from '../../../../firebase/firebase';
 
 const ProductMainInfo:FC<any> = ({
-  product, handleOnChange, setCategoryID, productPhoto, setProductPhoto,
+  product, handleOnChange, setCategoryID, productPhoto, setProductPhoto, onDeleteClick,
 }) => {
   const imageInputRef = useRef<any>();
   const [category, setCategory] = useState({
@@ -51,19 +49,6 @@ const ProductMainInfo:FC<any> = ({
     }
   };
 
-  const onDeleteClick = (idx:number) => (e:any) => {
-    e.preventDefault();
-    const photo = productPhoto[idx];
-    const imgRef = ref(storage, `products/${photo.name}`);
-
-    deleteObject(imgRef).then(() => {
-      toast.success('image deleted');
-      setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
-    }).catch((errDelete:any) => {
-      toast.error(errDelete);
-    });
-  };
-
   return (
     <div className="my-4">
       {
@@ -79,11 +64,14 @@ const ProductMainInfo:FC<any> = ({
       }
       <h5 className="text-start"><b>Informasi Dasar</b></h5>
       <div className="row my-3">
-        <label className="col-3 text-end align-self-center" htmlFor="photo">Foto Produk</label>
+        <label className="col-3 text-end align-self-center" htmlFor="photo">
+          <span className="text-accent">*</span>
+          <span>Foto Produk</span>
+        </label>
         <div className="col-9 p-0 d-flex justify-content-start">
           {productPhoto.map(
             (el:any, i:any) => (
-              <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
+              <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={() => onDeleteClick(i)}>
                 <div className="d-flex flex-column justify-content-center product-form__image__filter">
                   <div>
                     X
@@ -111,7 +99,10 @@ const ProductMainInfo:FC<any> = ({
         </div>
       </div>
       <div className="row my-3">
-        <label className="col-3 text-end align-self-center" htmlFor="name">Nama Produk</label>
+        <label className="col-3 text-end align-self-center" htmlFor="name">
+          <span className="text-accent">*</span>
+          <span>Nama Produk</span>
+        </label>
         <input
           name="name"
           className="col-9 border rounded p-2"
@@ -124,13 +115,19 @@ const ProductMainInfo:FC<any> = ({
         />
       </div>
       <div className="row my-3">
-        <label className="col-3 text-end align-self-center">Kategori</label>
+        <label className="col-3 text-end align-self-center">
+          <span className="text-accent">*</span>
+          <span>Kategori</span>
+        </label>
         <div className="col-9 product-form__category" role="presentation" onClick={() => setShowCategoryModal(true)}>
           <input value={category.name} placeholder="Pilih Kategori" required readOnly />
         </div>
       </div>
       <div className="row my-3">
-        <label className="col-3 text-end align-self-center" htmlFor="description">Deskripsi</label>
+        <label className="col-3 text-end align-self-center" htmlFor="description">
+          <span className="text-accent">*</span>
+          <span>Deskripsi</span>
+        </label>
         <textarea
           name="description"
           className="col-9 border rounded p-2"
