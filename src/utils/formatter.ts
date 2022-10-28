@@ -1,10 +1,6 @@
-const DisplayDatetime = (time: string) => {
-  const { length } = time;
-  if (length === 27) {
-    return time.replace('T', ' ').substring(0, length - 11);
-  }
-  return time.replace('T', ' ').substring(0, length - 4);
-};
+import moment from 'moment';
+
+const DisplayDatetime = (time: string) => moment(time).format('YYYY-MM-DD hh:mm');
 
 const DisplayPrice = (price: number) => {
   const str = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price || 0);
