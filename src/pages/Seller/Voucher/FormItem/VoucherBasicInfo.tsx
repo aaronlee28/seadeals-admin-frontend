@@ -7,8 +7,8 @@ import VoucherConstant from '../../../../constants/voucher';
 const VoucherBasicInfo:FC<any> = ({
   voucher, formType, handleOnChange, setVoucher,
 }) => {
-  const dt = moment(new Date()).add(2, 'minutes');
-  const timeNow = `${moment(dt).format('YYYY-MM-DDThh:mm')}`;
+  const dt = moment(new Date()).add(2, 'minutes').toISOString();
+  const timeNow = `${moment(dt).format('YYYY-MM-DDTHH:mm')}`;
   const auth = useAuth();
   const prefixCode = auth.auth.user.username.substring(0, 4).toUpperCase();
 
@@ -16,6 +16,7 @@ const VoucherBasicInfo:FC<any> = ({
     setVoucher({ ...voucher, start_date: timeNow, end_date: timeNow });
   }, []);
 
+  console.log(voucher.start_date);
   return (
     <div className="my-4">
       <h5 className="text-start"><b>Rincian Dasar</b></h5>

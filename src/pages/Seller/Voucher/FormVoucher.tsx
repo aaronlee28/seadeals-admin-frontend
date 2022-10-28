@@ -49,8 +49,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
         setVoucher({
           ...data,
           code: vID ? '' : data.code,
-          start_date: moment(data.start_date).format('YYYY-MM-DDThh:mm'),
-          end_date: moment(data.end_date).format('YYYY-MM-DDThh:mm'),
+          start_date: moment(data.start_date).format('YYYY-MM-DDTHH:mm'),
+          end_date: moment(data.end_date).format('YYYY-MM-DDTHH:mm'),
         });
       })
       .catch((err:any) => toast.error(err.response?.data?.message));

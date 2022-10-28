@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-const DisplayDatetime = (time: string) => moment(time).format('YYYY-MM-DD hh:mm');
+const DisplayDatetime = (time: string) => moment(time).format('YYYY-MM-DD HH:mm');
 
 const DisplayPrice = (price: number) => {
   const str = new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR' }).format(price || 0);
