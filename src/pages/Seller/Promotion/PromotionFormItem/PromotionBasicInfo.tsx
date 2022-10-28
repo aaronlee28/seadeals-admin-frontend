@@ -3,13 +3,13 @@ import '../Promotions.scss';
 import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
 import {
-  deleteObject, getDownloadURL, ref, uploadBytes,
+  getDownloadURL, ref, uploadBytes,
 } from 'firebase/storage';
 import VoucherConstant from '../../../../constants/voucher';
 import storage from '../../../../firebase/firebase';
 
 const PromotionBasicInfo:FC<any> = ({
-  promotion, formType, handleOnChange, setPromotion,
+  promotion, formType, handleOnChange, setPromotion, onDeleteBanner,
 }) => {
   const timeNow = `${new Date().toISOString().split('.')[0]}`;
   const imageInputRef = useRef<any>();
@@ -36,18 +36,6 @@ const PromotionBasicInfo:FC<any> = ({
     }
   };
 
-  const onDeleteClick = (e:any) => {
-    e.preventDefault();
-    const imgRef = ref(storage, `banners/${promotion.banner_name}`);
-
-    deleteObject(imgRef).then(() => {
-      toast.success('image deleted');
-      setPromotion({ ...promotion, banner_name: '', banner_url: '' });
-    }).catch((errDelete:any) => {
-      toast.error(errDelete);
-    });
-  };
-
   return (
     <div className="my-4">
       <h5 className="text-start"><b>Rincian Dasar</b></h5>
@@ -56,7 +44,7 @@ const PromotionBasicInfo:FC<any> = ({
         <div className="col-9 p-0 d-flex justify-content-start">
           {
             promotion.banner_url ? (
-              <button className="promo-image" type="button" onClick={onDeleteClick}>
+              <button className="promo-image" type="button" onClick={onDeleteBanner}>
                 <div className="d-flex flex-column justify-content-center promo-image__filter">
                   <div>
                     X

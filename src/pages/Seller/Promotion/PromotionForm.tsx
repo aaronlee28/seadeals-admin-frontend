@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 
 import './Promotions.scss';
 import toast from 'react-hot-toast';
+import { deleteObject, ref } from 'firebase/storage';
 import PromotionBasicInfo from './PromotionFormItem/PromotionBasicInfo';
 import PromotionBonusInfo from './PromotionFormItem/PromotionBonusInfo';
 import PromotionsAPI from '../../../api/promotions';
 import Button from '../../../components/Button/Button';
 import VoucherConstant from '../../../constants/voucher';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import storage from '../../../firebase/firebase';
 
 const PromotionForm:FC<any> = ({ title, formType }) => {
   const axiosPrivate = useAxiosPrivate();
@@ -23,7 +25,8 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
     max_quota: '',
     amount_type: '',
     amount: '',
-    banner_url: 'dawdaw.png',
+    banner_name: '',
+    banner_url: '',
   });
 
   const [promotions, setPromotions] = useState<any>([]);
@@ -55,27 +58,16 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
     });
   };
 
-  // const handleUpdate = async () => {
-  //   try {
-  //     const response = await axiosPrivate.patch(
-  //       `${PROMOTION_URL}/${voucherID}`,
-  //       JSON.stringify({
-  //         ...voucher,
-  //         quota: Number(voucher.quota),
-  //         amount: Number(voucher.amount),
-  //         min_spending: Number(voucher.min_spending),
-  //         start_date: `${voucher.start_date}+07:00`,
-  //         end_date: `${voucher.end_date}+07:00`,
-  //       }),
-  //     );
-  //     if (response.status === 200) {
-  //       toast.success('Promosi berhasil diubah');
-  //     }
-  //     navigate('/seller/promotions/list');
-  //   } catch (err:any) {
-  //     toast.error(err.response?.data?.message);
-  //   }
-  // };
+  const onDeleteClick = () => {
+    const imgRef = ref(storage, `banners/${promotion.banner_name}`);
+
+    deleteObject(imgRef).then(() => {
+      toast.success('image deleted');
+      setPromotion({ ...promotion, banner_name: '', banner_url: '' });
+    }).catch((errDelete:any) => {
+      toast.error(errDelete);
+    });
+  };
 
   const handleSubmit = async () => {
     try {
@@ -111,30 +103,41 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
     <div className="promotions-dashboard_container">
       <h3 className="mb-4 mt-2">{title}</h3>
       <div className="promotion_content">
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={(e) => {
+          e.preventDefault();
+          handleSubmit().then();
+        }}
+        >
           <PromotionBasicInfo
             promotion={promotion}
+            onDeleteBanner={onDeleteClick}
             setPromotion={setPromotion}
             formType={formType}
             handleOnChange={handleOnChange}
           />
           {
               (promotion.start_date !== '' && promotion.end_date !== '') && (
-              <>
-                <PromotionBonusInfo
-                  promotion={promotion}
-                  setPromotions={setPromotions}
-                  formType={formType}
-                  handleOnChange={handleOnChange}
-                />
-                <div className="d-flex flex-row-reverse gap-3 mt-3">
-                  {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
-                  {formType === VoucherConstant.UPDATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan Perubahan" />}
-                  <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/promotions/list')} text={formType === VoucherConstant.SHOW ? 'Kembali' : 'Batal'} />
-                </div>
-              </>
+              <PromotionBonusInfo
+                promotion={promotion}
+                setPromotions={setPromotions}
+                formType={formType}
+                handleOnChange={handleOnChange}
+              />
               )
           }
+          <div className="d-flex flex-row-reverse gap-3 mt-3">
+            {formType === VoucherConstant.CREATE && promotion.start_date !== '' && promotion.end_date !== '' && <Button isSubmit buttonType="primary" handleClickedButton={() => {}} text="Simpan" />}
+            <Button
+              buttonType="secondary alt"
+              handleClickedButton={
+              () => {
+                onDeleteClick();
+                navigate('/seller/promotions/list');
+              }
+}
+              text={formType === VoucherConstant.SHOW ? 'Kembali' : 'Batal'}
+            />
+          </div>
         </form>
       </div>
     </div>
