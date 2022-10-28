@@ -3,6 +3,7 @@ import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
 
 import './Voucher.scss';
 import toast from 'react-hot-toast';
+import moment from 'moment';
 import VoucherBasicInfo from './FormItem/VoucherBasicInfo';
 import VoucherBonusInfo from './FormItem/VoucherBonusInfo';
 import VoucherAPI from '../../../api/voucher';
@@ -48,8 +49,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
         setVoucher({
           ...data,
           code: vID ? '' : data.code,
-          start_date: data.start_date.replace('Z', ''),
-          end_date: data.end_date.replace('Z', ''),
+          start_date: moment(data.start_date).format('YYYY-MM-DDThh:mm'),
+          end_date: moment(data.end_date).format('YYYY-MM-DDThh:mm'),
         });
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
@@ -70,8 +71,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           quota: Number(voucher.quota),
           amount: Number(voucher.amount),
           min_spending: Number(voucher.min_spending),
-          start_date: `${voucher.start_date}+07:00`,
-          end_date: `${voucher.end_date}+07:00`,
+          start_date: voucher.start_date,
+          end_date: voucher.end_date,
         }),
       );
       if (response.status === 200) {
@@ -85,6 +86,7 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
 
   const handleSubmit = async () => {
     try {
+      console.log(JSON.stringify(moment(voucher.start_date)));
       const response = await axiosPrivate.post(
         VOUCHERS_URL,
         JSON.stringify({
@@ -92,8 +94,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           quota: Number(voucher.quota),
           amount: Number(voucher.amount),
           min_spending: Number(voucher.min_spending),
-          start_date: `${voucher.start_date}+07:00`,
-          end_date: `${voucher.end_date}+07:00`,
+          start_date: moment(voucher.start_date),
+          end_date: moment(voucher.end_date),
         }),
       );
       if (response.status === 200) {
@@ -110,7 +112,13 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
       <h3 className="mb-4 mt-2">{title}</h3>
       <div className="promotion_content">
         <form onSubmit={(e) => e.preventDefault()}>
-          <VoucherBasicInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
+          <input type="hidden" id="timezone" name="timezone" value="-08:00" />
+          <VoucherBasicInfo
+            voucher={voucher}
+            formType={formType}
+            handleOnChange={handleOnChange}
+            setVoucher={setVoucher}
+          />
           <VoucherBonusInfo voucher={voucher} formType={formType} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
             {formType === VoucherConstant.CREATE && <Button isSubmit buttonType="primary" handleClickedButton={handleSubmit} text="Simpan" />}
