@@ -3,15 +3,13 @@ import React, {
 } from 'react';
 import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
-import {
-  deleteObject, getDownloadURL, ref, uploadBytes,
-} from 'firebase/storage';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import Modal from '../../../../components/Modal/Modal';
 import CategoryInput from './CategoryInput';
 import storage from '../../../../firebase/firebase';
 
 const ProductMainInfo:FC<any> = ({
-  product, handleOnChange, setCategoryID, productPhoto, setProductPhoto,
+  product, handleOnChange, setCategoryID, productPhoto, setProductPhoto, onDeleteClick,
 }) => {
   const imageInputRef = useRef<any>();
   const [category, setCategory] = useState({
@@ -51,19 +49,6 @@ const ProductMainInfo:FC<any> = ({
     }
   };
 
-  const onDeleteClick = (idx:number) => (e:any) => {
-    e.preventDefault();
-    const photo = productPhoto[idx];
-    const imgRef = ref(storage, `products/${photo.name}`);
-
-    deleteObject(imgRef).then(() => {
-      toast.success('image deleted');
-      setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
-    }).catch((errDelete:any) => {
-      toast.error(errDelete);
-    });
-  };
-
   return (
     <div className="my-4">
       {
@@ -83,7 +68,7 @@ const ProductMainInfo:FC<any> = ({
         <div className="col-9 p-0 d-flex justify-content-start">
           {productPhoto.map(
             (el:any, i:any) => (
-              <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={onDeleteClick(i)}>
+              <button className="product-form__image" key={`test${i.toString()}`} type="button" onClick={() => onDeleteClick(i)}>
                 <div className="d-flex flex-column justify-content-center product-form__image__filter">
                   <div>
                     X

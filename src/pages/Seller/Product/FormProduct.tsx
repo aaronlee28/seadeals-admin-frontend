@@ -1,11 +1,13 @@
 import React, { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { deleteObject, ref } from 'firebase/storage';
 import Button from '../../../components/Button/Button';
 import ProductMainInfo from './FormItem/ProductMainInfo';
 import ProductVariantInfo from './FormItem/ProductVariantInfo';
 import ProductOtherInfo from './FormItem/ProductOtherInfo';
 import useAxiosPrivate from '../../../hooks/useAxiosPrivate';
+import storage from '../../../firebase/firebase';
 
 const CREATE_PRODUCT_URL = 'sellers/create-product';
 
@@ -108,6 +110,25 @@ const FormProduct:FC<any> = ({
     }
   };
 
+  const onDeleteClick = (idx:number) => {
+    const photo = productPhoto[idx];
+    const imgRef = ref(storage, `products/${photo.name}`);
+
+    deleteObject(imgRef).then(() => {
+      toast.success('image deleted');
+      setProductPhoto(productPhoto.filter((el:any, i:any) => (i !== idx)));
+    }).catch((errDelete:any) => {
+      toast.error(errDelete);
+    });
+  };
+
+  const handleAbort = () => {
+    productPhoto.forEach((_, index) => {
+      onDeleteClick(index);
+    });
+    navigate('/seller/product/list');
+  };
+
   return (
     <div className="product-form__container">
       <h3 className="mb-4 mt-2">{title}</h3>
@@ -123,6 +144,7 @@ const FormProduct:FC<any> = ({
             setCategoryID={setCategoryID}
             productPhoto={productPhoto}
             setProductPhoto={setProductPhoto}
+            onDeleteClick={onDeleteClick}
           />
           <ProductVariantInfo
             product={product}
@@ -134,7 +156,13 @@ const FormProduct:FC<any> = ({
           <ProductOtherInfo product={product} handleOnChange={handleOnChange} />
           <div className="d-flex flex-row-reverse gap-3">
             <Button isSubmit buttonType="primary" handleClickedButton={() => {}} text="Simpan" />
-            <Button buttonType="secondary alt" handleClickedButton={() => navigate('/seller/product/list')} text="Batal" />
+            <Button
+              buttonType="secondary alt"
+              handleClickedButton={() => {
+                handleAbort();
+              }}
+              text="Batal"
+            />
           </div>
         </form>
       </div>
