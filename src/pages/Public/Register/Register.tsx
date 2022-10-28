@@ -144,7 +144,7 @@ const Register = () => {
                   }}
                 >
                   <input
-                    className="form-control mb-2"
+                    className="form__input p-2 mb-2"
                     value={email}
                     onChange={(event) => setEmail(event.target.value)}
                     type="email"
@@ -153,59 +153,61 @@ const Register = () => {
                     autoComplete="new-password"
                     required
                   />
-                  <div className="input-group mb-2">
-                    <input
-                      value={password}
-                      onChange={(event) => setPassword(event.target.value)}
-                      type={(revealed) ? 'text' : 'password'}
-                      name="password"
-                      id="password"
-                      className={passwordValidity ? 'form-control' : 'form-control is-invalid'}
-                      placeholder="Kata sandi"
-                      autoComplete="new-password"
-                      required
-                    />
-                    <div className="input-group-append" role="presentation" onClick={handleReveal}>
-                      <span className="input-group-text">
-                        { !revealed ? <BsEyeSlash /> : <BsEye /> }
-                      </span>
+                  <div className="mb-2">
+                    <div className="input-group suffix">
+                      <input
+                        value={password}
+                        onChange={(event) => setPassword(event.target.value)}
+                        type={(revealed) ? 'text' : 'password'}
+                        className={passwordValidity ? 'form__input p-2' : 'form__input p-2 is-invalid'}
+                        placeholder="Kata sandi"
+                        autoComplete="new-password"
+                        required
+                      />
+                      <div className="input-group-addon" role="presentation" onClick={handleReveal}>
+                        <span className="">
+                          { !revealed ? <BsEyeSlash /> : <BsEye /> }
+                        </span>
+                      </div>
                     </div>
                     {
-                      passwordValidity ? '' : (
-                        <div id="invalid-password" className="invalid-feedback">
-                          Password should not include username!
-                        </div>
+                        passwordValidity ? '' : (
+                          <div id="invalid-password" className="invalid-feedback">
+                            Password should not include username!
+                          </div>
+                        )
+                      }
+                  </div>
+                  <div className="mb-2">
+                    <div className="input-group suffix">
+                      <input
+                        value={confirmPassword}
+                        onChange={(event) => setConfirmPassword(event.target.value)}
+                        type={(confirmPasswordVis) ? 'text' : 'password'}
+                        name="confirm-password"
+                        id="confirm-password"
+                        className={passwordCorrect ? 'form__input p-2' : 'form__input p-2 is-invalid'}
+                        placeholder="Ulang kata sandi"
+                        autoComplete="new-password"
+                        required
+                      />
+                      <div className="input-group-addon" role="presentation" onClick={handleCPVis}>
+                        <span className="">
+                          { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
+                        </span>
+                      </div>
+                    </div>
+                    {
+                      !passwordCorrect && (
+                        <p id="invalid-password" className="text-accent">
+                          {'Password doesn\'t match!'}
+                        </p>
                       )
                     }
                   </div>
-                  <div className="input-group mb-2">
+                  <div className="mb-2">
                     <input
-                      value={confirmPassword}
-                      onChange={(event) => setConfirmPassword(event.target.value)}
-                      type={(confirmPasswordVis) ? 'text' : 'password'}
-                      name="confirm-password"
-                      id="confirm-password"
-                      className={passwordCorrect ? 'form-control' : 'form-control is-invalid'}
-                      placeholder="Ulang kata sandi"
-                      autoComplete="new-password"
-                      required
-                    />
-                    <div className="input-group-append" role="presentation" onClick={handleCPVis}>
-                      <span className="input-group-text">
-                        { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
-                      </span>
-                    </div>
-                    {
-                      passwordCorrect ? '' : (
-                        <div id="invalid-password" className="invalid-feedback">
-                          Passwords are not the same!
-                        </div>
-                      )
-                    }
-                  </div>
-                  <div className="input-group mb-2">
-                    <input
-                      className={userNameValidity ? 'form-control' : 'form-control is-invalid'}
+                      className={userNameValidity ? 'form__input p-2' : 'form__input p-2 is-invalid'}
                       value={userName}
                       onChange={(event) => setUserName(event.target.value)}
                       type="text"
@@ -225,7 +227,7 @@ const Register = () => {
                   <input
                     value={fullName}
                     onChange={(event) => setFullName(event.target.value)}
-                    className="form-control mb-2"
+                    className="form__input my-2"
                     type="text"
                     id="fullName"
                     placeholder="Nama lengkap"
@@ -241,15 +243,15 @@ const Register = () => {
                     <option value="male">Laki-laki</option>
                     <option value="female">Perempuan</option>
                   </select>
-                  <div className="input-group">
-                    <div className="input-group-prepend">
-                      <span className="input-group-text" id="inputGroupPrepend">+62</span>
+                  <div className="input-group prefix">
+                    <div className="input-group-addon">
+                      <span className="" id="inputGroupPrepend">+62</span>
                     </div>
                     <input
                       value={phone}
                       onChange={(event) => setPhone(event.target.value)}
                       type="tel"
-                      className="form-control"
+                      className="form__input p-2"
                       id="validationCustomTelephone"
                       placeholder="Nomor ponsel"
                       aria-describedby="inputGroupPrepend"
@@ -260,7 +262,7 @@ const Register = () => {
                   <input
                     value={birthDate}
                     onChange={(event) => setBirthDate(event.target.value)}
-                    className="form-control mb-2"
+                    className="form__input p-2 mb-2"
                     type="date"
                     id="birthDate"
                     required

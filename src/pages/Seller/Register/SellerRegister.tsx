@@ -313,7 +313,7 @@ const SellerRegister = () => {
             </div>
           </div>
           <div className="button-group">
-            <Button buttonType="secondary mx-2" text="Batalkan pendaftaran" handleClickedButton={() => { logout().then(); navigate('/login'); }} />
+            <Button buttonType="secondary alt mx-2" text="Batalkan pendaftaran" handleClickedButton={() => { logout().then(); navigate('/login'); }} />
             {!show && !mainAddress && (
               <Button
                 buttonType="primary alt"
