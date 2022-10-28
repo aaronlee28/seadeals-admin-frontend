@@ -35,7 +35,7 @@ const ListPromotions:FC<any> = ({ promotions }) => {
                     </div>
                   </td>
                   <td>
-                    {promotion.name}
+                    {promotion.product_name}
                   </td>
                   <td>
                     {promotion.description}

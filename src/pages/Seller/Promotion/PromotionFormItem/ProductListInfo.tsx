@@ -5,10 +5,10 @@ import Modal from '../../../../components/Modal/Modal';
 
 const ProductListInfo:FC<any> = ({
   addedProduct, products, discount, promotionType, quota, globalQuota, maxQuota,
-  setQuota, setMaxQuota, setReqProducts, globalQuotaValue, globalMaxQuotaValue,
-  setGlobalQuota,
+  setQuota, setMaxQuota, setPromotions, globalQuotaValue, globalMaxQuotaValue,
+  setGlobalQuota, promotion,
 }) => {
-  const [productList, setProductList] = useState<any>([]);
+  const [promotionList, setPromotionList] = useState<any>([]);
   const [productIds, setProductIds] = useState<any>([]);
   const [show, setShow] = useState<any>(false);
   const [productIdForModal, setProductIdForModal] = useState<any>('');
@@ -17,10 +17,14 @@ const ProductListInfo:FC<any> = ({
     if (addedProduct !== undefined) {
       for (let i = 0; i < products.length; i += 1) {
         if (addedProduct === products[i].id.toString() && !productIds.includes(products[i].id)) {
-          const promoProd = {
-            product_id: products[i].id, product_name: products[i].name, quota, max_quota: maxQuota,
+          const promoPerProduct = {
+            ...promotion,
+            product_id: products[i].id,
+            product_name: products[i].name,
+            quota,
+            max_quota: maxQuota,
           };
-          setProductList([...productList, promoProd]);
+          setPromotionList([...promotionList, promoPerProduct]);
           setProductIds([...productIds, products[i].id]);
           setQuota('');
           setMaxQuota('');
@@ -30,16 +34,16 @@ const ProductListInfo:FC<any> = ({
   }, [addedProduct]);
 
   useEffect(() => {
-    if (productList.length > 0) {
-      setReqProducts(productList);
+    if (promotionList.length > 0) {
+      setPromotions(promotionList);
     }
-  }, [productList]);
+  }, [promotionList]);
 
   const [newQuota, setNewQuota] = useState<any>('');
   const [newMaxQuota, setNewMaxQuota] = useState<any>('');
 
   const handleChangeQuotas = (e:any, id:any) => {
-    const temp = [...productList];
+    const temp = [...promotionList];
 
     temp.forEach((item:any, index:number) => {
       if (item.product_id.toString() === id) {
@@ -49,7 +53,7 @@ const ProductListInfo:FC<any> = ({
         temp[index] = { ...temp[index], ...tempItem };
       }
     });
-    setProductList(temp);
+    setPromotionList(temp);
     setShow(false);
   };
 
@@ -60,7 +64,7 @@ const ProductListInfo:FC<any> = ({
 
   useEffect(() => {
     if (globalQuota) {
-      const temp = [...productList];
+      const temp = [...promotionList];
 
       temp.forEach((item:any, index: number) => {
         const tempItem:any = {};
@@ -68,7 +72,7 @@ const ProductListInfo:FC<any> = ({
         tempItem.max_quota = globalMaxQuotaValue || temp[index].max_quota;
         temp[index] = { ...temp[index], ...tempItem };
       });
-      setProductList(temp);
+      setPromotionList(temp);
       setGlobalQuota(false);
     }
   }, [globalQuota]);
@@ -78,7 +82,7 @@ const ProductListInfo:FC<any> = ({
       <div className="table-responsive table_wrapper">
         <table className="table table-hover promotion-dashboard__table">
           <thead>
-            <tr className="table-secondary" key={productList.length}>
+            <tr className="table-secondary" key={promotionList.length}>
               <th className="col-2 text-center" scope="row">Id Produk</th>
               <th>Nama Produk</th>
               <th className="text-center">Diskon</th>
@@ -89,9 +93,9 @@ const ProductListInfo:FC<any> = ({
           </thead>
           <tbody>
             {
-              productList.length === 0
-                ? <tr key={productList.length}><td colSpan={6} className="text-center">Tambah produk!</td></tr>
-                : productList.map((product:any) => (
+              promotionList.length === 0
+                ? <tr key={promotionList.length}><td colSpan={6} className="text-center">Tambah produk!</td></tr>
+                : promotionList.map((product:any) => (
                   <tr key={product.product_id}>
                     <td className="align-middle text-center">
                       {product.product_id}

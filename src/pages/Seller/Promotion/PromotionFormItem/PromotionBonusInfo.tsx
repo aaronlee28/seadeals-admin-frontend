@@ -1,16 +1,20 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, {
+  FC, useEffect, useState,
+} from 'react';
 import toast from 'react-hot-toast';
 import VoucherConstant from '../../../../constants/voucher';
 import '../Promotions.scss';
 import Button from '../../../../components/Button/Button';
 import Modal from '../../../../components/Modal/Modal';
 import ProductListInfo from './ProductListInfo';
-import { axiosPrivate } from '../../../../api/axios';
 import ProductAPI from '../../../../api/product';
+import useAxiosPrivate from '../../../../hooks/useAxiosPrivate';
+import PromotionsAPI from '../../../../api/promotions';
 
 const PromotionBonusInfo:FC<any> = ({
-  promotion, setReqProducts, formType, handleOnChange,
+  promotion, setPromotions, formType, handleOnChange,
 }) => {
+  const axiosPrivate = useAxiosPrivate();
   const [show, setShow] = useState<any>(false);
 
   const [products, setProducts] = useState<any>([]);
@@ -21,18 +25,47 @@ const PromotionBonusInfo:FC<any> = ({
 
   const [globalQuota, setGlobalQuota] = useState<any>(false);
 
+  const [tempData, setTempData] = useState<any>([]);
+  const [unavailableProductsIds, setUnavailableProductsIds] = useState<any>([]);
+  const [uPFetch, setUPFetch] = useState<any>(false);
+  useEffect(() => {
+    PromotionsAPI.GetPromotions(axiosPrivate, null)
+      .then((resp:any) => {
+        const { data } = resp.data;
+        setTempData(data);
+      })
+      .catch((err:any) => toast.error(err.response?.data?.message));
+  }, []);
+
+  useEffect(() => {
+    if (tempData.length > 0) {
+      tempData.forEach((promo:any) => {
+        if (promo.status === 'ongoing' || promo.status === 'upcoming') {
+          setUnavailableProductsIds((prev:any) => [...prev, promo.product_id]);
+        }
+      });
+      setUPFetch(true);
+    }
+  }, [tempData, promotion.start_date, promotion.end_date]);
+
   const findProducts = async () => {
     await ProductAPI.FindProductBySellerID(axiosPrivate, null)
       .then((resp:any) => {
         const { data } = resp.data;
-        setProducts(data.products);
+        data.products.forEach((product:any) => {
+          if (!unavailableProductsIds.includes(product.id)) {
+            setProducts((prev:any) => [...prev, product]);
+          }
+        });
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
   };
 
   useEffect(() => {
-    findProducts();
-  }, [deletedID]);
+    if (uPFetch) {
+      findProducts().then();
+    }
+  }, [uPFetch, deletedID]);
 
   const [addedProduct, setAddedProduct] = useState<any>();
   const [currentProduct, setCurrentProduct] = useState<any>();
@@ -237,7 +270,7 @@ const PromotionBonusInfo:FC<any> = ({
             addedProduct={addedProduct}
             products={products}
             promotion={promotion}
-            setReqProducts={setReqProducts}
+            setPromotions={setPromotions}
             setDeletedID={setDeletedID}
             discount={promotion.amount}
             quota={quota === '' ? promotion.quota : quota}
