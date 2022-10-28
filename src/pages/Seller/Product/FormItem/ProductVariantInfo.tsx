@@ -12,7 +12,7 @@ const ProductVariantInfo:FC<any> = ({
   product, handleOnChange, setProduct, dataVariants, setDataVariants,
 }) => {
   const [showVariantTable, setShowVariantTable] = useState(false);
-  const [variant1, setVariant1] = useState<any>([]);
+  const [variant1, setVariant1] = useState<any>(['']);
   const [variant2, setVariant2] = useState<any>([]);
   const defaultVariantValue = {
     price: '',
@@ -218,6 +218,7 @@ const ProductVariantInfo:FC<any> = ({
                     type="text"
                     onChange={handleOnChange}
                     value={product.variant_1_name}
+                    required
                   />
                   {product.variant_1_name !== '' && (
                   <>
