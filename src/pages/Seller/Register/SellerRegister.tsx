@@ -201,34 +201,34 @@ const SellerRegister = () => {
   const [description, setDescription] = useState('');
 
   const handleSubmit = () => {
-    try {
-      axiosPrivate.post(
-        uRLSellers,
-        JSON.stringify({
-          user_id: userId,
-          shop_name: shopName,
-          description,
-        }),
-      ).then((res: any) => {
-        if (res.data.statusCode === 200) {
-          const decode:any = jwt_decode(res.data.data.id_token);
-          const accessToken = res?.data?.data.id_token;
-          const { user, scope } = decode;
-          setAuth({ user, roles: scope.split(' '), accessToken });
-          localStorage.setItem('access_token', accessToken);
-          navigate('/seller/register/couriers', { replace: true });
-        }
-      });
-    } catch (err: any) {
+    axiosPrivate.post(
+      uRLSellers,
+      JSON.stringify({
+        user_id: userId,
+        shop_name: shopName,
+        description,
+      }),
+    ).then((res: any) => {
+      if (res.data.statusCode === 200) {
+        const decode:any = jwt_decode(res.data.data.id_token);
+        const accessToken = res?.data?.data.id_token;
+        const { user, scope } = decode;
+        setAuth({ user, roles: scope.split(' '), accessToken });
+        localStorage.setItem('access_token', accessToken);
+        navigate('/seller/register/couriers', { replace: true });
+      }
+      if (res.data.statusCode !== 200) {
+        toast.error('ERROR');
+      }
+    }).catch((err: any) => {
       toast.error(err.response?.data?.message);
-      navigate('/seller/register', { replace: true });
-    }
+    });
   };
 
   return (
     <div className="seller-register_container">
       <div className="registration-form-card">
-        <div className="header"><p className="header-text">Atur informasi toko</p></div>
+        <div className="header"><h1 className="header-text">Atur informasi toko</h1></div>
         {show && (
         <Modal cancel={handleClose} modalType="">
           <div className="d-flex flex-column p-4 w-75">
@@ -304,12 +304,12 @@ const SellerRegister = () => {
         <form onSubmit={(e) => e.preventDefault()}>
           <div className="input-groups">
             <div className="input-group row">
-              <div className="col-2">Nama toko:</div>
-              <div className="col-10"><input type="text" placeholder="Nama toko" className="form-control" value={shopName} onChange={(event) => setShopName(event.target.value)} required /></div>
+              <label>Nama toko:</label>
+              <div className="col-12"><input type="text" placeholder="Nama toko" className="form-control" value={shopName} onChange={(event) => setShopName(event.target.value)} required /></div>
             </div>
             <div className="input-group row">
-              <div className="col-2">Deskripsi:</div>
-              <div className="col-10"><textarea placeholder="Deskripsi" className="form-control" value={description} onChange={(event) => setDescription(event.target.value)} required /></div>
+              <label>Deskripsi:</label>
+              <div className="col-12"><textarea placeholder="Deskripsi" className="form-control" value={description} onChange={(event) => setDescription(event.target.value)} required /></div>
             </div>
           </div>
           <div className="button-group">
