@@ -1,4 +1,4 @@
-import React, { FC, useRef } from 'react';
+import React, { FC, useEffect, useRef } from 'react';
 import '../Promotions.scss';
 import toast from 'react-hot-toast';
 import { v4 } from 'uuid';
@@ -7,11 +7,12 @@ import {
 } from 'firebase/storage';
 import VoucherConstant from '../../../../constants/voucher';
 import storage from '../../../../firebase/firebase';
+import formatter from '../../../../utils/formatter';
 
 const PromotionBasicInfo:FC<any> = ({
   promotion, formType, handleOnChange, setPromotion, onDeleteBanner,
 }) => {
-  const timeNow = `${new Date().toISOString().split('.')[0]}`;
+  const timeNow = formatter.TimeNowString(2);
   const imageInputRef = useRef<any>();
 
   const handleImageChange = (e:any) => {
@@ -35,6 +36,10 @@ const PromotionBasicInfo:FC<any> = ({
       imageInputRef.current.value = '';
     }
   };
+
+  useEffect(() => {
+    setPromotion({ ...promotion, start_date: timeNow, end_date: timeNow });
+  }, []);
 
   return (
     <div className="my-4">
@@ -113,7 +118,7 @@ const PromotionBasicInfo:FC<any> = ({
           type="datetime-local"
           required
           step={1}
-          value={promotion.start_date ? promotion.start_date : timeNow}
+          value={promotion.start_date}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}
@@ -126,7 +131,7 @@ const PromotionBasicInfo:FC<any> = ({
           type="datetime-local"
           step={1}
           required
-          value={promotion.end_date ? promotion.end_date : timeNow}
+          value={promotion.end_date}
           readOnly={formType === VoucherConstant.SHOW}
           disabled={formType === VoucherConstant.SHOW}
           onChange={handleOnChange}

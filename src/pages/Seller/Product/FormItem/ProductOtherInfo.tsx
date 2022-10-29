@@ -6,7 +6,10 @@ const ProductOtherInfo:FC<any> = ({ product, handleOnChange }) => (
   <div className="my-4">
     <h5 className="text-start"><b>Informasi Lainnya</b></h5>
     <div className="row my-3">
-      <label className="col-3 text-end align-self-center" htmlFor="weight">Berat</label>
+      <label className="col-3 text-end align-self-center" htmlFor="weight">
+        <span className="text-accent">*</span>
+        <span>Berat</span>
+      </label>
       <div className="col-9">
         <div className="row">
           <div className="input-group suffix small p-0">
@@ -26,7 +29,10 @@ const ProductOtherInfo:FC<any> = ({ product, handleOnChange }) => (
       </div>
     </div>
     <div className="row my-3">
-      <label className="col-3 text-end align-self-center">Ukuran</label>
+      <label className="col-3 text-end align-self-center">
+        <span className="text-accent">*</span>
+        <span>Ukuran</span>
+      </label>
       <div className="col-9 p-0">
         <div className="d-flex flex-row gap-3 align-items-center p-0">
           <div className="input-group suffix small p-0">
@@ -74,13 +80,19 @@ const ProductOtherInfo:FC<any> = ({ product, handleOnChange }) => (
       </div>
     </div>
     <div className="row my-3">
-      <label className="col-3 text-end align-self-center" htmlFor="photo">Produk Berbahaya</label>
+      <label className="col-3 text-end align-self-center" htmlFor="photo">
+        <span className="text-accent">*</span>
+        <span>Produk Berbahaya</span>
+      </label>
       <div className="col-9 p-0">
         <RadioBoolean name="is_hazardous" data={product.is_hazardous} handleOnChange={handleOnChange} />
       </div>
     </div>
     <div className="row my-3">
-      <label className="col-3 text-end align-self-center" htmlFor="photo">Kondisi Produk</label>
+      <label className="col-3 text-end align-self-center" htmlFor="photo">
+        <span className="text-accent">*</span>
+        <span>Kondisi Produk</span>
+      </label>
       <div className="col-9 p-0">
         <select className="form-select mb-2" name="condition_status" required onChange={handleOnChange}>
           <option>Pilih kondisi</option>

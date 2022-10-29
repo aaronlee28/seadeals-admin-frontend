@@ -34,6 +34,7 @@ const DetailProduct:FC<any> = () => {
     }
   }, []);
 
+  console.log(product);
   return (
     <div className="product-form__container">
       <h3 className="mb-4 mt-2">Detail Produk</h3>
@@ -74,7 +75,7 @@ const DetailProduct:FC<any> = () => {
                 <RowContent label="Nama" value={product.product.name} />
                 <RowContent label="Kategori" value={product.product.category.name} />
                 <RowContent label="Deskripsi" element="textarea" value={product.product.product_detail.description} />
-                { productVariant[0].product_variant1.name === ''
+                { productVariant[0].product_variant1 !== null
                   && (
                   <>
                     <RowContent label="Harga">
@@ -87,7 +88,7 @@ const DetailProduct:FC<any> = () => {
                   )}
               </div>
               {
-                product.product.product_variant_detail[0].product_variant1.name
+                productVariant[0].product_variant1 !== null
                 && (
                   <div className="my-4 text-start">
                     <h5>Informasi Varian Produk</h5>
@@ -99,7 +100,7 @@ const DetailProduct:FC<any> = () => {
                               <td className="cell-width text-center">
                                 {productVariant[0].product_variant1.name}
                               </td>
-                              {productVariant[0].product_variant2.name
+                              {productVariant[0].product_variant2 !== null
                               && (
                                 <td className="cell-width text-center">
                                   {productVariant[0].product_variant2.name}
@@ -116,7 +117,7 @@ const DetailProduct:FC<any> = () => {
                             productVariant.map((item:any) => (
                               <tr key={item.id} className="d-flex">
                                 <td className="cell-width text-center">{item.variant1_value}</td>
-                                {productVariant[0].product_variant2.name
+                                {productVariant[0].product_variant2 !== null
                                   && (
                                     <td className="cell-width text-center">
                                       {item.variant2_value}

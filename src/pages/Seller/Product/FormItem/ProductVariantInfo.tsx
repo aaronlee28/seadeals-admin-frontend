@@ -12,7 +12,7 @@ const ProductVariantInfo:FC<any> = ({
   product, handleOnChange, setProduct, dataVariants, setDataVariants,
 }) => {
   const [showVariantTable, setShowVariantTable] = useState(false);
-  const [variant1, setVariant1] = useState<any>([]);
+  const [variant1, setVariant1] = useState<any>(['']);
   const [variant2, setVariant2] = useState<any>([]);
   const defaultVariantValue = {
     price: '',
@@ -157,6 +157,7 @@ const ProductVariantInfo:FC<any> = ({
               handleChangeByName('default_price', '');
               handleChangeByName('default_stock', '');
               setShowVariantTable(!showVariantTable);
+              setVariant1(['']);
             }}
           />
         </div>
@@ -165,7 +166,10 @@ const ProductVariantInfo:FC<any> = ({
         ? (
           <>
             <div className="row my-3">
-              <label className="col-3 text-end align-self-center" htmlFor="default_price">Harga Produk</label>
+              <label className="col-3 text-end align-self-center" htmlFor="default_price">
+                <span className="text-accent">*</span>
+                <span>Harga Produk</span>
+              </label>
               <div className="col-9 p-0">
                 <div className="row">
                   <div className="input-group prefix">
@@ -184,7 +188,10 @@ const ProductVariantInfo:FC<any> = ({
               </div>
             </div>
             <div className="row my-3">
-              <label className="col-3 text-end align-self-center" htmlFor="default_stock">Stok Produk</label>
+              <label className="col-3 text-end align-self-center" htmlFor="default_stock">
+                <span className="text-accent">*</span>
+                <span>Stok Produk</span>
+              </label>
               <div className="col-9 p-0">
                 <div className="row">
                   <div className="input-group suffix">
@@ -207,7 +214,10 @@ const ProductVariantInfo:FC<any> = ({
         : (
           <>
             <div className="row my-3">
-              <label className="col-3 text-end align-self-center">Variasi 1</label>
+              <label className="col-3 text-end align-self-center">
+                <span className="text-accent">*</span>
+                <span>Variasi 1</span>
+              </label>
               <div className="col-9 variant__input-container">
                 <div className="d-flex gap-3">
                   <input
@@ -218,6 +228,7 @@ const ProductVariantInfo:FC<any> = ({
                     type="text"
                     onChange={handleOnChange}
                     value={product.variant_1_name}
+                    required
                   />
                   {product.variant_1_name !== '' && (
                   <>

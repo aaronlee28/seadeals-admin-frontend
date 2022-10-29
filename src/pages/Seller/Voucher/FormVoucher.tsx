@@ -49,8 +49,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
         setVoucher({
           ...data,
           code: vID ? '' : data.code,
-          start_date: moment(data.start_date).format('YYYY-MM-DDThh:mm'),
-          end_date: moment(data.end_date).format('YYYY-MM-DDThh:mm'),
+          start_date: moment(data.start_date).format('YYYY-MM-DDTHH:mm'),
+          end_date: moment(data.end_date).format('YYYY-MM-DDTHH:mm'),
         });
       })
       .catch((err:any) => toast.error(err.response?.data?.message));
@@ -86,7 +86,6 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
 
   const handleSubmit = async () => {
     try {
-      console.log(JSON.stringify(moment(voucher.start_date)));
       const response = await axiosPrivate.post(
         VOUCHERS_URL,
         JSON.stringify({
