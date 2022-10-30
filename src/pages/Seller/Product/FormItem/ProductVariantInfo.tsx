@@ -15,7 +15,7 @@ const ProductVariantInfo:FC<any> = ({
   const [variant1, setVariant1] = useState<any>(['']);
   const [variant2, setVariant2] = useState<any>([]);
   const defaultVariantValue = {
-    price: 0,
+    price: 99,
     stock: 0,
     variant_code: '',
     picture_url: '',
