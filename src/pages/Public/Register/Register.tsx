@@ -4,14 +4,13 @@ import { BsEye, BsEyeSlash } from 'react-icons/bs';
 import { useLocation, useNavigate } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import toast from 'react-hot-toast';
-import axios from '../../../api/axios';
 import logo from '../../../assets/images/logo.png';
 import logo_xs from '../../../assets/images/logo_xs.png';
 import useAuth from '../../../hooks/useAuth';
-import useCheckLogged from '../../../hooks/useCheckLogged';
+import Button from '../../../components/Button/Button';
+import axios from '../../../api/axios';
 
 const Register = () => {
-  useCheckLogged();
   const [revealed, setRevealed] = useState(false);
   const [confirmPasswordVis, setConfirmPasswordVis] = useState(false);
 
@@ -32,6 +31,7 @@ const Register = () => {
   const [gender, setGender] = useState('male');
   const [phone, setPhone] = useState('');
   const [birthDate, setBirthDate] = useState('');
+  const timeNow = `${new Date().toISOString().split('.')[0]}`;
 
   const [passwordCorrect, setPasswordCorrect] = useState(true);
 
@@ -50,7 +50,7 @@ const Register = () => {
       return;
     }
     setPasswordValidity(true);
-  }, [userName]);
+  }, [password, userName]);
 
   const [userNameValidity, setUserNameValidity] = useState(true);
   useEffect(() => {
@@ -64,10 +64,13 @@ const Register = () => {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const googleUser = location.state;
+  const from = location.state?.from?.pathname || '/';
+  const googleUser = location.state ? location.state.user : null;
 
-  const handleSubmit = async () => {
-    const toastLoading = toast.loading('Waiting for register');
+  const handleSubmit = async (e:any) => {
+    e.preventDefault();
+
+    const loadingToast = toast.loading('Waiting for register');
     try {
       const response = await axios.post(
         uRL,
@@ -105,20 +108,43 @@ const Register = () => {
       toast.error(err.response?.data?.message);
       navigate('/register', { replace: true });
     } finally {
-      toast.dismiss(toastLoading);
+      toast.dismiss(loadingToast);
     }
   };
+
+  const [status, setStatus] = useState('');
 
   useEffect(() => {
     if (googleUser) {
       setEmail(googleUser.email);
       setFullName(googleUser.name);
     }
+
+    const token:any = localStorage.getItem('access_token');
+    if (token !== null) {
+      const dateNow = new Date();
+      // @ts-ignore
+      if (jwt_decode(token).exp * 1000 < dateNow.getTime()) {
+        setStatus('expired');
+        return;
+      }
+      setStatus('signed');
+      return;
+    }
+    setStatus('unsigned');
   }, []);
+
+  useEffect(() => {
+    if (status === 'signed') {
+      if (from === '/login' || from === '/register' || from === '/') {
+        navigate('/', { replace: true });
+      }
+    }
+  }, [status]);
 
   return (
     <div className="register_container">
-      <div className="register_cards_container mx-3 mx-sm-5">
+      <div className="register_cards_container col-10 col-xl-8">
         <div className="register_cards row">
           <div className="logo-m d-block d-md-none col-12 col-md-6 py-2">
             <img alt="" className="img-fluid" src={logo_xs} />
@@ -128,27 +154,27 @@ const Register = () => {
               <img alt="" className="register-logo-l img-fluid" src={logo} />
             </a>
           </div>
-          <div className="col-12 col-md-6 mx-auto my-3 p-2 d-lg-block">
-            <div>
+          <div className="col-12 col-md-6 mx-auto my-2">
+            <div className="my-3">
               <h1 className="header mb-2">
                 <b>
-                  Daftar sebagai User
+                  Form daftar akun SeaDeals
                 </b>
               </h1>
-              <div className="justify-content-center row">
+              <div className="justify-content-center">
                 <form
-                  className="register_form col-md-10"
+                  className="col-12"
                   onSubmit={(e) => {
-                    e.preventDefault();
-                    handleSubmit().then();
+                    handleSubmit(e).then();
                   }}
                 >
                   <input
                     className="form__input p-2 mb-2"
                     value={email}
-                    onChange={(event) => setEmail(event.target.value)}
+                    onChange={(event: { target: { value: React.SetStateAction<string>; };
+                    }) => setEmail(event.target.value)}
                     type="email"
-                    id="email"
+                    id="email-m"
                     placeholder="Email"
                     autoComplete="new-password"
                     required
@@ -159,20 +185,23 @@ const Register = () => {
                         value={password}
                         onChange={(event) => setPassword(event.target.value)}
                         type={(revealed) ? 'text' : 'password'}
+                        name="password-m"
+                        id="password-m"
                         className={passwordValidity ? 'form__input p-2' : 'form__input p-2 is-invalid'}
                         placeholder="Kata sandi"
                         autoComplete="new-password"
                         required
                       />
+                      {/* eslint-disable-next-line max-len */}
                       <div className="input-group-addon" role="presentation" onClick={handleReveal}>
                         <span className="">
-                          { !revealed ? <BsEyeSlash /> : <BsEye /> }
+                          { !revealed ? <BsEyeSlash className="password-vis-button" /> : <BsEye className="password-vis-button" /> }
                         </span>
                       </div>
                     </div>
                     {
                         passwordValidity ? '' : (
-                          <div id="invalid-password" className="invalid-feedback">
+                          <div id="invalid-password" className="d-flex justify-content-start mt-1 text-accent">
                             Password should not include username!
                           </div>
                         )
@@ -184,52 +213,53 @@ const Register = () => {
                         value={confirmPassword}
                         onChange={(event) => setConfirmPassword(event.target.value)}
                         type={(confirmPasswordVis) ? 'text' : 'password'}
-                        name="confirm-password"
-                        id="confirm-password"
+                        name="confirm-password-m"
+                        id="confirm-password-m"
                         className={passwordCorrect ? 'form__input p-2' : 'form__input p-2 is-invalid'}
                         placeholder="Ulang kata sandi"
                         autoComplete="new-password"
                         required
                       />
+                      {/* eslint-disable-next-line max-len */}
                       <div className="input-group-addon" role="presentation" onClick={handleCPVis}>
                         <span className="">
-                          { !confirmPasswordVis ? <BsEyeSlash /> : <BsEye /> }
+                          { !confirmPasswordVis ? <BsEyeSlash className="password-vis-button" /> : <BsEye className="password-vis-button" /> }
                         </span>
                       </div>
                     </div>
                     {
-                      !passwordCorrect && (
-                        <p id="invalid-password" className="text-accent">
-                          {'Password doesn\'t match!'}
-                        </p>
-                      )
-                    }
+                        passwordCorrect ? '' : (
+                          <div id="invalid-password" className="d-flex justify-content-start mt-1 text-accent">
+                            Passwords are not the same!
+                          </div>
+                        )
+                      }
                   </div>
                   <div className="mb-2">
                     <input
-                      className={userNameValidity ? 'form__input p-2' : 'form__input p-2 is-invalid'}
+                      className={userNameValidity ? 'form__input p-2 mb-2' : 'form__input p-2 is-invalid mb-2'}
                       value={userName}
                       onChange={(event) => setUserName(event.target.value)}
                       type="text"
-                      id="username"
+                      id="username-m"
                       placeholder="Username"
                       autoComplete="new-password"
                       required
                     />
                     {
-                      userNameValidity ? '' : (
-                        <div id="invalid-username" className="invalid-feedback">
-                          Whitespaces aren&apos;t allowed in usernames!
-                        </div>
-                      )
-                    }
+                        userNameValidity ? '' : (
+                          <div id="invalid-username" className="d-flex justify-content-start mt-1 invalid-feedback">
+                            Whitespaces aren&apos;t allowed in usernames!
+                          </div>
+                        )
+                      }
                   </div>
                   <input
                     value={fullName}
                     onChange={(event) => setFullName(event.target.value)}
-                    className="form__input my-2"
+                    className="form__input p-2 mb-2"
                     type="text"
-                    id="fullName"
+                    id="fullName-m"
                     placeholder="Nama lengkap"
                     autoComplete="new-password"
                     required
@@ -252,30 +282,26 @@ const Register = () => {
                       onChange={(event) => setPhone(event.target.value)}
                       type="tel"
                       className="form__input p-2"
-                      id="validationCustomTelephone"
+                      id="validationCustomTelephone-m"
                       placeholder="Nomor ponsel"
                       aria-describedby="inputGroupPrepend"
                       required
                     />
                   </div>
-                  <label className="birth-date my-0 p-0 mb-2">Tanggal lahir: </label>
+                  <div className="d-flex justify-content-start">
+                    <label className="birth-date my-2">Tanggal lahir: </label>
+                  </div>
                   <input
                     value={birthDate}
                     onChange={(event) => setBirthDate(event.target.value)}
+                    max={timeNow.toString().substring(0, 10)}
                     className="form__input p-2 mb-2"
                     type="date"
-                    id="birthDate"
+                    id="birthDate-m"
                     required
                   />
-                  <div className="mb-4">
-                    <button className="register-button" type="submit"><b>Daftar</b></button>
-                  </div>
-                  <div className="d-flex justify-content-center mb-2">
-                    <p id="daftar-text">
-                      Sudah punya akun SeaDeals?
-                      {' '}
-                      <a href="/login" id="daftar-link"><b>Masuk</b></a>
-                    </p>
+                  <div>
+                    <Button buttonType="primary w-100" handleClickedButton={() => {}} isSubmit text="Daftar" />
                   </div>
                 </form>
               </div>
