@@ -71,8 +71,8 @@ const FormVoucher:FC<any> = ({ title, formType }) => {
           quota: Number(voucher.quota),
           amount: Number(voucher.amount),
           min_spending: Number(voucher.min_spending),
-          start_date: voucher.start_date,
-          end_date: voucher.end_date,
+          start_date: moment(voucher.start_date),
+          end_date: moment(voucher.end_date),
         }),
       );
       if (response.status === 200) {

@@ -153,7 +153,7 @@ const DetailProduct:FC<any> = () => {
                 <RowContent label="Kondisi" value={product.product.product_detail.condition_status} />
                 <RowContent label="Barang Berbahaya" element="boolean" value={product.product.product_detail.is_hazardous} />
                 <RowContent label="Berat" element="children">
-                  <InputPreSuffix value={product.product.product_detail.weight} unit="kg" isSuffix />
+                  <InputPreSuffix value={product.product.product_detail.weight} unit="gr" isSuffix />
                 </RowContent>
                 <RowContent label="Ukuran (P*L*T)" element="children">
                   <div className="d-flex gap-2 align-items-center">
