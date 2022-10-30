@@ -15,8 +15,8 @@ const ProductVariantInfo:FC<any> = ({
   const [variant1, setVariant1] = useState<any>([]);
   const [variant2, setVariant2] = useState<any>([]);
   const defaultVariantValue = {
-    price: '',
-    stock: '',
+    price: 99,
+    stock: 1,
     variant_code: '',
     picture_url: '',
     picture_name: '',
@@ -98,8 +98,8 @@ const ProductVariantInfo:FC<any> = ({
   const cleanVariant = () => {
     setVariant1([]);
     setVariant2([]);
-    handleChangeByName('variant_1_name', '');
-    handleChangeByName('variant_2_name', '');
+    handleChangeByName('variant_1_name', null);
+    handleChangeByName('variant_2_name', null);
     setDataVariants({});
   };
 
@@ -157,6 +157,7 @@ const ProductVariantInfo:FC<any> = ({
               handleChangeByName('default_price', '');
               handleChangeByName('default_stock', '');
               setShowVariantTable(!showVariantTable);
+              setVariant1([]);
             }}
           />
         </div>
@@ -165,7 +166,10 @@ const ProductVariantInfo:FC<any> = ({
         ? (
           <>
             <div className="row my-3">
-              <label className="col-3 text-end align-self-center" htmlFor="default_price">Harga Produk</label>
+              <label className="col-3 text-end align-self-center" htmlFor="default_price">
+                <span className="text-accent">*</span>
+                <span>Harga Produk</span>
+              </label>
               <div className="col-9 p-0">
                 <div className="row">
                   <div className="input-group prefix">
@@ -184,7 +188,10 @@ const ProductVariantInfo:FC<any> = ({
               </div>
             </div>
             <div className="row my-3">
-              <label className="col-3 text-end align-self-center" htmlFor="default_stock">Stok Produk</label>
+              <label className="col-3 text-end align-self-center" htmlFor="default_stock">
+                <span className="text-accent">*</span>
+                <span>Stok Produk</span>
+              </label>
               <div className="col-9 p-0">
                 <div className="row">
                   <div className="input-group suffix">
@@ -207,7 +214,10 @@ const ProductVariantInfo:FC<any> = ({
         : (
           <>
             <div className="row my-3">
-              <label className="col-3 text-end align-self-center">Variasi 1</label>
+              <label className="col-3 text-end align-self-center">
+                <span className="text-accent">*</span>
+                <span>Variasi 1</span>
+              </label>
               <div className="col-9 variant__input-container">
                 <div className="d-flex gap-3">
                   <input
@@ -217,22 +227,15 @@ const ProductVariantInfo:FC<any> = ({
                     placeholder="Masukkan nama variasi"
                     type="text"
                     onChange={handleOnChange}
-                    value={product.variant_1_name}
+                    value={product.variant_1_name || ''}
+                    required
                   />
-                  {product.variant_1_name !== '' && (
-                  <>
-                    <Button
-                      buttonType="primary alt"
-                      handleClickedButton={() => { setVariant1([...variant1, '']); }}
-                      text="Tambah varian 1"
-                    />
-                    {React.createElement(IconClose, {
-                      className: 'icon-remove',
-                      onClick: () => {
-                        cleanVariant();
-                      },
-                    })}
-                  </>
+                  {product.variant_1_name !== null && (
+                  <Button
+                    buttonType="primary alt"
+                    handleClickedButton={() => { setVariant1([...variant1, '']); }}
+                    text="Tambah varian 1"
+                  />
                   )}
                 </div>
                 <div className="row mt-3">
@@ -251,7 +254,7 @@ const ProductVariantInfo:FC<any> = ({
                 </div>
               </div>
             </div>
-            {product.variant_1_name !== '' && (
+            {product.variant_1_name !== null && (
             <div className="row my-3">
               <label className="col-3 text-end align-self-center">Variasi 2</label>
               <div className="col-9 variant__input-container">
@@ -263,9 +266,9 @@ const ProductVariantInfo:FC<any> = ({
                     placeholder="Masukkan nama variasi"
                     type="text"
                     onChange={handleOnChange}
-                    value={product.variant_2_name}
+                    value={product.variant_2_name || ''}
                   />
-                  {product.variant_2_name !== '' && (
+                  {product.variant_2_name !== null && (
                     <>
                       <Button
                         buttonType="primary alt"
@@ -276,7 +279,7 @@ const ProductVariantInfo:FC<any> = ({
                         className: 'icon-remove',
                         onClick: () => {
                           setVariant2([]);
-                          handleChangeByName('variant_2_name', '');
+                          handleChangeByName('variant_2_name', null);
                           setDataVariants({});
                         },
                       })}
@@ -351,7 +354,7 @@ const ProductVariantInfo:FC<any> = ({
                       variant1.map((item:any, index:string) => (
                         <tr className="cell-content__row" key={`${item}${index + 1}`}>
                           <td className="border py-4 my-2">{item}</td>
-                          { product.variant_2_name !== '' ? (
+                          { product.variant_2_name !== null ? (
                             <>
                               {
                             variant2.map((item2: any, index2: string) => (

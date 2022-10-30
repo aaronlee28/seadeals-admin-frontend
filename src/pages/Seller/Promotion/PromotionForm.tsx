@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './Promotions.scss';
 import toast from 'react-hot-toast';
 import { deleteObject, ref } from 'firebase/storage';
+import moment from 'moment';
 import PromotionBasicInfo from './PromotionFormItem/PromotionBasicInfo';
 import PromotionBonusInfo from './PromotionFormItem/PromotionBonusInfo';
 import PromotionsAPI from '../../../api/promotions';
@@ -23,7 +24,7 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
     end_date: '',
     quota: '',
     max_quota: '',
-    amount_type: '',
+    amount_type: 'percentage',
     amount: '',
     banner_name: '',
     banner_url: '',
@@ -77,8 +78,8 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
           product_id: promo.product_id,
           name: promotion.name,
           description: promotion.description,
-          start_date: `${promotion.start_date}Z`,
-          end_date: `${promotion.end_date}Z`,
+          start_date: moment(promotion.start_date),
+          end_date: moment(promotion.end_date),
           quota: Number(promo.quota),
           amount: Number(promo.amount),
           amount_type: promo.amount_type,
@@ -131,7 +132,9 @@ const PromotionForm:FC<any> = ({ title, formType }) => {
               buttonType="secondary alt"
               handleClickedButton={
               () => {
-                onDeleteClick();
+                if (promotion.banner_url) {
+                  onDeleteClick();
+                }
                 navigate('/seller/promotions/list');
               }
 }

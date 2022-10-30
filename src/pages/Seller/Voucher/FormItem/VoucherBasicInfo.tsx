@@ -1,14 +1,13 @@
 import React, { FC, useEffect } from 'react';
-import moment from 'moment';
 import useAuth from '../../../../hooks/useAuth';
 import '../Voucher.scss';
 import VoucherConstant from '../../../../constants/voucher';
+import formatter from '../../../../utils/formatter';
 
 const VoucherBasicInfo:FC<any> = ({
   voucher, formType, handleOnChange, setVoucher,
 }) => {
-  const dt = moment(new Date()).add(2, 'minutes');
-  const timeNow = `${moment(dt).format('YYYY-MM-DDThh:mm')}`;
+  const timeNow = formatter.TimeNowString(2);
   const auth = useAuth();
   const prefixCode = auth.auth.user.username.substring(0, 4).toUpperCase();
 

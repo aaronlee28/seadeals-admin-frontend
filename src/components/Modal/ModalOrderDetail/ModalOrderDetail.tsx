@@ -12,11 +12,11 @@ interface ModalOrderDetailProps {
 
 const ModalOrderDetail:FC<ModalOrderDetailProps> = ({ setShow, order, refreshData }) => {
   const [showDelivery, setShowDelivery] = useState(false);
-  const [showComplant, setShowComplaint] = useState(false);
+  const [showComplaint, setShowComplaint] = useState(false);
 
   const children = () => (
     <div className="p-5 pe-3 w-100 text-start">
-      {!showDelivery && !showComplant && (
+      {!showDelivery && !showComplaint && (
         <OrderDetail
           order={order}
           toggleDelivery={() => setShowDelivery(true)}
@@ -31,7 +31,7 @@ const ModalOrderDetail:FC<ModalOrderDetailProps> = ({ setShow, order, refreshDat
           refreshData={refreshData}
         />
       )}
-      {showComplant && (
+      {showComplaint && (
       <ManageComplaint
         closeComplaint={() => setShowComplaint(false)}
         order={order}

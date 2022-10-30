@@ -7,11 +7,14 @@ const useLogout = () => {
   const axiosPrivate = useAxiosPrivate();
 
   return async () => {
+    const loadingToast = toast.loading('Waiting for sign out');
     try {
       await axiosPrivate.post('/sign-out', JSON.stringify({ user_id: parseInt(auth.user.user_id, 10) }));
       localStorage.removeItem('access_token');
     } catch (err:any) {
       toast.error(err.response?.data?.message);
+    } finally {
+      toast.dismiss(loadingToast);
     }
     setAuth({});
   };

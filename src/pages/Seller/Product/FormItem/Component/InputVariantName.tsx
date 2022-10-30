@@ -18,13 +18,17 @@ const InputVariantName:FC<any> = ({
       }}
       required
     />
-    {React.createElement(IconClose, {
-      className: 'icon-remove small',
-      onClick: () => {
-        removeVariantByIdx(true, index);
-        setDataVariants({});
-      },
-    })}
+    {index !== 0 && (
+    <div>
+      {React.createElement(IconClose, {
+        className: 'icon-remove small',
+        onClick: () => {
+          removeVariantByIdx(true, index);
+          setDataVariants({});
+        },
+      })}
+    </div>
+    )}
   </div>
 );
 
