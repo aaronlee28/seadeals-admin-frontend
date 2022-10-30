@@ -62,15 +62,20 @@ const FormProduct:FC<any> = ({
 
   const handleSubmit = async () => {
     try {
-      if (productPhoto.length < 1) {
-        toast.error('Minimal terdapat 1 foto produk');
-        return;
-      }
+      // if (productPhoto.length < 1) {
+      //   toast.error('Minimal terdapat 1 foto produk');
+      //   return;
+      // }
 
-      const variantArray:any = [];
+      const variantArray:any = null;
       if (dataVariants) {
         Object.keys(dataVariants).forEach((dataVariant:any) => {
-          variantArray.push({ product_variant_details: dataVariants[dataVariant] });
+          const tmp = dataVariant;
+          if (product.variant_1_name === null && product.variant_2_name === null) {
+            tmp.stock = product.default_stock;
+            tmp.price = product.default_price;
+          }
+          variantArray.push({ product_variant_details: dataVariants[tmp] });
         });
       }
 
