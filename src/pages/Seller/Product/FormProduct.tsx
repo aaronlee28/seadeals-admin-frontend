@@ -62,10 +62,10 @@ const FormProduct:FC<any> = ({
 
   const handleSubmit = async () => {
     try {
-      // if (productPhoto.length < 1) {
-      //   toast.error('Minimal terdapat 1 foto produk');
-      //   return;
-      // }
+      if (productPhoto.length < 1) {
+        toast.error('Minimal terdapat 1 foto produk');
+        return;
+      }
 
       const variantArray:any = null;
       if (dataVariants) {
