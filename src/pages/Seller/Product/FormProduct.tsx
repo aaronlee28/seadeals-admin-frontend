@@ -67,15 +67,11 @@ const FormProduct:FC<any> = ({
         return;
       }
 
-      const variantArray:any = null;
+      let variantArray:any = null;
       if (dataVariants) {
+        variantArray = [];
         Object.keys(dataVariants).forEach((dataVariant:any) => {
-          const tmp = dataVariant;
-          if (product.variant_1_name === null && product.variant_2_name === null) {
-            tmp.stock = product.default_stock;
-            tmp.price = product.default_price;
-          }
-          variantArray.push({ product_variant_details: dataVariants[tmp] });
+          variantArray.push({ product_variant_details: dataVariants[dataVariant] });
         });
       }
 
