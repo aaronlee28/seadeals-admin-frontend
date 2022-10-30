@@ -15,8 +15,8 @@ const ProductVariantInfo:FC<any> = ({
   const [variant1, setVariant1] = useState<any>([]);
   const [variant2, setVariant2] = useState<any>([]);
   const defaultVariantValue = {
-    price: 0,
-    stock: 0,
+    price: 99,
+    stock: 1,
     variant_code: '',
     picture_url: '',
     picture_name: '',
@@ -103,8 +103,6 @@ const ProductVariantInfo:FC<any> = ({
     setDataVariants({});
   };
 
-  console.log('variant1: ', typeof product.variant_1_name);
-  console.log('variant2: ', typeof product.variant_2_name);
   return (
     <div className="my-4">
       <h5 className="text-start"><b>Informasi Penjualan</b></h5>
@@ -159,7 +157,7 @@ const ProductVariantInfo:FC<any> = ({
               handleChangeByName('default_price', '');
               handleChangeByName('default_stock', '');
               setShowVariantTable(!showVariantTable);
-              setVariant1(['']);
+              setVariant1([]);
             }}
           />
         </div>
