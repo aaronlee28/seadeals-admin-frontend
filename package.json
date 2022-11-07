@@ -2,6 +2,11 @@
   "name": "seadeals-admin",
   "version": "0.1.0",
   "private": true,
+  "main": "server.js",
+  "engines": {
+    "npm": "8.11.0",
+    "node": "16.15.1"
+  },
   "dependencies": {
     "@react-pdf/renderer": "^3.0.0",
     "@testing-library/jest-dom": "^5.16.5",
@@ -16,6 +21,7 @@
     "axios": "^0.27.2",
     "buffer": "^6.0.3",
     "firebase": "^9.12.1",
+    "hash-router": "^0.4.0",
     "jsbarcode": "^3.11.5",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
@@ -35,10 +41,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "node server.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "heroku-postbuild": "npm install"
   },
   "eslintConfig": {
     "extends": [

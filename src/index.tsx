@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { HashRouter, Routes, Route } from 'react-router-dom';
 import moment from 'moment-timezone';
 import App from './App';
 import { AuthProvider } from './context/AuthContext';
@@ -13,11 +13,11 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <BrowserRouter>
+  <HashRouter>
     <AuthProvider>
       <Routes>
         <Route path="/*" element={<App />} />
       </Routes>
     </AuthProvider>
-  </BrowserRouter>,
+  </HashRouter>,
 );

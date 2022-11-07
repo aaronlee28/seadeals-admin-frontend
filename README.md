@@ -22,7 +22,6 @@ git push -uf origin main
 
 ## Integrate with your tools
 
-- [ ] [Set up project integrations](https://gitlab.com/reivaldo.julianto/seadeals-frontend-seller/-/settings/integrations)
 
 ## Collaborate with your team
 
