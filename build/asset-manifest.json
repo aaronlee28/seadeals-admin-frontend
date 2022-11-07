@@ -1,0 +1,33 @@
+{
+  "files": {
+    "main.css": "/static/css/main.457e795e.css",
+    "main.js": "/static/js/main.0c50d986.js",
+    "static/media/TIKI.png": "/static/media/TIKI.116dec7ca2318c9ffdcf.png",
+    "static/media/POS_Indonesia.png": "/static/media/POS_Indonesia.cf573ceef231a50d9197.png",
+    "static/media/JNE.png": "/static/media/JNE.ef66c49f43c96b1b778d.png",
+    "static/media/logo_sea_deals.png": "/static/media/logo_sea_deals.7b4a3d8027e169c3ef66.png",
+    "static/media/logo.png": "/static/media/logo.8677f725604398e7e3f3.png",
+    "static/media/logo_xs.png": "/static/media/logo_xs.fe2f5ef5534ba809ee37.png",
+    "static/media/settings.svg": "/static/media/settings.d1f12c2838fe47b49cafa3c482e7d570.svg",
+    "static/media/calendar.svg": "/static/media/calendar.21c88110889018115b4f559a735db4ac.svg",
+    "static/media/order.svg": "/static/media/order.e133e35fee19f46a4a8cbd50ec12d21a.svg",
+    "static/media/courier.svg": "/static/media/courier.8836eae12a5aca96ba1464d7a4e866fb.svg",
+    "static/media/icon_product.svg": "/static/media/icon_product.b2edec412b46d5394d3a7e8f966c3120.svg",
+    "index.html": "/index.html",
+    "static/media/icon_shoutout.svg": "/static/media/icon_shoutout.ab51ef9eb849ab5660de7fdbe5903180.svg",
+    "static/media/icon_voucher.svg": "/static/media/icon_voucher.ea6aec2c28139bc4a8cc5ec00489425e.svg",
+    "static/media/icon_close.svg": "/static/media/icon_close.43acac53cb85a6489dbf8cf3109f8021.svg",
+    "static/media/loading.svg": "/static/media/loading.846d211ef207083b1410b578b5d5037c.svg",
+    "static/media/icon_search.svg": "/static/media/icon_search.d6c01fa3783fc17e1f60858532beb324.svg",
+    "static/media/print.svg": "/static/media/print.7203ee088ea2903e6963a4359aea37eb.svg",
+    "static/media/icon_heart.svg": "/static/media/icon_heart.7924cadf368ee8141d72b3ce56d8e533.svg",
+    "static/media/icon_chevron_right.svg": "/static/media/icon_chevron_right.2d73a3c98aa2e0945928bf880d9473c5.svg",
+    "static/media/icon_burger.svg": "/static/media/icon_burger.13049c7e91802f2d825aacde47767a14.svg",
+    "main.457e795e.css.map": "/static/css/main.457e795e.css.map",
+    "main.0c50d986.js.map": "/static/js/main.0c50d986.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.457e795e.css",
+    "static/js/main.0c50d986.js"
+  ]
+}
